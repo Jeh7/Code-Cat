@@ -19,12 +19,14 @@ if ($_SESSION['role'] !== 'student' && $_SESSION['role'] !== 'na') {
 
 $student_id = $_SESSION['id'];
 
-$levels = $conn->query("
+$levels_result = $conn->query("
 SELECT l.id,
+       l.classroom_id,
        l.title,
        l.description,
        l.instructions,
        l.difficulty,
+       l.created_at,
        c.name AS classroom_name,
        u.username AS teacher_name,
        p.status AS progress_status,
@@ -39,8 +41,26 @@ LEFT JOIN student_level_progress p
     ON p.level_id = l.id AND p.student_id = cm.student_id
 WHERE cm.student_id = '$student_id'
   AND l.status = 'published'
-ORDER BY c.name ASC, l.created_at DESC
+ORDER BY c.name ASC, l.created_at ASC, l.id ASC
 ");
+
+$levels = [];
+if ($levels_result && $levels_result->num_rows > 0) {
+    $classroom_is_unlocked = [];
+
+    while ($level = $levels_result->fetch_assoc()) {
+        $classroom_id = (int)$level['classroom_id'];
+        $status = (string)($level['progress_status'] ?? 'not_started');
+
+        if (!array_key_exists($classroom_id, $classroom_is_unlocked)) {
+            $classroom_is_unlocked[$classroom_id] = true;
+        }
+
+        $level['is_unlocked'] = $classroom_is_unlocked[$classroom_id];
+        $levels[] = $level;
+        $classroom_is_unlocked[$classroom_id] = ($status === 'completed');
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -84,8 +104,8 @@ ORDER BY c.name ASC, l.created_at DESC
             <p>These are the published levels assigned to the classrooms you are enrolled in.</p>
 
             <div class="level_grid">
-                <?php if ($levels && $levels->num_rows > 0): ?>
-                    <?php while ($level = $levels->fetch_assoc()): ?>
+                <?php if ($levels): ?>
+                    <?php foreach ($levels as $level): ?>
                     <div class="level_card">
                         <div class="level_card_header">
                             <h3><?= htmlspecialchars($level['title']) ?></h3>
@@ -102,21 +122,28 @@ ORDER BY c.name ASC, l.created_at DESC
                             <?= nl2br(htmlspecialchars($level['instructions'])) ?>
                         </div>
                         <div class="table_actions">
-                            <a class="secondary_button" href="play_level.php?id=<?= (int)$level['id'] ?>">
-                                <?php
-                                $status = $level['progress_status'] ?? 'not_started';
-                                if ($status === 'completed') {
-                                    echo 'View completion';
-                                } elseif ($status === 'not_started') {
-                                    echo 'Open level';
-                                } else {
-                                    echo 'Continue level';
-                                }
-                                ?>
-                            </a>
+                            <?php $status = $level['progress_status'] ?? 'not_started'; ?>
+                            <?php if (!($level['is_unlocked'] ?? false)): ?>
+                                <span class="secondary_button is-disabled">Complete the previous level first</span>
+                            <?php else: ?>
+                                <a class="secondary_button" href="play_level.php?id=<?= (int)$level['id'] ?>">
+                                    <?php
+                                    if ($status === 'completed') {
+                                        echo 'View completion';
+                                    } elseif ($status === 'not_started') {
+                                        echo 'Open level';
+                                    } else {
+                                        echo 'Continue level';
+                                    }
+                                    ?>
+                                </a>
+                            <?php endif; ?>
                         </div>
+                        <?php if (!($level['is_unlocked'] ?? false)): ?>
+                            <p class="form_hint">Levels unlock in order. Finish the current classroom level to open this one.</p>
+                        <?php endif; ?>
                     </div>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <div class="empty_state">
                         <strong>No classroom levels are assigned to you yet.</strong>

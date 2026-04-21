@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "classroom_level_helpers.php";
 
 header('Content-Type: application/json');
 
@@ -49,6 +50,16 @@ if (!$level_result || $level_result->num_rows === 0) {
 }
 
 $level = $level_result->fetch_assoc();
+$gate = get_classroom_level_gate($conn, $student_id, (int)$level['classroom_id'], $level_id);
+if (!$gate['found'] || !$gate['unlocked']) {
+    http_response_code(423);
+    echo json_encode([
+        'ok' => false,
+        'message' => 'Complete ' . (($gate['blocked_by']['title'] ?? 'the previous level')) . ' first.',
+        'locked' => true,
+    ]);
+    exit();
+}
 
 $existing_progress_result = $conn->query("
 SELECT status, attempts, last_played_at, completed_at

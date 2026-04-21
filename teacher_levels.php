@@ -99,7 +99,7 @@ INNER JOIN classrooms c ON c.id = l.classroom_id
 LEFT JOIN student_level_progress p ON p.level_id = l.id
 WHERE l.teacher_id = '$teacher_id'
 GROUP BY l.id
-ORDER BY l.created_at DESC
+ORDER BY c.name ASC, l.created_at ASC, l.id ASC
 ";
 $levels = $conn->query($level_summary_sql);
 
@@ -117,7 +117,7 @@ INNER JOIN teacher_levels l ON l.id = p.level_id
 INNER JOIN classrooms c ON c.id = l.classroom_id
 INNER JOIN users u ON u.id = p.student_id
 WHERE l.teacher_id = '$teacher_id'
-ORDER BY c.name ASC, l.created_at DESC, u.username ASC
+ORDER BY c.name ASC, l.created_at ASC, u.username ASC
 ";
 $progress_rows = $conn->query($progress_sql);
 

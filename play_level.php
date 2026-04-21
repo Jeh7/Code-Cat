@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "classroom_level_helpers.php";
 
 if (!isset($_SESSION['role'])) {
     header("Location: login.php");
@@ -45,6 +46,8 @@ if (!$level_result || $level_result->num_rows === 0) {
 }
 
 $level = $level_result->fetch_assoc();
+$gate = get_classroom_level_gate($conn, (int)$student_id, (int)$level['classroom_id'], (int)$level_id);
+$is_locked = !$gate['found'] || !$gate['unlocked'];
 $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
 ?>
 
@@ -81,7 +84,7 @@ $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
     </div>
 
     <div class="content teacher_content">
-        <?php if (!$is_completed): ?>
+        <?php if (!$is_completed && !$is_locked): ?>
             <div class="game_shell classroom_game_shell">
                 <iframe
                     id="classroom-game-frame"
@@ -113,6 +116,16 @@ $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
                     <span>
                         This classroom level is already finished<?= !empty($level['completed_at']) ? ' on ' . htmlspecialchars($level['completed_at']) : '' ?>.
                         Progress has been recorded, and replay is disabled.
+                    </span>
+                </div>
+                <div class="table_actions">
+                    <a class="secondary_button" href="levels.php">Back to Levels</a>
+                </div>
+            <?php elseif ($is_locked): ?>
+                <div class="empty_state">
+                    <strong>This classroom level is locked.</strong>
+                    <span>
+                        Complete <?= htmlspecialchars((string)($gate['blocked_by']['title'] ?? 'the previous level')) ?> first before opening this level.
                     </span>
                 </div>
                 <div class="table_actions">

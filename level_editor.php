@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "classroom_level_helpers.php";
 
 function teacher_levels_has_column(mysqli $conn, string $column): bool
 {
@@ -68,7 +69,6 @@ if ($edit_id > 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $level_id = (int)($_POST['level_id'] ?? 0);
     $classroom_id = (int)($_POST['classroom_id'] ?? 0);
-    $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $instructions = trim($_POST['instructions'] ?? '');
     $difficulty = $_POST['difficulty'] ?? 'beginner';
@@ -82,6 +82,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $walls = trim($_POST['walls'] ?? '');
     $spikes = trim($_POST['spikes'] ?? '');
     $entities = trim($_POST['entities'] ?? '[]');
+
+    $existing_level = null;
+    if ($level_id > 0) {
+        $existing_level_result = $conn->query("
+            SELECT id, classroom_id, title
+            FROM teacher_levels
+            WHERE id = $level_id
+              AND teacher_id = $teacher_id
+            LIMIT 1
+        ");
+
+        if ($existing_level_result && $existing_level_result->num_rows > 0) {
+            $existing_level = $existing_level_result->fetch_assoc();
+        }
+    }
+
+    if ($existing_level && (int)$existing_level['classroom_id'] === $classroom_id) {
+        $title = trim((string)$existing_level['title']) !== ''
+            ? (string)$existing_level['title']
+            : next_classroom_level_title($conn, $classroom_id, $level_id);
+    } else {
+        $title = $classroom_id > 0 ? next_classroom_level_title($conn, $classroom_id, $level_id) : 'Level';
+    }
 
     $editing = [
         'id' => $level_id,
@@ -111,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $goal_y < $grid_height &&
         !($start_x === $goal_x && $start_y === $goal_y);
 
-    if ($title !== '' && $description !== '' && $instructions !== '' && $classroom_check && $classroom_check->num_rows > 0 && $coordinates_valid) {
+    if ($description !== '' && $instructions !== '' && $classroom_check && $classroom_check->num_rows > 0 && $coordinates_valid) {
         $save_ok = false;
 
         if ($level_id > 0) {
@@ -332,6 +355,17 @@ if (is_array($decoded_editor_entities)) {
         ];
     }
 }
+
+$classroom_level_previews = [];
+foreach ($classroom_select_options as $classroom_option) {
+    $preview_classroom_id = (int)$classroom_option['id'];
+    if ((int)$editing['id'] > 0 && (int)$editing['classroom_id'] === $preview_classroom_id && trim((string)$editing['title']) !== '') {
+        $classroom_level_previews[$preview_classroom_id] = (string)$editing['title'];
+        continue;
+    }
+
+    $classroom_level_previews[$preview_classroom_id] = next_classroom_level_title($conn, $preview_classroom_id, (int)$editing['id']);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -406,8 +440,10 @@ if (is_array($decoded_editor_entities)) {
                                 <?php endforeach; ?>
                             </select>
 
-                            <label for="title">Level title</label>
-                            <input type="text" id="title" name="title" required value="<?= htmlspecialchars($editing['title']) ?>">
+                            <div class="callout compact_notice">
+                                <strong>Assigned level number</strong>
+                                <span id="level-title-preview"><?= htmlspecialchars($editing['title'] !== '' ? $editing['title'] : ($classroom_level_previews[(int)$editing['classroom_id']] ?? 'Level')) ?></span>
+                            </div>
 
                             <label for="description">Short description</label>
                             <input type="text" id="description" name="description" required value="<?= htmlspecialchars($editing['description']) ?>">
@@ -542,6 +578,8 @@ if (is_array($decoded_editor_entities)) {
 
         const gridWidthInput = document.getElementById('grid_width');
         const gridHeightInput = document.getElementById('grid_height');
+        const classroomInput = document.getElementById('classroom_id');
+        const titlePreview = document.getElementById('level-title-preview');
         const startXInput = document.getElementById('start_x');
         const startYInput = document.getElementById('start_y');
         const goalXInput = document.getElementById('goal_x');
@@ -569,6 +607,7 @@ if (is_array($decoded_editor_entities)) {
             stun_gun: 'T',
             enemy: 'E'
         };
+        const levelTitlePreviews = <?= json_encode($classroom_level_previews) ?>;
 
         function setActiveTool(tool) {
             activeTool = tool;
@@ -768,6 +807,12 @@ if (is_array($decoded_editor_entities)) {
                 setActiveTool(button.dataset.tool);
             });
         });
+
+        if (classroomInput && titlePreview) {
+            classroomInput.addEventListener('change', function () {
+                titlePreview.textContent = levelTitlePreviews[classroomInput.value] || 'Level';
+            });
+        }
 
         [gridWidthInput, gridHeightInput, startXInput, startYInput, goalXInput, goalYInput].forEach((input) => {
             input.addEventListener('input', renderEditor);

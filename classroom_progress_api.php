@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "classroom_level_helpers.php";
 
 header('Content-Type: application/json');
 
@@ -81,7 +82,7 @@ if ($student_id <= 0 || $level_id <= 0 || $status !== 'completed') {
 }
 
 $level_result = $conn->query("
-SELECT l.id
+SELECT l.id, l.classroom_id
 FROM teacher_levels l
 INNER JOIN classrooms c ON c.id = l.classroom_id
 INNER JOIN classroom_members cm ON cm.classroom_id = c.id
@@ -96,6 +97,18 @@ if (!$level_result || $level_result->num_rows === 0) {
     echo json_encode([
         'ok' => false,
         'message' => 'Classroom level not found.',
+    ]);
+    exit();
+}
+
+$level = $level_result->fetch_assoc();
+$gate = get_classroom_level_gate($conn, $student_id, (int)$level['classroom_id'], $level_id);
+if (!$gate['found'] || !$gate['unlocked']) {
+    http_response_code(423);
+    echo json_encode([
+        'ok' => false,
+        'message' => 'Complete ' . (($gate['blocked_by']['title'] ?? 'the previous level')) . ' first.',
+        'locked' => true,
     ]);
     exit();
 }
