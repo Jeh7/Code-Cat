@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Designer"
+  short_description: "Senior UI/UX design workflow skill"
+  default_prompt: "Use $ui-ux-designer to improve this product flow and interface."
