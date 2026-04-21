@@ -600,6 +600,45 @@ iframe,
   margin-top: 0;
 }
 
+.dashboard_creation_intro {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.creation_hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(94, 146, 218, 0.16), rgba(255, 255, 255, 0.38));
+}
+
+.creation_hero h2,
+.creation_hero p {
+  margin: 0;
+}
+
+.creation_actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboard_guides {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.creation_callout {
+  min-height: 110px;
+  align-content: start;
+}
+
 .compact_notice {
   margin-bottom: 4px;
 }
@@ -653,6 +692,15 @@ iframe,
 
 .teacher_split {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.teacher_creation_split {
+  align-items: start;
+}
+
+.teacher_editor_cta,
+.teacher_cta_list {
+  gap: 14px;
 }
 
 .stats_grid {
@@ -745,6 +793,25 @@ iframe,
   align-items: start;
 }
 
+.classroom_play_page {
+  display: grid;
+  gap: 16px;
+  width: min(1180px, calc(100% - 32px));
+}
+
+.classroom_player_shell {
+  gap: 16px;
+}
+
+.classroom_game_shell {
+  width: min(1180px, 100%);
+}
+
+.classroom_instruction_box {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .level_card {
   display: grid;
   gap: 12px;
@@ -835,6 +902,10 @@ iframe,
   flex-wrap: wrap;
 }
 
+.dashboard_editor_actions {
+  margin-bottom: 4px;
+}
+
 .editor_tool {
   min-height: 38px;
   padding: 8px 12px;
@@ -842,6 +913,10 @@ iframe,
 
 .editor_tool.is-active {
   background: #366ab3;
+}
+
+.inline_editor_note {
+  margin-bottom: 2px;
 }
 
 .player_shell {

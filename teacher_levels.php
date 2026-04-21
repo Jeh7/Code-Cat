@@ -9,7 +9,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'teacher') {
 
 $teacher_id = $_SESSION['id'];
 $message = "";
-$level_form = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -69,105 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    if ($action === 'save_level') {
-        $level_id = (int)($_POST['level_id'] ?? 0);
-        $classroom_id = (int)($_POST['classroom_id'] ?? 0);
-        $title = trim($_POST['title'] ?? '');
-        $description = trim($_POST['description'] ?? '');
-        $instructions = trim($_POST['instructions'] ?? '');
-        $difficulty = $_POST['difficulty'] ?? 'beginner';
-        $status = $_POST['status'] ?? 'draft';
-        $grid_width = min(14, max(3, (int)($_POST['grid_width'] ?? 6)));
-        $grid_height = min(14, max(3, (int)($_POST['grid_height'] ?? 6)));
-        $start_x = max(0, (int)($_POST['start_x'] ?? 0));
-        $start_y = max(0, (int)($_POST['start_y'] ?? 0));
-        $goal_x = max(0, (int)($_POST['goal_x'] ?? 5));
-        $goal_y = max(0, (int)($_POST['goal_y'] ?? 5));
-        $walls = trim($_POST['walls'] ?? '');
-
-        $level_form = [
-            'id' => $level_id,
-            'classroom_id' => $classroom_id,
-            'title' => $title,
-            'description' => $description,
-            'instructions' => $instructions,
-            'difficulty' => $difficulty,
-            'status' => $status,
-            'grid_width' => $grid_width,
-            'grid_height' => $grid_height,
-            'start_x' => $start_x,
-            'start_y' => $start_y,
-            'goal_x' => $goal_x,
-            'goal_y' => $goal_y,
-            'walls' => $walls,
-        ];
-
-        $classroom_check = $conn->query("SELECT id FROM classrooms WHERE id=$classroom_id AND teacher_id=$teacher_id");
-
-        $coordinates_valid =
-            $start_x < $grid_width &&
-            $goal_x < $grid_width &&
-            $start_y < $grid_height &&
-            $goal_y < $grid_height &&
-            !($start_x === $goal_x && $start_y === $goal_y);
-
-        if ($title !== '' && $description !== '' && $instructions !== '' && $classroom_check && $classroom_check->num_rows > 0 && $coordinates_valid) {
-            if ($level_id > 0) {
-                $sql = "UPDATE teacher_levels
-                        SET classroom_id=$classroom_id,
-                            title='$title',
-                            description='$description',
-                            instructions='$instructions',
-                            difficulty='$difficulty',
-                            status='$status',
-                            grid_width=$grid_width,
-                            grid_height=$grid_height,
-                            start_x=$start_x,
-                            start_y=$start_y,
-                            goal_x=$goal_x,
-                            goal_y=$goal_y,
-                            walls='$walls'
-                        WHERE id=$level_id AND teacher_id=$teacher_id";
-                $conn->query($sql);
-            } else {
-                $sql = "INSERT INTO teacher_levels (
-                            teacher_id, classroom_id, title, description, instructions, difficulty, status,
-                            grid_width, grid_height, start_x, start_y, goal_x, goal_y, walls
-                        )
-                        VALUES (
-                            $teacher_id, $classroom_id, '$title', '$description', '$instructions', '$difficulty', '$status',
-                            $grid_width, $grid_height, $start_x, $start_y, $goal_x, $goal_y, '$walls'
-                        )";
-                $conn->query($sql);
-            }
-
-            header("Location: teacher_levels.php");
-            exit();
-        }
-
-        $message = "Each level needs a classroom, valid grid coordinates, and all required fields.";
-    }
-
     if ($action === 'delete_level') {
         $level_id = (int)($_POST['level_id'] ?? 0);
         $conn->query("DELETE FROM teacher_levels WHERE id=$level_id AND teacher_id=$teacher_id");
         header("Location: teacher_levels.php");
         exit();
     }
-}
-
-$editing = null;
-$edit_id = (int)($_GET['edit'] ?? 0);
-
-if ($edit_id > 0) {
-    $edit_result = $conn->query("SELECT * FROM teacher_levels WHERE id=$edit_id AND teacher_id=$teacher_id");
-    if ($edit_result && $edit_result->num_rows > 0) {
-        $editing = $edit_result->fetch_assoc();
-    }
-}
-
-if (!empty($level_form)) {
-    $editing = $level_form;
 }
 
 $classrooms = $conn->query("
@@ -253,22 +159,7 @@ if ($classroom_options_result && $classroom_options_result->num_rows > 0) {
 }
 
 $has_classrooms = count($classroom_select_options) > 0;
-
-$editor_walls = trim((string)($editing['walls'] ?? ''));
-$editor_wall_points = [];
-
-if ($editor_walls !== '') {
-    $editor_parts = preg_split('/\s+/', $editor_walls);
-    foreach ($editor_parts as $editor_part) {
-        $editor_coords = explode(',', $editor_part);
-        if (count($editor_coords) === 2) {
-            $editor_wall_points[] = [
-                'x' => (int)$editor_coords[0],
-                'y' => (int)$editor_coords[1],
-            ];
-        }
-    }
-}
+$prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
 ?>
 
 <!DOCTYPE html>
@@ -307,7 +198,7 @@ if ($editor_walls !== '') {
             <div class="report_header">
                 <div>
                     <h2>Teacher Dashboard</h2>
-                    <p>Manage classrooms, assign students, create levels, and monitor classroom progress.</p>
+                    <p>Manage classrooms, assign students, create classroom levels, and monitor student progress.</p>
                 </div>
                 <div class="table_actions">
                     <a class="secondary_button" href="level_editor.php">Open Level Editor</a>
@@ -335,7 +226,36 @@ if ($editor_walls !== '') {
         </div>
 
         <div class="page teacher_page">
-            <div class="teacher_split">
+            <div class="dashboard_creation_intro">
+                <div class="creation_hero">
+                    <div>
+                        <h2>Create Levels</h2>
+                        <p>The full classroom level editor is the primary tool for building playable stages. Use it to place walls, spikes, keys, doors, locked doors, stun guns, and enemies.</p>
+                    </div>
+                    <div class="creation_actions">
+                        <?php if ($has_classrooms): ?>
+                            <a class="secondary_button" href="level_editor.php<?= $prefill_classroom_id > 0 ? '?classroom_id=' . $prefill_classroom_id : '' ?>">Open Full Editor</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="dashboard_guides">
+                    <div class="callout creation_callout">
+                        <strong>Recommended flow</strong>
+                        <span>1. Create a classroom. 2. Open the full editor. 3. Build the level with drag-and-place tools. 4. Publish it so enrolled students can play it.</span>
+                    </div>
+                    <div class="callout creation_callout">
+                        <strong>What the full editor includes</strong>
+                        <span>Drag to paint walls or spikes, place the start and goal, add gameplay objects, and save the exact classroom stage used by Godot.</span>
+                    </div>
+                    <div class="callout creation_callout">
+                        <strong>Dashboard role</strong>
+                        <span>Create classrooms here, manage enrollment, and monitor progress. All level creation and editing now happens in the full editor.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher_split teacher_creation_split">
                 <form method="POST" class="teacher_form">
                     <input type="hidden" name="action" value="save_classroom">
                     <div class="form_heading">
@@ -351,128 +271,31 @@ if ($editor_walls !== '') {
                     <button type="submit">Create classroom</button>
                 </form>
 
-                <form method="POST" class="teacher_form">
-                    <input type="hidden" name="action" value="save_level">
-                    <input type="hidden" name="level_id" value="<?= $editing ? (int)($editing['id'] ?? 0) : 0 ?>">
-
+                <div class="teacher_form teacher_editor_cta">
                     <div class="form_heading">
-                        <h3><?= $editing ? 'Edit level' : 'Create a new level' ?></h3>
-                        <?php if ($editing): ?>
-                            <a class="secondary_link" href="teacher_levels.php">Cancel editing</a>
-                        <?php endif; ?>
+                        <h3>Build classroom levels in the full editor</h3>
                     </div>
-
                     <?php if (!$has_classrooms): ?>
                         <div class="empty_state">
                             <strong>Create a classroom before creating a level.</strong>
-                            <span>The level form is disabled until at least one classroom exists.</span>
+                            <span>Once a classroom exists, open the full editor to create a level for that class.</span>
                         </div>
                     <?php else: ?>
                         <div class="callout compact_notice">
-                            <strong>Assign each level to one classroom.</strong>
-                            <span>Students will only see levels from classrooms they belong to.</span>
+                            <strong>Single creation flow.</strong>
+                            <span>Use the full editor to set metadata, place gameplay objects, and save the actual classroom level students will play in Godot.</span>
+                        </div>
+                        <div class="teacher_cta_list">
+                            <div class="callout compact_notice">
+                                <strong>What you can do there</strong>
+                                <span>Assign the classroom, choose the grid size, place walls, spikes, keys, doors, enemies, and publish the level.</span>
+                            </div>
+                            <div class="table_actions dashboard_editor_actions">
+                                <a class="secondary_button" href="level_editor.php<?= $prefill_classroom_id > 0 ? '?classroom_id=' . $prefill_classroom_id : '' ?>">Create level in full editor</a>
+                            </div>
                         </div>
                     <?php endif; ?>
-
-                    <label for="classroom_id">Classroom</label>
-                    <select id="classroom_id" name="classroom_id" required <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        <option value="">Select classroom</option>
-                        <?php if ($has_classrooms): ?>
-                            <?php foreach ($classroom_select_options as $classroom): ?>
-                                <option value="<?= (int)$classroom['id'] ?>" <?= ((int)($editing['classroom_id'] ?? 0) === (int)$classroom['id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($classroom['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </select>
-
-                    <label for="title">Level title</label>
-                    <input type="text" id="title" name="title" required value="<?= htmlspecialchars($editing['title'] ?? '') ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-
-                    <label for="description">Short description</label>
-                    <input type="text" id="description" name="description" required value="<?= htmlspecialchars($editing['description'] ?? '') ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-
-                    <label for="instructions">Instructions</label>
-                    <textarea id="instructions" name="instructions" rows="6" required <?= !$has_classrooms ? 'disabled' : '' ?>><?= htmlspecialchars($editing['instructions'] ?? '') ?></textarea>
-
-                    <div class="teacher_form_row">
-                        <div>
-                            <label for="grid_width">Grid width</label>
-                            <input type="number" id="grid_width" name="grid_width" min="3" max="14" value="<?= (int)($editing['grid_width'] ?? 6) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                        <div>
-                            <label for="grid_height">Grid height</label>
-                            <input type="number" id="grid_height" name="grid_height" min="3" max="14" value="<?= (int)($editing['grid_height'] ?? 6) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                    </div>
-
-                    <div class="teacher_form_row">
-                        <div>
-                            <label for="start_x">Start X</label>
-                            <input type="number" id="start_x" name="start_x" min="0" value="<?= (int)($editing['start_x'] ?? 0) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                        <div>
-                            <label for="start_y">Start Y</label>
-                            <input type="number" id="start_y" name="start_y" min="0" value="<?= (int)($editing['start_y'] ?? 0) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                        <div>
-                            <label for="goal_x">Goal X</label>
-                            <input type="number" id="goal_x" name="goal_x" min="0" value="<?= (int)($editing['goal_x'] ?? 5) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                        <div>
-                            <label for="goal_y">Goal Y</label>
-                            <input type="number" id="goal_y" name="goal_y" min="0" value="<?= (int)($editing['goal_y'] ?? 5) ?>" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                        </div>
-                    </div>
-
-                    <div class="level_editor_panel <?= !$has_classrooms ? 'is-disabled' : '' ?>">
-                        <div class="form_heading">
-                            <h3>Visual level editor</h3>
-                        </div>
-                        <div class="editor_toolbar">
-                            <button type="button" class="editor_tool is-active" data-tool="wall" <?= !$has_classrooms ? 'disabled' : '' ?>>Wall</button>
-                            <button type="button" class="editor_tool" data-tool="start" <?= !$has_classrooms ? 'disabled' : '' ?>>Start</button>
-                            <button type="button" class="editor_tool" data-tool="goal" <?= !$has_classrooms ? 'disabled' : '' ?>>Goal</button>
-                            <button type="button" class="editor_tool" data-tool="erase" <?= !$has_classrooms ? 'disabled' : '' ?>>Erase</button>
-                        </div>
-                        <div
-                            id="teacher-level-editor"
-                            class="level_board editor_board"
-                            data-width="<?= (int)($editing['grid_width'] ?? 6) ?>"
-                            data-height="<?= (int)($editing['grid_height'] ?? 6) ?>"
-                            data-start-x="<?= (int)($editing['start_x'] ?? 0) ?>"
-                            data-start-y="<?= (int)($editing['start_y'] ?? 0) ?>"
-                            data-goal-x="<?= (int)($editing['goal_x'] ?? 5) ?>"
-                            data-goal-y="<?= (int)($editing['goal_y'] ?? 5) ?>"
-                            data-walls='<?= htmlspecialchars(json_encode($editor_wall_points), ENT_QUOTES) ?>'
-                        ></div>
-                        <p class="form_hint">Click or drag to paint walls. Use the other tools to move the start and goal.</p>
-                    </div>
-
-                    <label for="walls">Walls</label>
-                    <textarea id="walls" name="walls" rows="4" placeholder="Enter blocked cells like 1,0 1,1 3,4" <?= !$has_classrooms ? 'disabled' : '' ?>><?= htmlspecialchars($editing['walls'] ?? '') ?></textarea>
-                    <p class="form_hint">Use space or new lines between coordinates. Example: <code>1,0 1,1 1,2</code></p>
-
-                    <div class="teacher_form_row">
-                        <div>
-                            <label for="difficulty">Difficulty</label>
-                            <select id="difficulty" name="difficulty" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                                <option value="beginner" <?= (($editing['difficulty'] ?? '') === 'beginner') ? 'selected' : '' ?>>Beginner</option>
-                                <option value="intermediate" <?= (($editing['difficulty'] ?? '') === 'intermediate') ? 'selected' : '' ?>>Intermediate</option>
-                                <option value="advanced" <?= (($editing['difficulty'] ?? '') === 'advanced') ? 'selected' : '' ?>>Advanced</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="status">Status</label>
-                            <select id="status" name="status" <?= !$has_classrooms ? 'disabled' : '' ?>>
-                                <option value="draft" <?= (($editing['status'] ?? '') === 'draft') ? 'selected' : '' ?>>Draft</option>
-                                <option value="published" <?= (($editing['status'] ?? '') === 'published') ? 'selected' : '' ?>>Published</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" <?= !$has_classrooms ? 'disabled' : '' ?>><?= $editing ? 'Update level' : 'Save level' ?></button>
-                </form>
+                </div>
             </div>
         </div>
 
@@ -576,8 +399,7 @@ if ($editor_walls !== '') {
                             <td><?= (int)$level['active_students'] ?></td>
                             <td>
                                 <div class="table_actions">
-                                    <a class="secondary_link" href="teacher_levels.php?edit=<?= (int)$level['id'] ?>">Edit</a>
-                                    <a class="secondary_link" href="level_editor.php?id=<?= (int)$level['id'] ?>">Open editor</a>
+                                    <a class="secondary_link" href="level_editor.php?id=<?= (int)$level['id'] ?>">Edit in full editor</a>
                                     <form method="POST" class="inline_form">
                                         <input type="hidden" name="action" value="delete_level">
                                         <input type="hidden" name="level_id" value="<?= (int)$level['id'] ?>">
@@ -633,194 +455,5 @@ if ($editor_walls !== '') {
         </div>
     </div>
 
-    <script>
-    (function () {
-        const editor = document.getElementById('teacher-level-editor');
-        if (!editor) return;
-
-        const gridWidthInput = document.getElementById('grid_width');
-        const gridHeightInput = document.getElementById('grid_height');
-        const startXInput = document.getElementById('start_x');
-        const startYInput = document.getElementById('start_y');
-        const goalXInput = document.getElementById('goal_x');
-        const goalYInput = document.getElementById('goal_y');
-        const wallsInput = document.getElementById('walls');
-        const toolButtons = document.querySelectorAll('.editor_tool');
-
-        if (gridWidthInput.disabled) return;
-
-        let activeTool = 'wall';
-        let gridWidth = parseInt(editor.dataset.width, 10);
-        let gridHeight = parseInt(editor.dataset.height, 10);
-        let start = { x: parseInt(editor.dataset.startX, 10), y: parseInt(editor.dataset.startY, 10) };
-        let goal = { x: parseInt(editor.dataset.goalX, 10), y: parseInt(editor.dataset.goalY, 10) };
-        let walls = new Set((JSON.parse(editor.dataset.walls || '[]')).map((wall) => wall.x + ',' + wall.y));
-        let isPointerDown = false;
-
-        function setActiveTool(tool) {
-            activeTool = tool;
-            toolButtons.forEach((button) => {
-                button.classList.toggle('is-active', button.dataset.tool === tool);
-            });
-        }
-
-        function syncFields() {
-            startXInput.value = start.x;
-            startYInput.value = start.y;
-            goalXInput.value = goal.x;
-            goalYInput.value = goal.y;
-            wallsInput.value = Array.from(walls).sort().join(' ');
-        }
-
-        function clampPoint(point) {
-            point.x = Math.max(0, Math.min(gridWidth - 1, point.x));
-            point.y = Math.max(0, Math.min(gridHeight - 1, point.y));
-        }
-
-        function normalizeState() {
-            gridWidth = Math.max(3, parseInt(gridWidthInput.value || '6', 10));
-            gridHeight = Math.max(3, parseInt(gridHeightInput.value || '6', 10));
-            gridWidthInput.value = gridWidth;
-            gridHeightInput.value = gridHeight;
-
-            start = {
-                x: parseInt(startXInput.value || '0', 10),
-                y: parseInt(startYInput.value || '0', 10)
-            };
-            goal = {
-                x: parseInt(goalXInput.value || '0', 10),
-                y: parseInt(goalYInput.value || '0', 10)
-            };
-
-            clampPoint(start);
-            clampPoint(goal);
-
-            if (start.x === goal.x && start.y === goal.y) {
-                goal.x = Math.min(gridWidth - 1, start.x + 1);
-                goal.y = start.y;
-                if (goal.x === start.x && goal.y === start.y) {
-                    goal.x = start.x;
-                    goal.y = Math.min(gridHeight - 1, start.y + 1);
-                }
-            }
-
-            walls = new Set(Array.from(walls).filter((key) => {
-                const [x, y] = key.split(',').map(Number);
-                if (x < 0 || y < 0 || x >= gridWidth || y >= gridHeight) return false;
-                if (x === start.x && y === start.y) return false;
-                if (x === goal.x && y === goal.y) return false;
-                return true;
-            }));
-
-            syncFields();
-        }
-
-        function applyToolAt(x, y) {
-            const targetKey = x + ',' + y;
-
-            if (activeTool === 'wall') {
-                if (targetKey !== start.x + ',' + start.y && targetKey !== goal.x + ',' + goal.y) {
-                    walls.add(targetKey);
-                }
-            }
-
-            if (activeTool === 'erase') {
-                walls.delete(targetKey);
-            }
-
-            if (activeTool === 'start') {
-                start = { x: x, y: y };
-                walls.delete(targetKey);
-                if (goal.x === x && goal.y === y) {
-                    goal = { x: Math.min(gridWidth - 1, x + 1), y: y };
-                }
-            }
-
-            if (activeTool === 'goal') {
-                goal = { x: x, y: y };
-                walls.delete(targetKey);
-                if (start.x === x && start.y === y) {
-                    start = { x: Math.max(0, x - 1), y: y };
-                }
-            }
-        }
-
-        function renderEditor() {
-            normalizeState();
-            editor.style.gridTemplateColumns = 'repeat(' + gridWidth + ', 40px)';
-            editor.innerHTML = '';
-
-            for (let y = 0; y < gridHeight; y++) {
-                for (let x = 0; x < gridWidth; x++) {
-                    const cell = document.createElement('button');
-                    cell.type = 'button';
-                    cell.className = 'board_cell editor_cell';
-                    cell.dataset.x = x;
-                    cell.dataset.y = y;
-
-                    const key = x + ',' + y;
-                    if (walls.has(key)) {
-                        cell.classList.add('wall');
-                    }
-
-                    if (goal.x === x && goal.y === y) {
-                        cell.classList.add('goal');
-                        cell.textContent = 'G';
-                    }
-
-                    if (start.x === x && start.y === y) {
-                        cell.classList.add('player');
-                        cell.textContent = 'C';
-                    }
-
-                    cell.addEventListener('pointerdown', function (event) {
-                        event.preventDefault();
-                        isPointerDown = true;
-                        applyToolAt(x, y);
-                        renderEditor();
-                    });
-
-                    cell.addEventListener('pointerenter', function () {
-                        if (!isPointerDown) return;
-                        if (activeTool !== 'wall' && activeTool !== 'erase') return;
-                        applyToolAt(x, y);
-                        renderEditor();
-                    });
-
-                    editor.appendChild(cell);
-                }
-            }
-        }
-
-        toolButtons.forEach((button) => {
-            button.addEventListener('click', function () {
-                setActiveTool(button.dataset.tool);
-            });
-        });
-
-        [gridWidthInput, gridHeightInput, startXInput, startYInput, goalXInput, goalYInput].forEach((input) => {
-            input.addEventListener('input', renderEditor);
-        });
-
-        wallsInput.addEventListener('input', function () {
-            const nextWalls = new Set();
-            wallsInput.value.trim().split(/\s+/).filter(Boolean).forEach((part) => {
-                const coords = part.split(',');
-                if (coords.length === 2) {
-                    nextWalls.add(parseInt(coords[0], 10) + ',' + parseInt(coords[1], 10));
-                }
-            });
-            walls = nextWalls;
-            renderEditor();
-        });
-
-        window.addEventListener('pointerup', function () {
-            isPointerDown = false;
-        });
-
-        setActiveTool('wall');
-        renderEditor();
-    }());
-    </script>
 </body>
 </html>

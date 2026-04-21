@@ -81,7 +81,18 @@ $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
     </div>
 
     <div class="content teacher_content">
-        <div class="page teacher_page">
+        <?php if (!$is_completed): ?>
+            <div class="game_shell classroom_game_shell">
+                <iframe
+                    id="classroom-game-frame"
+                    src="game/index.html?classroom_level_id=<?= (int)$level_id ?>"
+                    class="game_frame"
+                    title="Classroom level gameplay"
+                ></iframe>
+            </div>
+        <?php endif; ?>
+
+        <div class="page teacher_page classroom_play_page">
             <div class="level_card_header">
                 <div>
                     <h2><?= htmlspecialchars($level['title']) ?></h2>
@@ -108,8 +119,12 @@ $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
                     <a class="secondary_button" href="levels.php">Back to Levels</a>
                 </div>
             <?php else: ?>
-                <div class="play_layout">
-                    <div class="instruction_box">
+                <div class="player_shell classroom_player_shell">
+                    <div id="completion-callout" class="callout" style="display:none;">
+                        <strong>Level completed.</strong>
+                        <span>Your progress has been updated. Redirecting to the finished page.</span>
+                    </div>
+                    <div class="instruction_box classroom_instruction_box">
                         <strong>Instructions</strong><br>
                         <?= nl2br(htmlspecialchars($level['instructions'])) ?>
                         <hr>
@@ -119,24 +134,9 @@ $is_completed = ($level['progress_status'] ?? 'not_started') === 'completed';
                         <strong>Progress tracking</strong><br>
                         Opening the game records an attempt. Reaching the goal updates completion automatically.
                     </div>
-
-                    <div class="player_shell">
-                        <div class="game_shell">
-                            <iframe
-                                id="classroom-game-frame"
-                                src="game/index.html?classroom_level_id=<?= (int)$level_id ?>"
-                                class="game_frame"
-                                title="Classroom level gameplay"
-                            ></iframe>
-                        </div>
-                        <div id="completion-callout" class="callout" style="display:none;">
-                            <strong>Level completed.</strong>
-                            <span>Your progress has been updated. Redirecting to the finished page.</span>
-                        </div>
-                        <div class="table_actions">
-                            <a class="secondary_button" href="levels.php">Back to Levels</a>
-                            <a class="secondary_button" href="play_level.php?id=<?= (int)$level_id ?>">Refresh Progress</a>
-                        </div>
+                    <div class="table_actions">
+                        <a class="secondary_button" href="levels.php">Back to Levels</a>
+                        <a class="secondary_button" href="play_level.php?id=<?= (int)$level_id ?>">Refresh Progress</a>
                     </div>
                 </div>
                 <script>

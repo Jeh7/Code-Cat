@@ -2,6 +2,13 @@
 session_start();
 include "db.php";
 
+function teacher_levels_has_column(mysqli $conn, string $column): bool
+{
+    $safe_column = $conn->real_escape_string($column);
+    $result = $conn->query("SHOW COLUMNS FROM teacher_levels LIKE '$safe_column'");
+    return $result instanceof mysqli_result && $result->num_rows > 0;
+}
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     echo "Access denied";
     exit();
@@ -10,6 +17,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
 $teacher_id = (int)$_SESSION['id'];
 $message = '';
 $saved = isset($_GET['saved']) && $_GET['saved'] === '1';
+$supports_spikes = teacher_levels_has_column($conn, 'spikes');
+$supports_entities = teacher_levels_has_column($conn, 'entities');
 
 $classroom_select_options = [];
 $classroom_options_result = $conn->query("
@@ -103,46 +112,179 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !($start_x === $goal_x && $start_y === $goal_y);
 
     if ($title !== '' && $description !== '' && $instructions !== '' && $classroom_check && $classroom_check->num_rows > 0 && $coordinates_valid) {
+        $save_ok = false;
+
         if ($level_id > 0) {
-            $conn->query("
-                UPDATE teacher_levels
-                SET classroom_id = $classroom_id,
-                    title = '$title',
-                    description = '$description',
-                    instructions = '$instructions',
-                    difficulty = '$difficulty',
-                    status = '$status',
-                    grid_width = $grid_width,
-                    grid_height = $grid_height,
-                    start_x = $start_x,
-                    start_y = $start_y,
-                    goal_x = $goal_x,
-                    goal_y = $goal_y,
-                    walls = '$walls',
-                    spikes = '$spikes',
-                    entities = '$entities'
-                WHERE id = $level_id
-                  AND teacher_id = $teacher_id
-            ");
+            if ($supports_spikes && $supports_entities) {
+                $stmt = $conn->prepare("
+                    UPDATE teacher_levels
+                    SET classroom_id = ?,
+                        title = ?,
+                        description = ?,
+                        instructions = ?,
+                        difficulty = ?,
+                        status = ?,
+                        grid_width = ?,
+                        grid_height = ?,
+                        start_x = ?,
+                        start_y = ?,
+                        goal_x = ?,
+                        goal_y = ?,
+                        walls = ?,
+                        spikes = ?,
+                        entities = ?
+                    WHERE id = ?
+                      AND teacher_id = ?
+                ");
+                if ($stmt) {
+                    $stmt->bind_param(
+                        'isssssiiiiiisssii',
+                        $classroom_id,
+                        $title,
+                        $description,
+                        $instructions,
+                        $difficulty,
+                        $status,
+                        $grid_width,
+                        $grid_height,
+                        $start_x,
+                        $start_y,
+                        $goal_x,
+                        $goal_y,
+                        $walls,
+                        $spikes,
+                        $entities,
+                        $level_id,
+                        $teacher_id
+                    );
+                    $save_ok = $stmt->execute();
+                    $stmt->close();
+                }
+            } else {
+                $stmt = $conn->prepare("
+                    UPDATE teacher_levels
+                    SET classroom_id = ?,
+                        title = ?,
+                        description = ?,
+                        instructions = ?,
+                        difficulty = ?,
+                        status = ?,
+                        grid_width = ?,
+                        grid_height = ?,
+                        start_x = ?,
+                        start_y = ?,
+                        goal_x = ?,
+                        goal_y = ?,
+                        walls = ?
+                    WHERE id = ?
+                      AND teacher_id = ?
+                ");
+                if ($stmt) {
+                    $stmt->bind_param(
+                        'isssssiiiiiisii',
+                        $classroom_id,
+                        $title,
+                        $description,
+                        $instructions,
+                        $difficulty,
+                        $status,
+                        $grid_width,
+                        $grid_height,
+                        $start_x,
+                        $start_y,
+                        $goal_x,
+                        $goal_y,
+                        $walls,
+                        $level_id,
+                        $teacher_id
+                    );
+                    $save_ok = $stmt->execute();
+                    $stmt->close();
+                }
+            }
         } else {
-            $conn->query("
-                INSERT INTO teacher_levels (
-                    teacher_id, classroom_id, title, description, instructions, difficulty, status,
-                    grid_width, grid_height, start_x, start_y, goal_x, goal_y, walls, spikes, entities
-                )
-                VALUES (
-                    $teacher_id, $classroom_id, '$title', '$description', '$instructions', '$difficulty', '$status',
-                    $grid_width, $grid_height, $start_x, $start_y, $goal_x, $goal_y, '$walls', '$spikes', '$entities'
-                )
-            ");
-            $level_id = (int)$conn->insert_id;
+            if ($supports_spikes && $supports_entities) {
+                $stmt = $conn->prepare("
+                    INSERT INTO teacher_levels (
+                        teacher_id, classroom_id, title, description, instructions, difficulty, status,
+                        grid_width, grid_height, start_x, start_y, goal_x, goal_y, walls, spikes, entities
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                if ($stmt) {
+                    $stmt->bind_param(
+                        'iisssssiiiiiisss',
+                        $teacher_id,
+                        $classroom_id,
+                        $title,
+                        $description,
+                        $instructions,
+                        $difficulty,
+                        $status,
+                        $grid_width,
+                        $grid_height,
+                        $start_x,
+                        $start_y,
+                        $goal_x,
+                        $goal_y,
+                        $walls,
+                        $spikes,
+                        $entities
+                    );
+                    $save_ok = $stmt->execute();
+                    if ($save_ok) {
+                        $level_id = (int)$stmt->insert_id;
+                    }
+                    $stmt->close();
+                }
+            } else {
+                $stmt = $conn->prepare("
+                    INSERT INTO teacher_levels (
+                        teacher_id, classroom_id, title, description, instructions, difficulty, status,
+                        grid_width, grid_height, start_x, start_y, goal_x, goal_y, walls
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                if ($stmt) {
+                    $stmt->bind_param(
+                        'iisssssiiiiiis',
+                        $teacher_id,
+                        $classroom_id,
+                        $title,
+                        $description,
+                        $instructions,
+                        $difficulty,
+                        $status,
+                        $grid_width,
+                        $grid_height,
+                        $start_x,
+                        $start_y,
+                        $goal_x,
+                        $goal_y,
+                        $walls
+                    );
+                    $save_ok = $stmt->execute();
+                    if ($save_ok) {
+                        $level_id = (int)$stmt->insert_id;
+                    }
+                    $stmt->close();
+                }
+            }
         }
 
-        header('Location: level_editor.php?id=' . $level_id . '&saved=1');
-        exit();
-    }
+        if ($save_ok && $level_id > 0) {
+            header('Location: level_editor.php?id=' . $level_id . '&saved=1');
+            exit();
+        }
 
-    $message = 'Complete all required fields and keep the start and goal in valid, separate cells.';
+        $message = 'The level could not be saved. Check that the selected classroom exists and that the database schema is up to date.';
+        if ((!$supports_spikes || !$supports_entities) && $message !== '') {
+            $message .= ' Extra gameplay pieces will not persist until `teacher_levels.spikes` and `teacher_levels.entities` are added.';
+        }
+    }
+    elseif ($message === '') {
+        $message = 'Complete all required fields and keep the start and goal in valid, separate cells.';
+    }
 }
 
 $editor_walls = trim((string)($editing['walls'] ?? ''));
