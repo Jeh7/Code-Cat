@@ -35,9 +35,10 @@ if (isset($_POST['login'])) {
 <html>
 <head>
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-<body >
+<body>
     <div class="tab">
         <a href="index.php">
             <img src="img\logo.png" class="logo">
@@ -47,12 +48,21 @@ if (isset($_POST['login'])) {
     <div class="login_body">
         <form method="POST" class="login_box">
             <h2>Login</h2>
-            <input type="text" name="username" required>
+            <p class="form_intro">Sign in to continue your Code Cat progress.</p>
+
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+
+            <label for="pass">Password</label>
             <input type="password" name="password" required id="pass">
-            <?= $error ?>
-            <button name="login">Login</button>
-            <a href="register.php">Don't have an account?</a>
+
+            <?php if ($error !== ""): ?>
+                <div class="form_error"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
+
+            <button name="login">Log In</button>
+            <a class="form_link" href="register.php">Don't have an account? Register here.</a>
         </form>
     </div>
 </body>
-
+</html>

@@ -24,13 +24,13 @@ if (!empty($sql)) {
         echo "Error: " . $conn->error;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Choose Role</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,12 +41,15 @@ if (!empty($sql)) {
     </div>
 
     <div class="login_body">
-        <form method="post" class="login_box">
+        <form method="post" class="login_box role_box">
             <h2>One More Thing...</h2>
-            Sign up as?
-            <button name="student">As a Student</button>
-            <button name="teacher">As a Teacher</button>
-            <button name="na">Not Applicable</button>
+            <p class="form_intro">Choose the role that best matches how you will use Code Cat.</p>
+            <div class="role_actions">
+                <button name="student">Continue as Student</button>
+                <button name="teacher">Continue as Teacher</button>
+                <button name="na">Continue without role</button>
+            </div>
         </form>
     </div>
 </body>
+</html>

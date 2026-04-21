@@ -7,6 +7,7 @@ include "db.php";
 <html>
 <head>
     <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -43,11 +44,11 @@ include "db.php";
     <div class="content">
         <div class="hbox">
             <div class="slideshow">
-                <button class="prev" onclick="changeSlide(-1)">❮</button>
-                <img class="slide" src="img/sc1.png">
-                <img class="slide" src="img/sc2.jpg">
-                <img class="slide" src="img/sc3.png">
-                <button class="next" onclick="changeSlide(1)">❯</button>
+                <button class="prev" onclick="changeSlide(-1)" aria-label="Previous slide">&#10094;</button>
+                <img class="slide" src="img/sc1.png" alt="Code Cat gameplay screenshot 1">
+                <img class="slide" src="img/sc2.jpg" alt="Code Cat gameplay screenshot 2">
+                <img class="slide" src="img/sc3.png" alt="Code Cat gameplay screenshot 3">
+                <button class="next" onclick="changeSlide(1)" aria-label="Next slide">&#10095;</button>
             </div>
 
             <script>
@@ -73,29 +74,33 @@ include "db.php";
                 changeSlide(1);
             }, 6000);
             </script>
-            
+
             <div class="intro_panel">
                 <h1>Welcome, to Code Cat</h1>
-                <h2>Learn Coding through puzzles!</h2><br>
+                <h2>Learn Coding through puzzles!</h2>
                 <p>
                     Make programming fun and exciting.<br>
                     This educational game teaches you<br>
                     the basics of programming in a gamified way.<br>
-                </p><br>
+                </p>
                 <?php if (isset($_SESSION['user'])): ?>
-                    <button onclick="javascript:location.href='game.php'" class="play-button">
-                        <h3>Click Here to Play</h3>
-                    </button>
+                    <button onclick="javascript:location.href='game.php'" class="play-button">Start Playing</button>
+                <?php else: ?>
+                    <div class="callout">
+                        <strong>Create an account to launch the game.</strong>
+                        <span>Register first, then choose a role and start solving puzzles.</span>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <br>
-        
         <div class="page">
             <h2>What's New?</h2>
             <div class="update_log">
-                
+                <div class="empty_state">
+                    <strong>No updates posted yet.</strong>
+                    <span>Use this area for release notes, puzzle additions, or classroom announcements.</span>
+                </div>
             </div>
         </div>
     </div>

@@ -1,12 +1,18 @@
 <?php
 session_start();
 include "db.php";
+
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome</title>
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -38,12 +44,12 @@ include "db.php";
     <div class="login_body">
         <div class="user_profile">
             <h2>Your Profile</h2>
-            <?= "<strong>Username:</strong> " . $_SESSION['user'] ?><br>
-            <?= "<strong>Role:</strong> " . $_SESSION["role"] ?><br>
-            <?= "<strong>Email:</strong> " . $_SESSION["email"] ?><br>
-            <?= "<strong>Date Created:</strong> " . $_SESSION["reg_date"] ?><br>
-            <a href="logout.php">Logout</a>
+            <div class="profile_field"><strong>Username</strong><span><?= htmlspecialchars($_SESSION['user']) ?></span></div>
+            <div class="profile_field"><strong>Role</strong><span><?= htmlspecialchars($_SESSION['role']) ?></span></div>
+            <div class="profile_field"><strong>Email</strong><span><?= htmlspecialchars($_SESSION['email']) ?></span></div>
+            <div class="profile_field"><strong>Date Created</strong><span><?= htmlspecialchars($_SESSION['reg_date']) ?></span></div>
+            <a class="secondary_link" href="logout.php">Log out</a>
         </div>
-    </div>    
+    </div>
 </body>
 </html>

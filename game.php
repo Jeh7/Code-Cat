@@ -11,6 +11,7 @@ if (!isset($_SESSION['user'])) {
 <html>
 <head>
     <title>Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -40,15 +41,27 @@ if (!isset($_SESSION['user'])) {
     </div>
 
     <div class="content">
-        <iframe src="game/index.html" width="1152" height="648"></iframe>
-        
-        <br><br><br>
+        <div class="game_shell">
+            <iframe src="game/index.html" class="game_frame" title="Code Cat game"></iframe>
+        </div>
 
         <div class="page">
             <h2>Help?</h2>
+            <div class="help_grid">
+                <div class="help_card">
+                    <strong>Move</strong>
+                    <span>Use W, A, S, and D inside the game.</span>
+                </div>
+                <div class="help_card">
+                    <strong>Retry</strong>
+                    <span>Press R to reset the current puzzle.</span>
+                </div>
+                <div class="help_card">
+                    <strong>Goal</strong>
+                    <span>Arrange actions and reach the finish while avoiding hazards.</span>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
-

@@ -9,12 +9,11 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['id'];
 
-// get all achievements + user progress
 $sql = "
 SELECT a.id, a.title, a.description,
        ua.id AS unlocked
 FROM achievements a
-LEFT JOIN user_achievements ua 
+LEFT JOIN user_achievements ua
 ON a.id = ua.achievement_id AND ua.user_id = '$user_id'
 ";
 
@@ -25,6 +24,7 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Achievements</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -58,13 +58,14 @@ $result = $conn->query($sql);
         <div class="achievements">
         <?php while ($row = $result->fetch_assoc()): ?>
             <div class="card <?php echo $row['unlocked'] ? 'unlocked' : 'locked'; ?>">
-                <h3><?php echo $row['title']; ?></h3>
-                <p><?php echo $row['description']; ?></p>
-                <span>
-                    <?php echo $row['unlocked'] ? "✅ Unlocked" : "🔒 Locked"; ?>
+                <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+                <p><?php echo htmlspecialchars($row['description']); ?></p>
+                <span class="card_status">
+                    <?php echo $row['unlocked'] ? "Unlocked" : "Locked"; ?>
                 </span>
             </div>
         <?php endwhile; ?>
         </div>
     </div>
 </body>
+</html>
