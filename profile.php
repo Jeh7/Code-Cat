@@ -26,6 +26,13 @@ if (!isset($_SESSION['user'])) {
                 <div id="dropdown" class="dropdown">
                     <a href="profile.php">Profile</a>
                     <a href="achievements.php">Achievements</a>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
+                        <a href="teacher_levels.php">Teacher Dashboard</a>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
+                        <a href="gameplay.php">Gameplay Modes</a>
+                        <a href="levels.php">Classroom Levels</a>
+                    <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                         <a href="reports.php">User Reports</a>
                     <?php endif; ?>

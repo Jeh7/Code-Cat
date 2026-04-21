@@ -25,6 +25,13 @@ include "db.php";
                     <div id="dropdown" class="dropdown">
                         <a href="profile.php">Profile</a>
                         <a href="achievements.php">Achievements</a>
+                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
+                            <a href="teacher_levels.php">Teacher Dashboard</a>
+                        <?php endif; ?>
+                        <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
+                            <a href="gameplay.php">Gameplay Modes</a>
+                            <a href="levels.php">Classroom Levels</a>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                             <a href="reports.php">User Reports</a>
                         <?php endif; ?>
@@ -83,8 +90,14 @@ include "db.php";
                     This educational game teaches you<br>
                     the basics of programming in a gamified way.<br>
                 </p>
-                <?php if (isset($_SESSION['user'])): ?>
-                    <button onclick="javascript:location.href='game.php'" class="play-button">Start Playing</button>
+                <?php if (isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] === 'teacher'): ?>
+                    <button onclick="javascript:location.href='teacher_levels.php'" class="play-button">Open Teacher Dashboard</button>
+                    <div class="callout">
+                        <strong>Teacher accounts do not launch the game.</strong>
+                        <span>Use classrooms, levels, and student progress tracking from your dashboard.</span>
+                    </div>
+                <?php elseif (isset($_SESSION['user'])): ?>
+                    <button onclick="javascript:location.href='gameplay.php'" class="play-button">Choose Gameplay</button>
                 <?php else: ?>
                     <div class="callout">
                         <strong>Create an account to launch the game.</strong>

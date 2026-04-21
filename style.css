@@ -188,6 +188,14 @@ html, body {
 .secondary_button:hover {
   background: var(--accent_hover);
 }
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
 /*#endregion Shared Layout*/
 
 /*#region Index*/
@@ -338,7 +346,10 @@ html, body {
 
 .login_box button,
 .login_box input,
-.report_filters select {
+.report_filters select,
+.teacher_form textarea,
+.teacher_form select,
+.teacher_form input {
   width: 100%;
   box-sizing: border-box;
 }
@@ -361,13 +372,21 @@ html, body {
 }
 
 .login_box input,
-.report_filters select {
+.report_filters select,
+.teacher_form textarea,
+.teacher_form select,
+.teacher_form input {
   min-height: 48px;
   padding: 12px 14px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   font-family: monospace;
   background: rgba(255, 255, 255, 0.8);
+}
+
+.teacher_form textarea {
+  min-height: 160px;
+  resize: vertical;
 }
 
 .form_intro {
@@ -380,6 +399,11 @@ html, body {
   background: rgba(154, 47, 47, 0.12);
   color: var(--danger);
   font-weight: bold;
+}
+
+.form_hint {
+  margin: 0;
+  color: #324657;
 }
 /*#endregion Login*/
 
@@ -567,6 +591,352 @@ iframe,
 }
 /*#endregion ProfilePage*/
 
+/*#region Teacher*/
+.teacher_content {
+  align-items: stretch;
+}
+
+.teacher_page p {
+  margin-top: 0;
+}
+
+.compact_notice {
+  margin-bottom: 4px;
+}
+
+.teacher_form {
+  display: grid;
+  gap: 10px;
+  background: var(--surface);
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.teacher_form label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.teacher_form button,
+.inline_form button,
+.level_card button {
+  background-color: var(--accent);
+  border: none;
+  border-radius: 12px;
+  color: rgb(230, 238, 255);
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 14px;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.teacher_form button:hover,
+.inline_form button:hover,
+.level_card button:hover {
+  background-color: var(--accent_hover);
+}
+
+.teacher_form_row,
+.stats_grid,
+.level_grid,
+.teacher_split,
+.classroom_grid,
+.play_layout {
+  display: grid;
+  gap: 14px;
+}
+
+.teacher_form_row {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.teacher_split {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.stats_grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin-bottom: 18px;
+}
+
+.stat_card,
+.level_card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.stat_card {
+  display: grid;
+  gap: 6px;
+}
+
+.stat_card strong {
+  font-size: 28px;
+  color: #22313e;
+}
+
+.form_heading,
+.level_card_header,
+.table_actions,
+.instruction_box,
+.level_meta {
+  display: flex;
+  gap: 10px;
+}
+
+.form_heading,
+.level_card_header {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form_heading h3,
+.level_card_header h3 {
+  margin: 0;
+}
+
+.table_actions {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.inline_form {
+  margin: 0;
+}
+
+.link_button {
+  background: transparent;
+  color: var(--danger);
+  min-height: unset;
+  padding: 0;
+  border-radius: 0;
+}
+
+.link_button:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(23, 125, 183, 0.12);
+  color: #11425f;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.level_grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.classroom_grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.play_layout {
+  grid-template-columns: minmax(220px, 360px) minmax(280px, 1fr);
+  align-items: start;
+}
+
+.level_card {
+  display: grid;
+  gap: 12px;
+}
+
+.classroom_card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.level_meta {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.instruction_box {
+  display: block;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.35);
+  line-height: 1.5;
+}
+
+.compact_form {
+  padding: 0;
+  background: transparent;
+}
+
+.editor_page {
+  width: min(1320px, calc(100% - 32px));
+}
+
+.editor_shell {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(420px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.editor_sidebar,
+.editor_workspace {
+  display: grid;
+  gap: 16px;
+}
+
+.editor_workspace .level_editor_panel {
+  min-height: 100%;
+}
+
+.editor_legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #324657;
+}
+
+.editor_board_large {
+  gap: 8px;
+  width: 100%;
+}
+
+.editor_cell_large {
+  width: auto;
+  min-width: 44px;
+  min-height: 44px;
+  aspect-ratio: 1 / 1;
+}
+
+.level_editor_panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.level_editor_panel.is-disabled {
+  opacity: 0.7;
+}
+
+.editor_toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.editor_tool {
+  min-height: 38px;
+  padding: 8px 12px;
+}
+
+.editor_tool.is-active {
+  background: #366ab3;
+}
+
+.player_shell {
+  display: grid;
+  gap: 12px;
+}
+
+.level_board {
+  display: grid;
+  gap: 6px;
+  justify-content: start;
+}
+
+.board_cell {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #22313e;
+}
+
+.editor_cell {
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.board_cell.wall {
+  background: #5c6670;
+  color: white;
+}
+
+.board_cell.spike {
+  background: #b95b5b;
+  color: white;
+}
+
+.board_cell.goal {
+  background: #93c968;
+}
+
+.board_cell.player {
+  background: #5e92da;
+  color: white;
+}
+
+.board_cell.entity-piece {
+  color: white;
+}
+
+.board_cell.entity-key {
+  background: #c59e1d;
+}
+
+.board_cell.entity-door {
+  background: #74634d;
+}
+
+.board_cell.entity-locked_door {
+  background: #5d4f3e;
+}
+
+.board_cell.entity-stun_gun {
+  background: #3e7f9c;
+}
+
+.board_cell.entity-enemy {
+  background: #9a4d93;
+}
+
+.command_input {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  font-family: monospace;
+  background: rgba(255, 255, 255, 0.8);
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.hidden_form {
+  margin: 0;
+}
+
+.hidden_button {
+  display: none;
+}
+/*#endregion Teacher*/
+
 @media (max-width: 720px) {
   .tab {
     height: auto;
@@ -600,5 +970,10 @@ iframe,
 
   .report_filters {
     display: grid;
+  }
+
+  .editor_shell,
+  .play_layout {
+    grid-template-columns: 1fr;
   }
 }
