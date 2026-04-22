@@ -4,25 +4,47 @@ include "db.php";
 $error = "";
 
 if (isset($_POST['register'])) {
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $email = trim($_POST['email'] ?? '');
+    $username = trim($_POST['username'] ?? '');
+    $password = password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT);
 
-    $check = $conn->query("SELECT * FROM users WHERE username='$username'");
+    $check = $conn->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
 
-    if ($check->num_rows > 0) {
-        $error = "Username already exists!";
-    } else {
-        $sql = "INSERT INTO users (username, password, email)
-                VALUES ('$username', '$password', '$email')";
+    if ($check) {
+        $check->bind_param("s", $username);
+        $check->execute();
+        $check_result = $check->get_result();
 
-        if ($conn->query($sql)) {
-            $user_id = $conn->insert_id;
-            header("Location: role.php?id=" . $user_id);
-            exit();
+        if ($check_result && $check_result->num_rows > 0) {
+            $error = "Username already exists!";
         } else {
-            $error = "Error: " . $conn->error;
+            $stmt = $conn->prepare("
+                INSERT INTO users (username, password, email)
+                VALUES (?, ?, ?)
+            ");
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $username, $password, $email);
+
+                if ($stmt->execute()) {
+                    $user_id = (int)$stmt->insert_id;
+                    $stmt->close();
+                    $check->close();
+                    header("Location: role.php?id=" . $user_id);
+                    exit();
+                } else {
+                    $error = "Error: " . $stmt->error;
+                }
+
+                $stmt->close();
+            } else {
+                $error = "Registration is temporarily unavailable.";
+            }
         }
+
+        $check->close();
+    } else {
+        $error = "Registration is temporarily unavailable.";
     }
 }
 ?>

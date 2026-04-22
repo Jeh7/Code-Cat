@@ -5,28 +5,37 @@ include "db.php";
 $error = "";
 
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    $sql = "SELECT * FROM users WHERE username='$username'";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
+    if ($stmt) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
+        if ($result && $result->num_rows > 0) {
+            $user = $result->fetch_assoc();
 
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['id'] = $user['id'];
-            $_SESSION['user'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['reg_date'] = $user['register_date'];
-            $_SESSION['role'] = $user['role'];
-            header("Location: index.php");
-            exit();
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['user'] = $user['username'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['reg_date'] = $user['register_date'];
+                $_SESSION['role'] = $user['role'];
+                $stmt->close();
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Wrong password";
+            }
         } else {
-            $error = "Wrong password";
+            $error = "User not found";
         }
+
+        $stmt->close();
     } else {
-        $error = "User not found";
+        $error = "Login is temporarily unavailable.";
     }
 }
 ?>

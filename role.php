@@ -1,23 +1,32 @@
 <?php
 include "db.php";
 
-$id = $_GET["id"];
-$sql = "";
+$id = (int)($_GET["id"] ?? 0);
+$role = "";
 
 if (isset($_POST['student'])) {
-    $sql = "UPDATE users SET role='student' WHERE id=$id";
+    $role = "student";
 }
 
 if (isset($_POST['teacher'])) {
-    $sql = "UPDATE users SET role='teacher' WHERE id=$id";
+    $role = "teacher";
 }
 
 if (isset($_POST['na'])) {
-    $sql = "UPDATE users SET role='na' WHERE id=$id";
+    $role = "na";
 }
 
-if (!empty($sql)) {
-    if ($conn->query($sql)) {
+if ($id > 0 && $role !== "") {
+    $stmt = $conn->prepare("UPDATE users SET role = ? WHERE id = ?");
+    if ($stmt) {
+        $stmt->bind_param("si", $role, $id);
+        $updated = $stmt->execute();
+        $stmt->close();
+    } else {
+        $updated = false;
+    }
+
+    if ($updated) {
         header("Location: login.php");
         exit();
     } else {

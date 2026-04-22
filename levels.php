@@ -17,9 +17,9 @@ if ($_SESSION['role'] !== 'student' && $_SESSION['role'] !== 'na') {
     exit();
 }
 
-$student_id = $_SESSION['id'];
+$student_id = (int)($_SESSION['id'] ?? 0);
 
-$levels_result = $conn->query("
+$levels_stmt = $conn->prepare("
 SELECT l.id,
        l.classroom_id,
        l.title,
@@ -39,14 +39,22 @@ INNER JOIN teacher_levels l ON l.classroom_id = c.id
 INNER JOIN users u ON u.id = l.teacher_id
 LEFT JOIN student_level_progress p
     ON p.level_id = l.id AND p.student_id = cm.student_id
-WHERE cm.student_id = '$student_id'
+WHERE cm.student_id = ?
   AND l.status = 'published'
 ORDER BY c.name ASC, l.created_at ASC, l.id ASC
 ");
 
+$levels_result = false;
+if ($levels_stmt) {
+    $levels_stmt->bind_param("i", $student_id);
+    $levels_stmt->execute();
+    $levels_result = $levels_stmt->get_result();
+}
+
 $levels = [];
 if ($levels_result && $levels_result->num_rows > 0) {
     $classroom_is_unlocked = [];
+    $level_number = 1;
 
     while ($level = $levels_result->fetch_assoc()) {
         $classroom_id = (int)$level['classroom_id'];
@@ -57,8 +65,10 @@ if ($levels_result && $levels_result->num_rows > 0) {
         }
 
         $level['is_unlocked'] = $classroom_is_unlocked[$classroom_id];
+        $level['display_number'] = $level_number;
         $levels[] = $level;
         $classroom_is_unlocked[$classroom_id] = ($status === 'completed');
+        $level_number++;
     }
 }
 ?>
@@ -70,7 +80,7 @@ if ($levels_result && $levels_result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="levels_page_body">
     <div class="tab">
         <a href="index.php">
             <img src="img\logo.png" class="logo">
@@ -99,53 +109,42 @@ if ($levels_result && $levels_result->num_rows > 0) {
     </div>
 
     <div class="content teacher_content">
-        <div class="page teacher_page">
-            <h2>Classroom Levels</h2>
-            <p>These are the published levels assigned to the classrooms you are enrolled in.</p>
+        <div class="page teacher_page levels_page">
+            <h2 class="levels_title">LEVEL SELECT</h2>
 
-            <div class="level_grid">
+            <div class="levels_selector_grid">
                 <?php if ($levels): ?>
                     <?php foreach ($levels as $level): ?>
-                    <div class="level_card">
-                        <div class="level_card_header">
-                            <h3><?= htmlspecialchars($level['title']) ?></h3>
-                            <span class="badge"><?= htmlspecialchars($level['difficulty']) ?></span>
-                        </div>
-                        <p><?= htmlspecialchars($level['description']) ?></p>
-                        <div class="level_meta">
-                            <span><strong>Classroom:</strong> <?= htmlspecialchars($level['classroom_name']) ?></span>
-                            <span><strong>Teacher:</strong> <?= htmlspecialchars($level['teacher_name']) ?></span>
-                            <span><strong>Status:</strong> <?= htmlspecialchars($level['progress_status'] ?? 'not_started') ?></span>
-                            <span><strong>Attempts:</strong> <?= (int)($level['attempts'] ?? 0) ?></span>
-                        </div>
-                        <div class="instruction_box">
-                            <?= nl2br(htmlspecialchars($level['instructions'])) ?>
-                        </div>
-                        <div class="table_actions">
-                            <?php $status = $level['progress_status'] ?? 'not_started'; ?>
-                            <?php if (!($level['is_unlocked'] ?? false)): ?>
-                                <span class="secondary_button is-disabled">Complete the previous level first</span>
-                            <?php else: ?>
-                                <a class="secondary_button" href="play_level.php?id=<?= (int)$level['id'] ?>">
-                                    <?php
-                                    if ($status === 'completed') {
-                                        echo 'View completion';
-                                    } elseif ($status === 'not_started') {
-                                        echo 'Open level';
-                                    } else {
-                                        echo 'Continue level';
-                                    }
-                                    ?>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                        <?php if (!($level['is_unlocked'] ?? false)): ?>
-                            <p class="form_hint">Levels unlock in order. Finish the current classroom level to open this one.</p>
-                        <?php endif; ?>
-                    </div>
+                    <?php $status = (string)($level['progress_status'] ?? 'not_started'); ?>
+                    <?php $is_clickable = ($level['is_unlocked'] ?? false) && $status !== 'completed'; ?>
+                    <?php $tile_classes = 'level_select_tile'; ?>
+                    <?php if ($is_clickable): ?>
+                        <?php $tile_classes .= ' is-active'; ?>
+                    <?php else: ?>
+                        <?php $tile_classes .= ' is-disabled'; ?>
+                    <?php endif; ?>
+
+                    <?php if ($is_clickable): ?>
+                        <a
+                            class="<?= $tile_classes ?>"
+                            href="play_level.php?id=<?= (int)$level['id'] ?>"
+                            title="<?= htmlspecialchars($level['title'] . ' | ' . $level['classroom_name']) ?>"
+                            aria-label="Open level <?= (int)$level['display_number'] ?>: <?= htmlspecialchars($level['title']) ?>"
+                        >
+                            <?= (int)$level['display_number'] ?>
+                        </a>
+                    <?php else: ?>
+                        <span
+                            class="<?= $tile_classes ?>"
+                            title="<?= htmlspecialchars($level['title'] . ' | ' . $level['classroom_name']) ?>"
+                            aria-label="<?= $status === 'completed' ? 'Completed level ' : 'Locked level ' ?><?= (int)$level['display_number'] ?>"
+                        >
+                            <?= (int)$level['display_number'] ?>
+                        </span>
+                    <?php endif; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="empty_state">
+                    <div class="empty_state levels_empty_state">
                         <strong>No classroom levels are assigned to you yet.</strong>
                         <span>Your teacher needs to add you to a classroom and publish levels for that class.</span>
                     </div>

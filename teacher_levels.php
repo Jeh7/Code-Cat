@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'teacher') {
     exit();
 }
 
-$teacher_id = $_SESSION['id'];
+$teacher_id = (int)($_SESSION['id'] ?? 0);
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,12 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $classroom_description = trim($_POST['classroom_description'] ?? '');
 
         if ($classroom_name !== '' && $classroom_description !== '') {
-            $conn->query("
+            $stmt = $conn->prepare("
                 INSERT INTO classrooms (teacher_id, name, description)
-                VALUES ($teacher_id, '$classroom_name', '$classroom_description')
+                VALUES (?, ?, ?)
             ");
-            header("Location: teacher_levels.php");
-            exit();
+            if ($stmt) {
+                $stmt->bind_param("iss", $teacher_id, $classroom_name, $classroom_description);
+                $stmt->execute();
+                $stmt->close();
+                header("Location: teacher_levels.php");
+                exit();
+            }
         }
 
         $message = "Classroom name and description are required.";
@@ -33,21 +38,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $classroom_id = (int)($_POST['classroom_id'] ?? 0);
         $student_username = trim($_POST['student_username'] ?? '');
 
-        $classroom_check = $conn->query("SELECT id FROM classrooms WHERE id=$classroom_id AND teacher_id=$teacher_id");
-        $student_result = $conn->query("SELECT id, role FROM users WHERE username='$student_username'");
+        $classroom_stmt = $conn->prepare("SELECT id FROM classrooms WHERE id = ? AND teacher_id = ? LIMIT 1");
+        $student_stmt = $conn->prepare("SELECT id, role FROM users WHERE username = ? LIMIT 1");
+        $classroom_check = false;
+        $student_result = false;
+
+        if ($classroom_stmt) {
+            $classroom_stmt->bind_param("ii", $classroom_id, $teacher_id);
+            $classroom_stmt->execute();
+            $classroom_check = $classroom_stmt->get_result();
+        }
+
+        if ($student_stmt) {
+            $student_stmt->bind_param("s", $student_username);
+            $student_stmt->execute();
+            $student_result = $student_stmt->get_result();
+        }
 
         if ($classroom_check && $classroom_check->num_rows > 0 && $student_result && $student_result->num_rows > 0) {
             $student = $student_result->fetch_assoc();
 
             if ($student['role'] === 'student' || $student['role'] === 'na') {
                 $student_id = (int)$student['id'];
-                $conn->query("
+                $insert_stmt = $conn->prepare("
                     INSERT IGNORE INTO classroom_members (classroom_id, student_id)
-                    VALUES ($classroom_id, $student_id)
+                    VALUES (?, ?)
                 ");
-                header("Location: teacher_levels.php");
-                exit();
+                if ($insert_stmt) {
+                    $insert_stmt->bind_param("ii", $classroom_id, $student_id);
+                    $insert_stmt->execute();
+                    $insert_stmt->close();
+                    if ($classroom_stmt) {
+                        $classroom_stmt->close();
+                    }
+                    if ($student_stmt) {
+                        $student_stmt->close();
+                    }
+                    header("Location: teacher_levels.php");
+                    exit();
+                }
             }
+        }
+
+        if ($classroom_stmt) {
+            $classroom_stmt->close();
+        }
+        if ($student_stmt) {
+            $student_stmt->close();
         }
 
         $message = "Only existing student accounts can be added to a classroom.";
@@ -83,7 +120,7 @@ SELECT c.*,
 FROM classrooms c
 LEFT JOIN classroom_members cm ON cm.classroom_id = c.id
 LEFT JOIN teacher_levels l ON l.classroom_id = c.id
-WHERE c.teacher_id = '$teacher_id'
+WHERE c.teacher_id = $teacher_id
 GROUP BY c.id
 ORDER BY c.created_at DESC
 ");
@@ -97,7 +134,7 @@ SELECT l.*,
 FROM teacher_levels l
 INNER JOIN classrooms c ON c.id = l.classroom_id
 LEFT JOIN student_level_progress p ON p.level_id = l.id
-WHERE l.teacher_id = '$teacher_id'
+WHERE l.teacher_id = $teacher_id
 GROUP BY l.id
 ORDER BY c.name ASC, l.created_at ASC, l.id ASC
 ";
@@ -116,7 +153,7 @@ FROM student_level_progress p
 INNER JOIN teacher_levels l ON l.id = p.level_id
 INNER JOIN classrooms c ON c.id = l.classroom_id
 INNER JOIN users u ON u.id = p.student_id
-WHERE l.teacher_id = '$teacher_id'
+WHERE l.teacher_id = $teacher_id
 ORDER BY c.name ASC, l.created_at ASC, u.username ASC
 ";
 $progress_rows = $conn->query($progress_sql);
@@ -130,25 +167,25 @@ SELECT c.id AS classroom_id,
 FROM classrooms c
 LEFT JOIN classroom_members cm ON cm.classroom_id = c.id
 LEFT JOIN users u ON u.id = cm.student_id
-WHERE c.teacher_id = '$teacher_id'
+WHERE c.teacher_id = $teacher_id
 ORDER BY c.name ASC, u.username ASC
 ");
 
 $teacher_overview = $conn->query("
 SELECT
-    (SELECT COUNT(*) FROM classrooms WHERE teacher_id = '$teacher_id') AS total_classrooms,
-    (SELECT COUNT(*) FROM teacher_levels WHERE teacher_id = '$teacher_id') AS total_levels,
+    (SELECT COUNT(*) FROM classrooms WHERE teacher_id = $teacher_id) AS total_classrooms,
+    (SELECT COUNT(*) FROM teacher_levels WHERE teacher_id = $teacher_id) AS total_levels,
     (SELECT COUNT(*)
      FROM classroom_members cm
      INNER JOIN classrooms c ON c.id = cm.classroom_id
-     WHERE c.teacher_id = '$teacher_id') AS total_students
+     WHERE c.teacher_id = $teacher_id) AS total_students
 ")->fetch_assoc();
 
 $classroom_select_options = [];
 $classroom_options_result = $conn->query("
 SELECT id, name
 FROM classrooms
-WHERE teacher_id = '$teacher_id'
+WHERE teacher_id = $teacher_id
 ORDER BY name ASC
 ");
 

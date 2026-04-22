@@ -7,14 +7,21 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     exit();
 }
 
-$role = $_GET['role'] ?? '';
-$sql = "SELECT * FROM users";
+$role = trim((string)($_GET['role'] ?? ''));
+$allowed_roles = ['student', 'teacher', 'admin', 'na'];
 
-if ($role != '') {
-    $sql .= " WHERE role='$role'";
+if ($role !== '' && !in_array($role, $allowed_roles, true)) {
+    $role = '';
 }
 
-$result = $conn->query($sql);
+if ($role !== '') {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE role = ?");
+    $stmt->bind_param("s", $role);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $conn->query("SELECT * FROM users");
+}
 ?>
 
 <!DOCTYPE html>
