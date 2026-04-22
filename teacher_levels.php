@@ -218,6 +218,7 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                     <a href="profile.php">Profile</a>
                     <a href="achievements.php">Achievements</a>
                     <a href="teacher_levels.php">Teacher Dashboard</a>
+                    <a href="teacher_reports.php">Teacher Reports</a>
                     <a href="logout.php">Logout</a>
                 </div>
                 <script>
@@ -241,6 +242,7 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                     <p>Manage classrooms, enroll students, create classroom levels, and review learning activity from one place.</p>
                 </div>
                 <div class="table_actions">
+                    <a class="secondary_button" href="teacher_reports.php">Teacher Reports</a>
                     <a class="primary_button" href="level_editor.php">Open Level Editor</a>
                 </div>
             </div>

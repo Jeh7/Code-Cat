@@ -27,6 +27,7 @@ include "db.php";
                         <a href="achievements.php">Achievements</a>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
                             <a href="teacher_levels.php">Teacher Dashboard</a>
+                            <a href="teacher_reports.php">Teacher Reports</a>
                         <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
                             <a href="gameplay.php">Gameplay Modes</a>
@@ -94,7 +95,7 @@ include "db.php";
                     <button onclick="javascript:location.href='teacher_levels.php'" class="play-button">Open Teacher Dashboard</button>
                     <div class="callout">
                         <strong>Teacher accounts do not launch the game.</strong>
-                        <span>Use classrooms, levels, and student progress tracking from your dashboard.</span>
+                        <span>Use classrooms, levels, teacher reports, and student progress tracking from your dashboard.</span>
                     </div>
                 <?php elseif (isset($_SESSION['user'])): ?>
                     <button onclick="javascript:location.href='gameplay.php'" class="play-button">Choose Gameplay</button>

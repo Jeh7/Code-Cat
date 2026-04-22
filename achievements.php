@@ -40,6 +40,7 @@ $result = $conn->query($sql);
                     <a href="achievements.php">Achievements</a>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
                         <a href="teacher_levels.php">Teacher Dashboard</a>
+                        <a href="teacher_reports.php">Teacher Reports</a>
                     <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
                         <a href="gameplay.php">Gameplay Modes</a>
