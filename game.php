@@ -53,24 +53,30 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
     </div>
 
     <div class="content">
-        <div class="game_shell">
-            <iframe src="game/index.html" class="game_frame" title="Code Cat game"></iframe>
-        </div>
+        <div class="gameplay_split">
+            <div class="game_shell">
+                <iframe src="game/index.html" class="game_frame" title="Code Cat game"></iframe>
+            </div>
 
-        <div class="page">
-            <h2>Help?</h2>
-            <div class="help_grid">
-                <div class="help_card">
-                    <strong>Move</strong>
-                    <span>Use W, A, S, and D inside the game.</span>
-                </div>
-                <div class="help_card">
-                    <strong>Retry</strong>
-                    <span>Press R to reset the current puzzle.</span>
-                </div>
-                <div class="help_card">
-                    <strong>Goal</strong>
-                    <span>Arrange actions and reach the finish while avoiding hazards.</span>
+            <div class="page gameplay_side_panel">
+                <h2>Game Help</h2>
+                <div class="help_grid">
+                    <div class="help_card">
+                        <strong>Move</strong>
+                        <span>Use W, A, S, and D inside the game.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Retry</strong>
+                        <span>Press R to reset the current puzzle.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Goal</strong>
+                        <span>Arrange actions and reach the finish while avoiding hazards.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Best view</strong>
+                        <span>The game area now scales to the current screen so the canvas and help stay visible together more reliably.</span>
+                    </div>
                 </div>
             </div>
         </div>
