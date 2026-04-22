@@ -61,6 +61,9 @@ $result = $conn->query($sql);
     </div>
 
     <div class="panel">
+        <div class="page_back_row">
+            <a class="secondary_button" href="index.php">Back to Home</a>
+        </div>
         <h2>Achievements</h2>
         <div class="achievements">
         <?php while ($row = $result->fetch_assoc()): ?>

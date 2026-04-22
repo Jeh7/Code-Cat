@@ -110,6 +110,9 @@ if ($levels_result && $levels_result->num_rows > 0) {
 
     <div class="content teacher_content">
         <div class="page teacher_page levels_page">
+            <div class="page_back_row">
+                <a class="secondary_button" href="gameplay.php">Back to Gameplay Modes</a>
+            </div>
             <h2 class="levels_title">LEVEL SELECT</h2>
 
             <div class="levels_selector_grid">

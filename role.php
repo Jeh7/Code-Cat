@@ -51,6 +51,9 @@ if ($id > 0 && $role !== "") {
 
     <div class="login_body">
         <form method="post" class="login_box role_box">
+            <div class="page_back_row is-tight">
+                <a class="secondary_button" href="register.php">Back to Register</a>
+            </div>
             <h2>One More Thing...</h2>
             <p class="form_intro">Choose the role that best matches how you will use Code Cat.</p>
             <div class="role_actions">

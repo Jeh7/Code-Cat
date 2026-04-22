@@ -59,6 +59,9 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
             </div>
 
             <div class="page gameplay_side_panel">
+                <div class="page_back_row">
+                    <a class="secondary_button" href="gameplay.php">Back to Gameplay Modes</a>
+                </div>
                 <h2>Game Help</h2>
                 <div class="help_grid">
                     <div class="help_card">

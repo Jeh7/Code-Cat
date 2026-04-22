@@ -50,6 +50,9 @@ if (!isset($_SESSION['user'])) {
 
     <div class="login_body">
         <div class="user_profile">
+            <div class="page_back_row is-tight">
+                <a class="secondary_button" href="index.php">Back to Home</a>
+            </div>
             <h2>Your Profile</h2>
             <div class="profile_field"><strong>Username</strong><span><?= htmlspecialchars($_SESSION['user']) ?></span></div>
             <div class="profile_field"><strong>Role</strong><span><?= htmlspecialchars($_SESSION['role']) ?></span></div>

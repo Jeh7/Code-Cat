@@ -216,6 +216,16 @@ body {
   cursor: not-allowed;
 }
 
+.page_back_row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.page_back_row.is-tight {
+  margin-bottom: 12px;
+}
+
 button:disabled,
 input:disabled,
 select:disabled,
@@ -1095,6 +1105,10 @@ iframe,
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
   gap: 6px;
+}
+
+.levels_page .page_back_row {
+  margin-bottom: 20px;
 }
 
 .level_select_tile {

@@ -64,6 +64,9 @@ if ($role !== '') {
     <div class="panel report_panel">
         <div class="report_header">
             <div>
+                <div class="page_back_row is-tight">
+                    <a class="secondary_button" href="index.php">Back to Home</a>
+                </div>
                 <h2>User Report</h2>
                 <p>Review registered users by role and export the current list.</p>
             </div>
