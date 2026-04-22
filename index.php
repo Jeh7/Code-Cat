@@ -7,6 +7,7 @@ include "db.php";
 <html>
 <head>
     <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,6 +25,13 @@ include "db.php";
                     <div id="dropdown" class="dropdown">
                         <a href="profile.php">Profile</a>
                         <a href="achievements.php">Achievements</a>
+                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
+                            <a href="teacher_levels.php">Teacher Dashboard</a>
+                        <?php endif; ?>
+                        <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
+                            <a href="gameplay.php">Gameplay Modes</a>
+                            <a href="levels.php">Classroom Levels</a>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                             <a href="reports.php">User Reports</a>
                         <?php endif; ?>
@@ -43,11 +51,11 @@ include "db.php";
     <div class="content">
         <div class="hbox">
             <div class="slideshow">
-                <button class="prev" onclick="changeSlide(-1)">❮</button>
-                <img class="slide" src="img/sc1.png">
-                <img class="slide" src="img/sc2.jpg">
-                <img class="slide" src="img/sc3.png">
-                <button class="next" onclick="changeSlide(1)">❯</button>
+                <button class="prev" onclick="changeSlide(-1)" aria-label="Previous slide">&#10094;</button>
+                <img class="slide" src="img/sc1.png" alt="Code Cat gameplay screenshot 1">
+                <img class="slide" src="img/sc2.jpg" alt="Code Cat gameplay screenshot 2">
+                <img class="slide" src="img/sc3.png" alt="Code Cat gameplay screenshot 3">
+                <button class="next" onclick="changeSlide(1)" aria-label="Next slide">&#10095;</button>
             </div>
 
             <script>
@@ -73,29 +81,39 @@ include "db.php";
                 changeSlide(1);
             }, 6000);
             </script>
-            
+
             <div class="intro_panel">
                 <h1>Welcome, to Code Cat</h1>
-                <h2>Learn Coding through puzzles!</h2><br>
+                <h2>Learn Coding through puzzles!</h2>
                 <p>
                     Make programming fun and exciting.<br>
                     This educational game teaches you<br>
                     the basics of programming in a gamified way.<br>
-                </p><br>
-                <?php if (isset($_SESSION['user'])): ?>
-                    <button onclick="javascript:location.href='game.php'" class="play-button">
-                        <h3>Click Here to Play</h3>
-                    </button>
+                </p>
+                <?php if (isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] === 'teacher'): ?>
+                    <button onclick="javascript:location.href='teacher_levels.php'" class="play-button">Open Teacher Dashboard</button>
+                    <div class="callout">
+                        <strong>Teacher accounts do not launch the game.</strong>
+                        <span>Use classrooms, levels, and student progress tracking from your dashboard.</span>
+                    </div>
+                <?php elseif (isset($_SESSION['user'])): ?>
+                    <button onclick="javascript:location.href='gameplay.php'" class="play-button">Choose Gameplay</button>
+                <?php else: ?>
+                    <div class="callout">
+                        <strong>Create an account to launch the game.</strong>
+                        <span>Register first, then choose a role and start solving puzzles.</span>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <br>
-        
         <div class="page">
             <h2>What's New?</h2>
             <div class="update_log">
-                
+                <div class="empty_state">
+                    <strong>No updates posted yet.</strong>
+                    <span>Use this area for release notes, puzzle additions, or classroom announcements.</span>
+                </div>
             </div>
         </div>
     </div>

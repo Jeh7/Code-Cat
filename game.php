@@ -5,12 +5,18 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
+
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
+    header("Location: teacher_levels.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,6 +30,13 @@ if (!isset($_SESSION['user'])) {
                 <div id="dropdown" class="dropdown">
                     <a href="profile.php">Profile</a>
                     <a href="achievements.php">Achievements</a>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
+                        <a href="teacher_levels.php">Teacher Dashboard</a>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
+                        <a href="gameplay.php">Gameplay Modes</a>
+                        <a href="levels.php">Classroom Levels</a>
+                    <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                         <a href="reports.php">User Reports</a>
                     <?php endif; ?>
@@ -40,15 +53,36 @@ if (!isset($_SESSION['user'])) {
     </div>
 
     <div class="content">
-        <iframe src="game/index.html" width="1152" height="648"></iframe>
-        
-        <br><br><br>
+        <div class="gameplay_split">
+            <div class="game_shell">
+                <iframe src="game/index.html" class="game_frame" title="Code Cat game"></iframe>
+            </div>
 
-        <div class="page">
-            <h2>Help?</h2>
+            <div class="page gameplay_side_panel">
+                <div class="page_back_row">
+                    <a class="secondary_button" href="gameplay.php">Back to Gameplay Modes</a>
+                </div>
+                <h2>Game Help</h2>
+                <div class="help_grid">
+                    <div class="help_card">
+                        <strong>Move</strong>
+                        <span>Use W, A, S, and D inside the game.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Retry</strong>
+                        <span>Press R to reset the current puzzle.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Goal</strong>
+                        <span>Arrange actions and reach the finish while avoiding hazards.</span>
+                    </div>
+                    <div class="help_card">
+                        <strong>Best view</strong>
+                        <span>The game area now scales to the current screen so the canvas and help stay visible together more reliably.</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
-
