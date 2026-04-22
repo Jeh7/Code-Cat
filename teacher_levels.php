@@ -232,13 +232,16 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
 
     <div class="content teacher_content">
         <div class="page teacher_page">
-            <div class="report_header">
+            <div class="page_back_row is-tight">
+                <a class="secondary_button" href="index.php">Back to Home</a>
+            </div>
+            <div class="dashboard_hero">
                 <div>
                     <h2>Teacher Dashboard</h2>
-                    <p>Manage classrooms, assign students, create classroom levels, and monitor student progress.</p>
+                    <p>Manage classrooms, enroll students, create classroom levels, and review learning activity from one place.</p>
                 </div>
                 <div class="table_actions">
-                    <a class="secondary_button" href="level_editor.php">Open Level Editor</a>
+                    <a class="primary_button" href="level_editor.php">Open Level Editor</a>
                 </div>
             </div>
 
@@ -249,15 +252,34 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
             <div class="stats_grid">
                 <div class="stat_card">
                     <strong><?= (int)$teacher_overview['total_classrooms'] ?></strong>
-                    <span>Classrooms</span>
+                    <span>Classrooms you manage</span>
                 </div>
                 <div class="stat_card">
                     <strong><?= (int)$teacher_overview['total_levels'] ?></strong>
-                    <span>Levels</span>
+                    <span>Levels created</span>
                 </div>
                 <div class="stat_card">
                     <strong><?= (int)$teacher_overview['total_students'] ?></strong>
                     <span>Tracked students</span>
+                </div>
+            </div>
+
+            <div class="dashboard_flow">
+                <div class="flow_step">
+                    <strong>1. Create a classroom</strong>
+                    <span>Set up the class space before building content.</span>
+                </div>
+                <div class="flow_step">
+                    <strong>2. Add students</strong>
+                    <span>Enroll existing student accounts by username.</span>
+                </div>
+                <div class="flow_step">
+                    <strong>3. Build and publish levels</strong>
+                    <span>Use the editor to create the exact puzzles students will play.</span>
+                </div>
+                <div class="flow_step">
+                    <strong>4. Review progress</strong>
+                    <span>Check which students started, are active, or already finished.</span>
                 </div>
             </div>
         </div>
@@ -299,11 +321,15 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                         <h3>Create a classroom</h3>
                     </div>
                     <p class="form_hint">Create the classroom first. Levels can only be assigned to an existing classroom.</p>
-                    <label for="classroom_name">Classroom name</label>
-                    <input type="text" id="classroom_name" name="classroom_name" required>
+                    <div class="field_group">
+                        <label for="classroom_name">Classroom name</label>
+                        <input type="text" id="classroom_name" name="classroom_name" placeholder="Example: Grade 7 - Section A" required>
+                    </div>
 
-                    <label for="classroom_description">Description</label>
-                    <input type="text" id="classroom_description" name="classroom_description" required>
+                    <div class="field_group">
+                        <label for="classroom_description">Description</label>
+                        <input type="text" id="classroom_description" name="classroom_description" placeholder="What students should expect in this class" required>
+                    </div>
 
                     <button type="submit">Create classroom</button>
                 </form>
@@ -337,7 +363,10 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
         </div>
 
         <div class="page teacher_page">
-            <h2>Your Classrooms</h2>
+            <div class="dashboard_section_header">
+                <h2>Your Classrooms</h2>
+                <p>Each classroom card keeps enrollment close to the class it belongs to, so adding students does not require leaving the page.</p>
+            </div>
             <div class="classroom_grid">
                 <?php if ($classrooms && $classrooms->num_rows > 0): ?>
                     <?php while ($classroom = $classrooms->fetch_assoc()): ?>
@@ -354,7 +383,8 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                             <input type="hidden" name="action" value="add_student">
                             <input type="hidden" name="classroom_id" value="<?= (int)$classroom['id'] ?>">
                             <label for="student_<?= (int)$classroom['id'] ?>">Add student by username</label>
-                            <input type="text" id="student_<?= (int)$classroom['id'] ?>" name="student_username" placeholder="student username" required>
+                            <input type="text" id="student_<?= (int)$classroom['id'] ?>" name="student_username" placeholder="Enter an existing username" required>
+                            <span class="field_help">Only existing student or unassigned accounts can be enrolled.</span>
                             <button type="submit">Add student</button>
                         </form>
                     </div>
@@ -369,7 +399,10 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
         </div>
 
         <div class="page teacher_page">
-            <h2>Classroom Members</h2>
+            <div class="dashboard_section_header">
+                <h2>Classroom Members</h2>
+                <p>Review current enrollment and remove students when class membership changes.</p>
+            </div>
             <div class="table_wrap">
                 <table class="report_table">
                     <tr>
@@ -399,7 +432,7 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                         </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
+                        <tr class="empty_state_row">
                             <td colspan="4">No classrooms or students available yet.</td>
                         </tr>
                     <?php endif; ?>
@@ -408,7 +441,10 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
         </div>
 
         <div class="page teacher_page">
-            <h2>Your Levels</h2>
+            <div class="dashboard_section_header">
+                <h2>Your Levels</h2>
+                <p>See what is already live, which levels are active, and where student progress is concentrated.</p>
+            </div>
             <div class="table_wrap">
                 <table class="report_table">
                     <tr>
@@ -429,8 +465,8 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                                 <strong><?= htmlspecialchars($level['title']) ?></strong><br>
                                 <span><?= htmlspecialchars($level['description']) ?></span>
                             </td>
-                            <td><?= htmlspecialchars($level['status']) ?></td>
-                            <td><?= htmlspecialchars($level['difficulty']) ?></td>
+                            <td><span class="status_pill status-<?= htmlspecialchars($level['status']) ?>"><?= htmlspecialchars($level['status']) ?></span></td>
+                            <td><span class="status_pill"><?= htmlspecialchars($level['difficulty']) ?></span></td>
                             <td><?= (int)$level['tracked_students'] ?></td>
                             <td><?= (int)$level['completed_students'] ?></td>
                             <td><?= (int)$level['active_students'] ?></td>
@@ -447,7 +483,7 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                         </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
+                        <tr class="empty_state_row">
                             <td colspan="8">No levels created yet.</td>
                         </tr>
                     <?php endif; ?>
@@ -456,7 +492,10 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
         </div>
 
         <div class="page teacher_page">
-            <h2>Student Progress</h2>
+            <div class="dashboard_section_header">
+                <h2>Student Progress</h2>
+                <p>Use this table to spot who has not started, who is still working, and which levels are already being completed.</p>
+            </div>
             <div class="table_wrap">
                 <table class="report_table">
                     <tr>
@@ -475,15 +514,15 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                             <td><?= htmlspecialchars($progress['classroom_name']) ?></td>
                             <td><?= htmlspecialchars($progress['username']) ?></td>
                             <td><?= htmlspecialchars($progress['title']) ?></td>
-                            <td><?= htmlspecialchars($progress['difficulty']) ?></td>
-                            <td><?= htmlspecialchars($progress['status']) ?></td>
+                            <td><span class="status_pill"><?= htmlspecialchars($progress['difficulty']) ?></span></td>
+                            <td><span class="status_pill status-<?= htmlspecialchars($progress['status']) ?>"><?= htmlspecialchars($progress['status']) ?></span></td>
                             <td><?= (int)$progress['attempts'] ?></td>
                             <td><?= htmlspecialchars($progress['last_played_at'] ?? 'Not started') ?></td>
                             <td><?= htmlspecialchars($progress['completed_at'] ?? '-') ?></td>
                         </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
+                        <tr class="empty_state_row">
                             <td colspan="8">No student activity recorded yet.</td>
                         </tr>
                     <?php endif; ?>

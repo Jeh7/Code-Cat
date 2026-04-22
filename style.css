@@ -17,6 +17,11 @@ html, body {
   --accent_hover: #568bd6;
   --surface: rgb(154, 164, 174);
   --danger: #9a2f2f;
+  --ink: #22313e;
+  --muted_ink: #4d6172;
+  --success_soft: rgba(76, 175, 80, 0.15);
+  --border_soft: rgba(34, 49, 62, 0.12);
+  --focus_ring: rgba(94, 146, 218, 0.3);
 }
 
 body {
@@ -206,6 +211,27 @@ body {
   box-sizing: border-box;
 }
 
+.primary_button {
+  min-height: 50px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #366ab3, var(--accent));
+  color: white;
+  font-family: monospace;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.primary_button:hover {
+  background: linear-gradient(135deg, #315f9f, var(--accent_hover));
+}
+
 .secondary_button:hover {
   background: var(--accent_hover);
 }
@@ -232,6 +258,21 @@ select:disabled,
 textarea:disabled {
   cursor: not-allowed;
   opacity: 0.65;
+}
+
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--focus_ring);
 }
 /*#endregion Shared Layout*/
 
@@ -357,14 +398,70 @@ textarea:disabled {
   box-sizing: border-box;
 }
 
-.login_box {
-  background-color: var(--panel_soft);
-  border-radius: 16px;
-  padding: 24px;
-  width: min(420px, 100%);
+.auth_shell {
+  width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 0.85fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.auth_aside,
+.auth_panel {
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.auth_aside {
+  color: #f1f5ff;
+  background:
+    radial-gradient(circle at top left, rgba(94, 146, 218, 0.5), transparent 45%),
+    linear-gradient(160deg, #17232d, #21384b 60%, #2f5775);
+  padding: 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.auth_aside h1,
+.auth_aside p,
+.auth_aside ul {
+  margin: 0;
+}
+
+.auth_eyebrow {
+  color: rgba(241, 245, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.auth_feature_list {
+  padding-left: 18px;
   display: grid;
   gap: 10px;
+}
+
+.auth_feature_list li {
+  color: rgba(241, 245, 255, 0.92);
+}
+
+.auth_aside_note {
+  margin-top: auto;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.login_box {
+  background-color: var(--panel_soft);
+  border-radius: 20px;
+  padding: 28px;
+  width: 100%;
+  display: grid;
+  gap: 14px;
   box-sizing: border-box;
+  color: var(--ink);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
 }
 
 .login_box h2,
@@ -374,6 +471,29 @@ textarea:disabled {
 
 .login_box h2 {
   color: var(--text_color);
+}
+
+.form_stack,
+.field_stack {
+  display: grid;
+  gap: 12px;
+}
+
+.field_group {
+  display: grid;
+  gap: 6px;
+}
+
+.field_help,
+.form_footer {
+  color: var(--muted_ink);
+  font-size: 14px;
+}
+
+.auth_actions,
+.form_actions {
+  display: grid;
+  gap: 10px;
 }
 
 .login_box label {
@@ -427,7 +547,7 @@ textarea:disabled {
 }
 
 .form_intro {
-  color: #21313f;
+  color: var(--muted_ink);
 }
 
 .form_error {
@@ -441,6 +561,25 @@ textarea:disabled {
 .form_hint {
   margin: 0;
   color: #324657;
+}
+
+.role_choice_grid {
+  display: grid;
+  gap: 12px;
+}
+
+.role_choice {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+}
+
+.role_choice small {
+  display: block;
+  font-weight: normal;
+  color: rgba(230, 238, 255, 0.9);
 }
 /*#endregion Login*/
 
@@ -578,9 +717,9 @@ iframe,
   background-color: var(--panel_color);
   border-radius: 16px;
   padding: 24px;
-  width: min(420px, 100%);
+  width: min(920px, 100%);
   display: grid;
-  gap: 12px;
+  gap: 18px;
   box-sizing: border-box;
 }
 
@@ -600,6 +739,91 @@ iframe,
 .role_actions {
   display: grid;
   gap: 12px;
+}
+
+.profile_shell,
+.profile_summary,
+.profile_details,
+.quick_action_grid,
+.dashboard_section,
+.dashboard_section_header,
+.dashboard_hero,
+.dashboard_flow,
+.dashboard_section_body,
+.dashboard_summary,
+.filter_card {
+  display: grid;
+}
+
+.profile_shell {
+  gap: 18px;
+}
+
+.profile_summary {
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+  gap: 16px;
+}
+
+.profile_intro_card,
+.profile_meta_card,
+.dashboard_section,
+.dashboard_hero,
+.dashboard_summary_card,
+.report_summary,
+.filter_card {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.profile_intro_card h3,
+.profile_intro_card p,
+.profile_meta_card p,
+.dashboard_hero h2,
+.dashboard_hero p,
+.dashboard_section_header h3,
+.dashboard_section_header p,
+.dashboard_summary_card p,
+.report_summary p {
+  margin: 0;
+}
+
+.profile_intro_card,
+.profile_meta_card,
+.dashboard_summary,
+.dashboard_section,
+.filter_card {
+  gap: 12px;
+}
+
+.profile_meta_card {
+  align-content: start;
+}
+
+.quick_action_grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.quick_action_card {
+  background: rgba(255, 255, 255, 0.52);
+  border-radius: 14px;
+  padding: 16px;
+  color: var(--ink);
+  text-decoration: none;
+  display: grid;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.quick_action_card:hover {
+  transform: translateY(-2px);
+}
+
+.quick_action_card strong,
+.quick_action_card span {
+  display: block;
 }
 
 .report_panel {
@@ -627,13 +851,69 @@ iframe,
   flex-wrap: wrap;
 }
 
+.report_filters .field_group {
+  min-width: 220px;
+  flex: 1 1 220px;
+}
+
 .report_filters label {
   font-weight: bold;
+}
+
+.dashboard_hero,
+.dashboard_section {
+  gap: 14px;
+}
+
+.dashboard_hero {
+  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+  align-items: start;
+}
+
+.dashboard_section_header {
+  gap: 4px;
+}
+
+.dashboard_section_header p {
+  color: var(--muted_ink);
+}
+
+.dashboard_flow {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.flow_step {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  padding: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.flow_step strong,
+.flow_step span {
+  display: block;
+}
+
+.dashboard_summary {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.dashboard_summary_card strong {
+  display: block;
+  font-size: 28px;
+  color: var(--ink);
+}
+
+.dashboard_summary_card span {
+  color: var(--muted_ink);
 }
 
 .table_wrap {
   overflow-x: auto;
   border-radius: 12px;
+  border: 1px solid var(--border_soft);
 }
 
 .report_table {
@@ -652,6 +932,20 @@ iframe,
 .report_table th {
   background: rgba(103, 113, 121, 0.18);
   color: #22313e;
+}
+
+.report_table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.report_table tr:hover td {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.empty_state_row td {
+  color: var(--muted_ink);
+  text-align: center;
+  padding: 24px 14px;
 }
 /*#endregion ProfilePage*/
 
@@ -709,7 +1003,7 @@ iframe,
 
 .teacher_form {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   background: var(--surface);
   padding: 18px;
   border-radius: 12px;
@@ -904,6 +1198,37 @@ iframe,
 .compact_form {
   padding: 0;
   background: transparent;
+}
+
+.teacher_form .field_help,
+.teacher_page .form_hint {
+  color: #324657;
+}
+
+.inline_note {
+  color: var(--muted_ink);
+}
+
+.status_pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(34, 49, 62, 0.12);
+  color: var(--ink);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status_pill.status-published,
+.status_pill.status-completed {
+  background: var(--success_soft);
+}
+
+.status_pill.status-draft,
+.status_pill.status-in_progress {
+  background: rgba(94, 146, 218, 0.16);
 }
 
 .editor_page {
@@ -1158,7 +1483,10 @@ iframe,
 
 @media (max-width: 1100px) {
   .gameplay_split,
-  .classroom_play_shell {
+  .classroom_play_shell,
+  .auth_shell,
+  .profile_summary,
+  .dashboard_hero {
     grid-template-columns: 1fr;
   }
 }
@@ -1201,6 +1529,11 @@ iframe,
 
   .report_filters {
     display: grid;
+  }
+
+  .login_box,
+  .auth_aside {
+    padding: 22px 18px;
   }
 
   .gameplay_split,
