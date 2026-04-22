@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS classroom_members;
 DROP TABLE IF EXISTS classrooms;
 DROP TABLE IF EXISTS student_level_progress;
 DROP TABLE IF EXISTS teacher_levels;
+DROP TABLE IF EXISTS teacher_reports;
 DROP TABLE IF EXISTS user_achievements;
 DROP TABLE IF EXISTS achievements;
 DROP TABLE IF EXISTS users;
@@ -109,6 +110,27 @@ CREATE TABLE student_level_progress (
     CONSTRAINT fk_student_level_progress_student
         FOREIGN KEY (student_id) REFERENCES users(id)
         ON DELETE CASCADE
+);
+
+CREATE TABLE teacher_reports (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    teacher_id INT UNSIGNED NOT NULL,
+    classroom_id INT UNSIGNED NULL,
+    title VARCHAR(160) NOT NULL,
+    report_type ENUM('generated_pdf', 'imported_pdf') NOT NULL,
+    summary TEXT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    original_filename VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_teacher_reports_teacher (teacher_id),
+    KEY idx_teacher_reports_classroom (classroom_id),
+    CONSTRAINT fk_teacher_reports_teacher
+        FOREIGN KEY (teacher_id) REFERENCES users(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_teacher_reports_classroom
+        FOREIGN KEY (classroom_id) REFERENCES classrooms(id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE user_achievements (

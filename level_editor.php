@@ -385,6 +385,7 @@ foreach ($classroom_select_options as $classroom_option) {
                 <div id="dropdown" class="dropdown">
                     <a href="profile.php">Profile</a>
                     <a href="teacher_levels.php">Teacher Dashboard</a>
+                    <a href="teacher_reports.php">Teacher Reports</a>
                     <a href="level_editor.php">Level Editor</a>
                     <a href="logout.php">Logout</a>
                 </div>
