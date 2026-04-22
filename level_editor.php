@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 include "classroom_level_helpers.php";
+include "flash.php";
 
 function teacher_levels_has_column(mysqli $conn, string $column): bool
 {
@@ -17,7 +18,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
 
 $teacher_id = (int)$_SESSION['id'];
 $message = '';
-$saved = isset($_GET['saved']) && $_GET['saved'] === '1';
 $supports_spikes = teacher_levels_has_column($conn, 'spikes');
 $supports_entities = teacher_levels_has_column($conn, 'entities');
 
@@ -62,7 +62,9 @@ if ($edit_id > 0) {
     if ($edit_result && $edit_result->num_rows > 0) {
         $editing = $edit_result->fetch_assoc();
     } else {
-        $message = 'That level could not be found.';
+        flash_add('error', 'That level could not be found.');
+        header('Location: teacher_levels.php');
+        exit();
     }
 }
 
@@ -296,7 +298,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($save_ok && $level_id > 0) {
-            header('Location: level_editor.php?id=' . $level_id . '&saved=1');
+            flash_add('success', 'Level saved successfully.');
+            header('Location: level_editor.php?id=' . $level_id);
             exit();
         }
 
@@ -405,12 +408,7 @@ foreach ($classroom_select_options as $classroom_option) {
                 </div>
             </div>
 
-            <?php if ($saved): ?>
-                <div class="callout">
-                    <strong>Level saved.</strong>
-                    <span>Published levels now appear on the classroom levels screen and open through the Godot gameplay with your placed pieces.</span>
-                </div>
-            <?php endif; ?>
+            <?= render_flash_messages() ?>
 
             <?php if ($message !== ''): ?>
                 <div class="form_error"><?= htmlspecialchars($message) ?></div>

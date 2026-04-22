@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "flash.php";
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +51,7 @@ include "db.php";
     </div>
 
     <div class="content">
+        <?= render_flash_messages() ?>
         <div class="hbox">
             <div class="slideshow">
                 <button class="prev" onclick="changeSlide(-1)" aria-label="Previous slide">&#10094;</button>

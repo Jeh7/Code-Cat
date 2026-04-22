@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "flash.php";
 include "teacher_report_helpers.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
@@ -9,9 +10,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
 }
 
 $teacher_id = (int)($_SESSION['id'] ?? 0);
-$message = '';
-$message_type = 'error';
-
 teacher_reports_ensure_table($conn);
 
 $classrooms = [];
@@ -152,11 +150,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $classroom = teacher_reports_find_classroom($classrooms, $classroom_id);
 
         if (!$classroom) {
-            $message = 'Choose one of your classrooms before generating a PDF report.';
+            flash_add('error', 'Choose one of your classrooms before generating a PDF report.');
         } else {
             $lines = teacher_reports_generate_lines($conn, $teacher_id, $classroom_id);
             if (!$lines) {
-                $message = 'The selected classroom could not be used to generate a report.';
+                flash_add('error', 'The selected classroom could not be used to generate a report.');
             } else {
                 $title = (string)$classroom['name'] . ' Progress Report';
                 $pdf = teacher_reports_build_pdf($title, $lines);
@@ -186,14 +184,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         );
                         $stmt->execute();
                         $stmt->close();
-                        $message = 'PDF report generated successfully.';
-                        $message_type = 'success';
+                        flash_add('success', 'PDF report generated successfully.');
+                        header("Location: teacher_reports.php");
+                        exit();
                     } else {
                         @unlink($absolute_path);
-                        $message = 'The PDF was created, but the report record could not be saved.';
+                        flash_add('error', 'The PDF was created, but the report record could not be saved.');
                     }
                 } else {
-                    $message = 'The PDF report could not be written to storage.';
+                    flash_add('error', 'The PDF report could not be written to storage.');
                 }
             }
         }
@@ -219,13 +218,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (is_file($absolute_path)) {
                         @unlink($absolute_path);
                     }
-                    $message = 'Report removed.';
-                    $message_type = 'success';
+                    flash_add('success', 'Report removed.');
+                    header("Location: teacher_reports.php");
+                    exit();
                 } else {
-                    $message = 'The report could not be deleted.';
+                    flash_add('error', 'The report could not be deleted.');
                 }
             } else {
-                $message = 'That report could not be found.';
+                flash_add('error', 'That report could not be found.');
             }
         }
     }
@@ -314,11 +314,7 @@ foreach ($report_rows as $report_row) {
                 </div>
             </div>
 
-            <?php if ($message !== ''): ?>
-                <div class="<?= $message_type === 'success' ? 'callout' : 'form_error' ?>">
-                    <strong><?= htmlspecialchars($message) ?></strong>
-                </div>
-            <?php endif; ?>
+            <?= render_flash_messages() ?>
 
             <?php if (!$classrooms): ?>
                 <div class="empty_state">

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "flash.php";
 
 $error = "";
 
@@ -24,6 +25,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['reg_date'] = $user['register_date'];
                 $_SESSION['role'] = $user['role'];
                 $stmt->close();
+                flash_add('success', 'Logged in successfully.');
                 header("Location: index.php");
                 exit();
             } else {
@@ -56,6 +58,7 @@ if (isset($_POST['login'])) {
 
     <div class="login_body">
         <div class="auth_shell">
+            <?= render_flash_messages() ?>
             <section class="auth_aside">
                 <span class="auth_eyebrow">Code Cat</span>
                 <h1>Pick up where you left off.</h1>

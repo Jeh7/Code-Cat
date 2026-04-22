@@ -182,6 +182,92 @@ body {
   background: rgba(23, 125, 183, 0.09);
 }
 
+.flash_stack {
+  width: min(1000px, 100%);
+  display: grid;
+  gap: 12px;
+}
+
+.flash_message {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 49, 62, 0.14);
+  box-sizing: border-box;
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.flash_message.is-success {
+  color: #2f7d32;
+  border-color: rgba(76, 175, 80, 0.28);
+}
+
+.flash_message.is-error {
+  border-color: rgba(154, 47, 47, 0.24);
+  color: var(--danger);
+}
+
+.flash_message.is-info {
+  border-color: rgba(23, 125, 183, 0.18);
+  color: var(--text_color);
+}
+
+.flash_toast_stack {
+  position: fixed;
+  top: calc(var(--nav_height) + 16px);
+  right: 16px;
+  width: min(360px, calc(100vw - 24px));
+  justify-items: stretch;
+  z-index: 10020;
+  pointer-events: none;
+}
+
+.flash_toast {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+  pointer-events: auto;
+  transform: translateY(0);
+  opacity: 1;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.flash_toast.is-hiding {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.flash_toast_text {
+  min-width: 0;
+  display: block;
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: center;
+}
+
+.flash_toast_close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  min-width: 24px;
+  min-height: 24px;
+  font-family: monospace;
+  font-weight: bold;
+  opacity: 0.72;
+}
+
+.flash_toast_close:hover {
+  opacity: 1;
+}
+
 .secondary_link,
 .form_link {
   text-decoration: none;

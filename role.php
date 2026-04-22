@@ -1,5 +1,6 @@
 <?php
 include "db.php";
+include "flash.php";
 
 $id = (int)($_GET["id"] ?? 0);
 $role = "";
@@ -27,6 +28,7 @@ if ($id > 0 && $role !== "") {
     }
 
     if ($updated) {
+        flash_add('success', 'Account created. You can now sign in.');
         header("Location: login.php");
         exit();
     } else {
@@ -51,6 +53,7 @@ if ($id > 0 && $role !== "") {
 
     <div class="login_body">
         <div class="auth_shell">
+            <?= render_flash_messages() ?>
             <section class="auth_aside">
                 <span class="auth_eyebrow">Final Setup</span>
                 <h1>Choose the experience you need.</h1>
