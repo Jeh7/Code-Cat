@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "flash.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'teacher') {
     echo "Access denied";
@@ -8,8 +9,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'teacher') {
 }
 
 $teacher_id = (int)($_SESSION['id'] ?? 0);
-$message = "";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -26,12 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_param("iss", $teacher_id, $classroom_name, $classroom_description);
                 $stmt->execute();
                 $stmt->close();
+                flash_add('success', 'Classroom created successfully.');
                 header("Location: teacher_levels.php");
                 exit();
             }
         }
 
-        $message = "Classroom name and description are required.";
+        flash_add('error', 'Classroom name and description are required.');
     }
 
     if ($action === 'add_student') {
@@ -74,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($student_stmt) {
                         $student_stmt->close();
                     }
+                    flash_add('success', 'Student added to the classroom.');
                     header("Location: teacher_levels.php");
                     exit();
                 }
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $student_stmt->close();
         }
 
-        $message = "Only existing student accounts can be added to a classroom.";
+        flash_add('error', 'Only existing student accounts can be added to a classroom.');
     }
 
     if ($action === 'remove_student') {
@@ -101,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               AND cm.student_id=$student_id
               AND c.teacher_id=$teacher_id
         ");
+        flash_add('success', 'Student removed from the classroom.');
         header("Location: teacher_levels.php");
         exit();
     }
@@ -108,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'delete_level') {
         $level_id = (int)($_POST['level_id'] ?? 0);
         $conn->query("DELETE FROM teacher_levels WHERE id=$level_id AND teacher_id=$teacher_id");
+        flash_add('success', 'Level deleted.');
         header("Location: teacher_levels.php");
         exit();
     }
@@ -247,9 +250,7 @@ $prefill_classroom_id = (int)($classroom_select_options[0]['id'] ?? 0);
                 </div>
             </div>
 
-            <?php if ($message !== ''): ?>
-                <div class="form_error"><?= htmlspecialchars($message) ?></div>
-            <?php endif; ?>
+            <?= render_flash_messages() ?>
 
             <div class="stats_grid">
                 <div class="stat_card">

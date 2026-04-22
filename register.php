@@ -1,5 +1,6 @@
 <?php
 include "db.php";
+include "flash.php";
 
 $error = "";
 
@@ -65,6 +66,7 @@ if (isset($_POST['register'])) {
 
     <div class="login_body">
         <div class="auth_shell">
+            <?= render_flash_messages() ?>
             <section class="auth_aside">
                 <span class="auth_eyebrow">Start Here</span>
                 <h1>Create your Code Cat account.</h1>
