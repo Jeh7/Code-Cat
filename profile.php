@@ -28,6 +28,7 @@ if (!isset($_SESSION['user'])) {
                     <a href="achievements.php">Achievements</a>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
                         <a href="teacher_levels.php">Teacher Dashboard</a>
+                        <a href="teacher_reports.php">Teacher Reports</a>
                     <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'student' || $_SESSION['role'] == 'na')): ?>
                         <a href="gameplay.php">Gameplay Modes</a>
@@ -92,6 +93,10 @@ if (!isset($_SESSION['user'])) {
                             <a class="quick_action_card" href="teacher_levels.php">
                                 <strong>Teacher Dashboard</strong>
                                 <span>Manage classrooms, levels, and student progress.</span>
+                            </a>
+                            <a class="quick_action_card" href="teacher_reports.php">
+                                <strong>Teacher Reports</strong>
+                                <span>Generate classroom progress reports and download the exported PDFs.</span>
                             </a>
                         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <a class="quick_action_card" href="reports.php">
