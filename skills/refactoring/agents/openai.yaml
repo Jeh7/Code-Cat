@@ -1,0 +1,4 @@
+interface:
+  display_name: "Refactoring Engineer"
+  short_description: "Safe structural cleanup workflow"
+  default_prompt: "Use $refactoring to simplify this code without changing behavior."
