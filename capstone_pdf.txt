@@ -1,0 +1,2151 @@
+CODE CAT: AN EDUCATIONAL PUZZLE GAME FOR LEARNING
+                    PROGRAMMING FUNDAMENTALS
+                                              
+
+                                           A Proposal
+                                      to the Faculty of the
+                    College of Computer Studies, University of Cebu
+
+                        In Partial Fulfillment of the Requirements
+                   for the degree Bachelor of Science in Information
+
+                                           Technology
+
+                                                By
+                                  Christan Jay C. Belandres
+
+                                      J Brone Mangonon
+                                    Joseph Earl L. Estimo
+
+                                       Remart B. Ybañez
+
+                                   Christian C. Barral, MIT
+                                             Adviser
+
+                                        December 2025
+                                                                                                                    ii
+Approval Sheet
+                                                                                                                   iii
+
+                                     ACKNOWLEDGEMENT
+
+         First and foremost, we extend our heartfelt appreciation to our research adviser, Mr.
+Christian C. Barral, for his invaluable guidance, unwavering support, and insightful mentorship
+throughout the entirety of this research journey. His expertise, patience, and steadfast
+commitment to academic excellence have played a pivotal role in shaping both the direction and
+quality of this study.
+
+         We are equally grateful to our dedicated research team. Your collaborative spirit,
+thoughtful input, and consistent efforts have been instrumental in the success of this project. The
+unity and determination within our team allowed us to overcome challenges and explore the
+multifaceted role of intelligent chatbot technology in higher education with clarity and depth.
+
+         Our sincere thanks also go to the University of Cebu ­ Main Campus for providing us
+with the resources and a supportive environment that made this research possible. The
+institution's encouragement and assistance have greatly contributed to the smooth execution of
+our work.
+
+         To our families, thank you for your unwavering love and support, which sustained us
+throughout this journey.
+Above all, we are grateful to the Almighty for His guidance and strength, which helped us
+persevere through every challenge.
+
+         Last but not least, the researchers Christan Jay C. Belandres, J Brone Manganon, Joseph
+Earl L. Estimo, and Remart B. Ybañez take pride in the successful development of the
+ScholarSphere. Despite the demands of our academic responsibilities, we dedicated countless
+hours to coding, testing, and refining this intelligent deal discovery system.
+
+         From late-night sessions to weekends filled with development tasks, our shared
+commitment and passion made this accomplishment possible.
+                                                                                                                   iv
+
+                                            DEDICATION
+This study is humbly dedicated to those who relentlessly seek knowledge, pursue understanding,
+and aim to make a meaningful difference.
+To the students whose struggles and stories inspired this research, may the outcomes of this study
+help shape a more empathetic and student-centered academic environment.
+
+To our research team, your shared drive, hard work, and pursuit of innovation were the
+foundation of this journey. Your dedication has been vital in bringing this vision to life.
+
+To our families, your constant support, love, and belief in our purpose have been our anchor. Your
+encouragement made this academic endeavor possible.
+
+To our adviser, Mr. Christian C. Barral, thank you for your steady guidance, patience, and insight.
+Your mentorship served as a compass, leading us to valuable discoveries and a deeper
+understanding.
+
+And to the Higher Power who directed our path, thank You for the wisdom, strength, and
+perseverance that carried us through this process.
+
+May this work reflect the strength of teamwork, the spark of curiosity, and the enduring impact of
+knowledge pursued with purpose.
+                                                               v
+
+                           TABLE OF CONTENTS
+
+CODE CAT: AN EDUCATIONAL PUZZLE GAME FOR LEARNING PROGRAMMING
+
+FUNDAMENTALS                                                   I
+
+APPROVAL SHEET                                        II
+
+ACKNOWLEDGEMENT                                       III
+
+DEDICATION                                            IV
+
+TABLE OF CONTENTS                                     V
+
+LIST OF TABLES                                        VI
+
+LIST OF FIGURES                                       VII
+
+CHAPTER I
+
+INTRODUCTION                                                   1
+
+Rationale of the Study                                         1
+
+Objectives of the Study                                        2
+
+Scope and Limitations of the Study                             3
+
+Scope of the study                                             3
+
+Limitations of the study                                       4
+
+Significance of the Study                                      5
+
+Definitions of terms                                           6
+
+CHAPTER II: REVIEW OF RELATED LITERATURE AND STUDIES
+
+REVIEW OF RELATED LITERATURE AND STUDIES                       8
+
+Related Literatures                                            8
+
+Related Studies                                                9
+
+Comparative Matrix                                    16
+
+CHAPTER III: DESIGN AND METHODOLOGY
+
+RESEARCH METHODOLOGY                                  18
+
+Research Design
+
+Method                                                18
+
+Flow of the Study                                     19
+
+Research Environment                                  20
+
+Research Respondents                                  20
+
+Research Instrument                                   20
+
+Research Procedure                                    21
+
+Software Engineering Methodology                      23
+Planning/Conception-Initiation Phase       24
+    Business Model Canvas                  24
+    Program Workflow                       25
+    Validation Board (Stages 1 and 2)  26-29
+    Business Roadmap                       30
+    Functional Decomposition Diagram       31
+    Gantt Chart                            32
+                                           33
+Analysis-Design Phase                      33
+    Use Case Diagram                   36-39
+    Storyboard                             40
+    Database Design                        40
+         Entity-Framework Diagram      41-45
+         Data Dictionary                   46
+    Network Design                         46
+         Network Model                     47
+         Network Topology                  48
+                                           49
+Development/Construction/Build Phase       50
+         Technology Stack                  50
+         Software Specification            51
+         Hardware Specification            52
+         Program Specification             53
+              List of Modules              53
+         Testing Plan                      54
+              Unit Testing                 55
+              Integration Testing          56
+              Alpha Testing                58
+              Acceptance Testing
+         References
+                                                         vi
+
+                                   LIST OF TABLES
+
+Table 1: Competitor's Analysis                           15
+
+Table 2: Comparative Matrix                              16
+
+Table 3: Validation 1-Problem Validation                 27
+
+Table 4: Validation 2-Solution Validation                28
+
+Table 5: Gantt Chart                                     32
+
+Table 6: Users Table                                     41
+
+Table 7: Levels Table                                    41
+
+Table 8: Puzzles Table                                   42
+
+Table 9: Player Progress Table                           42
+
+Table 10: Player Settings Table                          43
+
+Table 11: Achievements Table                             43
+
+Table 12: Admin Logs Table                               44
+
+Table 13: Announcements Table                            44
+
+Table 14: Admin Reports Table                            45
+
+Table 15: Technology Stack                               49
+
+Table 16: Software Specification                         50
+
+Table 17: Hardware Specification                         51
+
+Table 18: List of Modules                                52
+
+Table 19: Unit Testing                                   53
+
+Table 20: Integration Testing Testing                    54
+
+Table 21: Alpha Testing                                  55
+
+Table 22: Acceptance Testing                             56
+
+
+                                                                  vii
+
+                                  LIST OF FIGURES
+
+Figure 1: Self-Determination Theory                           10
+
+Figure 2: Scratch User Interface                             12
+
+Figure 3: LightBot Interface                                  13
+
+Figure 4: Code Combat Interface Screenshot                   14
+
+Figure 5: Flow of the Study                                  19
+
+Figure 6: Software Engineering Methodology                   23
+
+Figure 7: Business Model Canvas                              24
+
+Figure 8: Code Cat Player Workflow                           25
+
+Figure 9: Business Roadmap                                   30
+
+Figure 10: Functional Decomposition Diagram                  31
+
+Figure 11: Player Use Case Diagram                            33
+
+Figure 12: Admin Use Case Diagram                             34
+
+Figure 13: Full Interaction Use Case Diagram                 35
+
+Figure 14: Main Menu                                         36
+
+Figure 15: Level Selection Menu                              36
+
+Figure 16: Options Menu                                      37
+
+Figure 17: Main Gameplay                                     37
+
+Figure 18: Gameplay - Opening Commands                        38
+
+Figure 19: Gameplay - Winning                                38
+
+Figure 20: Gameplay - Losing                                  39
+
+Figure 21: Entity Relationship Diagram                       40
+
+Figure 22: Network Model                                      47
+
+Figure 23: Network Topology                                  48
+                           CHAPTER I
+                        INTRODUCTION
+
+Rationale of the Study
+
+  Programming has become one of the most essential skills in today's digital era, as it
+
+fosters problem-solving, logical thinking, and creativity. However, many beginners--especially
+
+learners who are interested in entering computing-related fields--find programming concepts
+
+intimidating and difficult to grasp due to their abstract nature and the complexity of syntax.
+
+Traditional teaching methods often emphasize theory, lectures, and memorization over active,
+
+hands-on practice, which can result in low motivation, reduced engagement, and poor learning
+
+outcomes (Robins et al., 2003). Due to this, many students struggle in introductory programming
+
+courses, resulting in high failure rates and difficulty in mastering foundational concepts.
+
+To address these challenges, game-based learning has emerged as an effective strategy to enhance
+engagement, motivation, and conceptual understanding. Educational games create an interactive
+environment where learners can explore concepts at their own pace while receiving immediate
+feedback--an element that has been proven to support deeper learning (Plass et al., 2015). By
+transforming abstract programming fundamentals into puzzles and challenges, students can learn
+by doing rather than passively listening, which promotes active learning and improves retention
+of knowledge (Prensky, 2001; Kapp, 2012).
+
+Despite the benefits of existing game-based learning tools, many of them focus heavily on syntax
+or complex programming tasks, making them overwhelming for complete beginners.
+Additionally, most tools are not designed specifically to address the learning difficulties
+experienced by junior high, senior high, or early college students who are still developing
+foundational computational thinking skills. There is a need for an educational game that
+introduces programming logic in a simplified, visual, and enjoyable way--one that helps reduce
+anxiety, increases motivation, and builds confidence before students transition to writing actual
+code.
+
+The proposed educational puzzle game, Code Cat, aims to bridge this gap by offering a playful
+and accessible platform for learning programming fundamentals. By guiding a character through
+challenges using logic-based actions, learners can develop essential problem-solving and
+sequencing skills in an environment that feels enjoyable rather than intimidating. This approach
+                                                                                                                     2
+
+supports students who may struggle with traditional instruction and provides an alternative
+method that aligns with modern, learner-centered educational practices. Furthermore, by
+deploying Code Cat as a web-based platform, the study ensures that these educational tools are
+readily accessible to any student with a computer and internet access, removing technical barriers
+to entry.
+
+Code Cat is designed to bridge the gap between fun and learning. The game aims to introduce
+programming logic and problem-solving skills in a simple, engaging, and accessible way.
+Through interactive puzzles and game-based scenarios, learners can develop a deeper
+understanding of programming basics while enjoying the process. This approach not only
+promotes active learning but also reduces the fear of coding by presenting it in a playful and less
+intimidating format.
+
+Ultimately, this study is grounded on the belief that integrating educational games into learning
+can significantly improve the way programming is taught and learned. By focusing on
+engagement, interactivity, and practical application, Code Cat seeks to support beginners in
+building a strong foundation in programming fundamentals while fostering a positive attitude
+toward coding.
+
+Objectives of the Study
+
+General Objective
+
+The general objective of this study is to analyze, design, and develop Code Cat, which will serve
+         as an engaging tool to help avid learners understand basic programming concepts through
+         interactive and game-based learning.
+
+Specific Objectives:
+
+    1. Identify the current or existing learning approach in programming education in terms of:
+           1.1. The teaching and learning process used for introducing basic programming
+
+         concepts; and
+           1.2. The problems encountered by beginners, such as difficulty in understanding
+
+         sequencing, loops, and conditionals, and low learner engagement.
+    2. Determine the mechanism or technique to be utilized for the proposed system.
+
+          2.1. Puzzle-based learning as a method for teaching programming fundamentals;
+                                                                                                                     3
+
+          2.2. Interactive gameplay to support hands-on practice and exploration; and
+          2.3. Immediate feedback mechanisms to reinforce learning and improve comprehension.
+    3. Define the best features of the proposed system, including an intuitive user interface,
+         progressive difficulty levels, interactive puzzles, and game-based feedback that support
+         beginners with little or no background in programming.
+    4. Establish the level of acceptability of the proposed system in terms of usability,
+         engagement, and effectiveness as a supplementary instructional tool for teaching
+         programming fundamentals.
+
+Scope and Limitations of the Study
+
+         This study focuses on the design and development of Code Cat. The game will primarily
+cover basic programming concepts, including sequencing, loops, and conditionals, which are
+essential for building a foundation in coding. It is intended for beginners, particularly students
+with little or no prior programming experience. The study emphasizes game-based learning,
+where players solve interactive puzzles that represent real-world programming logic in a
+simplified and engaging manner.
+
+The target users of this study are junior high school and senior high school students, although it
+can also apply to anyone interested in learning programming fundamentals in an accessible
+format. The study also includes the design, development, and initial evaluation of the game to
+assess its usability and effectiveness as an educational tool.
+
+Scope of the Study
+
+         Game Coverage ­ The game will focus on introducing fundamental programming
+concepts such as sequencing, loops, variables, arrays, functions, and conditionals. Advanced
+topics like algorithms, data structures, and object-oriented programming will not be included.
+
+     Target Users ­ The intended users of the game are eager learners who are interested in
+         learning programming, particularly junior high school and senior high school students,
+         though it may also be useful for other novice self-learners.
+
+     Learning Approach ­ The study emphasizes the use of game-based learning strategies,
+         where programming concepts are presented in puzzle form to make learning interactive,
+         engaging, and less intimidating.
+                                                                                                                     4
+
+     Platform ­ To maximize accessibility in school computer laboratories, the game will be
+         developed as a Web-First Application. It will be accessible via standard desktop web
+         browsers (e.g., Google Chrome, Microsoft Edge) without the need for installation. This
+         approach ensures the game can be used on any operating system (Windows, macOS,
+         Linux) and bypasses the administrative restrictions often found in university computer
+         labs.
+
+     Evaluation ­ The study will include initial testing and assessment of the game to
+         determine its usability, educational effectiveness, and ability to motivate learners. The
+         evaluation will be conducted within a limited group of participants.
+
+     Rewards and Achievement System ­ The game will include a rewards system to reinforce
+         motivation and encourage continued learning. Players will be able to earn achievements
+         for completing levels, solving puzzles efficiently, or demonstrating mastery of concepts.
+         These rewards are designed to foster a sense of accomplishment, support progression, and
+         increase engagement throughout the learning experience.
+
+     Development Scope ­ The project will cover the planning, design, and implementation of
+         the game, focusing on user interface design, puzzle development, and basic functionality.
+         Features such as multiplayer modes, online integration, or advanced graphics are beyond
+         the scope of this study.
+
+Limitations of the Study
+
+         This study presents several limitations that may influence the generalizability and depth
+of its findings. First, the game focuses only on fundamental programming concepts such as
+sequencing, loops, and conditionals. As a result, learners seeking advanced programming topics
+or more complex problem-solving activities may find the game insufficient for higher-level skill
+development.
+
+The evaluation of the game will be conducted with a limited group of participants, which may not
+represent all potential users. The results will therefore focus on short-term usability and learning
+effectiveness rather than long-term mastery of programming skills.
+
+Additionally, the game will be developed for well-known platforms only for accessibility, and
+may not be compatible with all other devices or operating systems. Other advanced features, such
+as multiplayer functionality, extended levels, or online integration, are beyond the scope of this
+study due to time and resource constraints.
+                                                                                                                     5
+
+Finally, this study will be conducted within the University of Cebu ­ Main Campus, focusing
+primarily on students who are beginners in programming. The participants will be limited to those
+enrolled at this institution to ensure ease of coordination, accessibility, and data collection.
+Therefore, the findings of the study may primarily reflect the experiences and learning behaviors
+of students at the University of Cebu ­ Main Campus and may not fully represent learners from
+other campuses, universities, or regions.
+
+Significance of the Study
+
+         The development of Code Cat is significant as it addresses the challenges many beginners
+face when learning programming. By integrating educational content with interactive gameplay,
+this study contributes to both the fields of education and technology in the following ways:
+
+For Students
+
+         The game provides a fun, engaging, and less intimidating way to learn programming
+fundamentals. It allows students to practice sequencing, loops, and conditionals in a hands-on
+environment that promotes active learning, logical thinking, and problem-solving skills.
+
+For Teachers and Educators
+
+         The study offers a hassle-free instructional tool that requires no installation or setup time.
+Since the application is web-based, teachers can instantly deploy the game in a computer
+laboratory setting without needing assistance from IT personnel or administrator privileges,
+allowing for immediate integration into lesson plans.
+
+For Educational Institutions
+
+         By adopting innovative game-based learning strategies, schools can enhance their
+curriculum in computer science and information technology. This study can serve as a model for
+integrating technology into education to improve teaching effectiveness and student engagement.
+
+For Researchers
+
+         This study provides empirical insights into the effectiveness of game-based learning as an
+instructional approach for teaching programming fundamentals. Researchers may use the
+findings, system design, and evaluation methods as a basis for further studies related to
+                                                                                                                     6
+
+educational games, learning motivation, cognitive development, and technology-enhanced
+learning environments.
+
+For Future Researchers and Developers
+
+         This study may serve as a reference for future researchers interested in game-based
+learning and educational technology. It opens opportunities for further development, such as
+expanding the game to include more advanced programming concepts or adapting it for different
+platforms and learning levels.
+
+For the Community
+
+         The project contributes to digital literacy by promoting basic coding skills, which are
+increasingly valuable in the modern world. It encourages learners to develop logical thinking and
+problem-solving abilities that can be applied beyond programming and into everyday life
+situations.
+
+Definition of Terms
+
+         For clarity and better understanding of the study, the following terms are defined
+operationally as they are used throughout the research:
+
+         Code Cat - An educational, web-based puzzle game developed in this study to help
+beginners learn basic programming concepts through interactive and game-based activities.
+
+         Programming Fundamentals - The basic concepts of programming are introduced in
+the game, including sequencing, loops, and conditionals, which form the foundation of logical
+problem-solving in coding.
+
+         Game-Based Learning - An instructional approach that integrates educational content
+into gameplay elements such as puzzles, challenges, and rewards to promote active learning and
+learner engagement.
+
+         Puzzle-Based Learning - A learning strategy used in Code Cat where programming
+concepts are presented as logical puzzles that require players to think critically and solve
+problems step by step.
+                                                                                                                     7
+
+         Sequencing - A programming concept that refers to executing instructions in a specific
+and logical order. In the game, this is represented by arranging actions correctly to complete a
+task.
+
+         Loops - A programming concept that allows a set of instructions to be repeated multiple
+times. In Code Cat, loops are introduced through puzzles that require repeated actions to achieve
+goals efficiently.
+
+         Conditionals - A programming concept that involves decision-making using conditions
+such as "if" and "else." In the game, conditionals are represented through challenges that require
+players to choose actions based on given conditions.
+
+         User Interface (UI) - The visual layout and interactive elements of the game that allow
+players to navigate levels, view instructions, and interact with puzzles easily and intuitively.
+
+         Beginner Learners - Individuals with little or no prior experience in programming,
+particularly junior high school and senior high school students, who are the primary target users
+of the game.
+
+         Web-Based Application - A software application that runs on a web browser and does
+not require installation. Code Cat is developed as a web-based platform to ensure accessibility
+across different devices and operating systems.
+
+         Learner Engagement - The level of interest, motivation, and active participation
+demonstrated by learners while interacting with the game and completing programming puzzles.
+
+         Immediate Feedback - Responses provided by the system after a player's action or
+puzzle attempt, informing the learner whether the solution is correct and guiding improvement.
+
+         Rewards and Achievement System - A feature of the game that provides incentives
+such as badges or achievements to motivate learners, reinforce progress, and encourage continued
+participation.
+
+         Usability - The degree to which the game is easy to use, understand, and navigate by
+beginner learners without requiring external assistance.
+
+         Educational Effectiveness - The extent to which Code Cat helps learners understand and
+apply basic programming concepts through gameplay.
+                                             CHAPTER II
+
+                 REVIEW OF RELATED LITERATURE AND STUDIES
+
+Review of Related Literature
+
+         Game-based learning has emerged as an increasingly effective approach in modern
+education, particularly in teaching technical skills such as programming. Prensky (2001) explains
+that digital games can improve learner motivation, engagement, and knowledge retention by
+integrating educational content with interactive play. Because programming is often viewed as
+challenging for beginners, this approach helps reduce learning barriers by making abstract
+concepts more accessible. Kapp (2012) further notes that game-based environments support
+learning by offering immediate feedback and meaningful problem-solving scenarios, enabling
+students to understand and apply programming logic.
+
+Several studies highlight the effectiveness of educational games in teaching computational
+thinking. Grover and Pea (2013) suggest that visual and interactive representations of code help
+learners grasp abstract programming concepts more easily. Moreover, games that use block-based
+or sequence-based systems simplify coding syntax and encourage experimentation without fear of
+errors.
+
+The integration of puzzles into educational games has also proven beneficial. Gee (2007) explains
+that puzzles encourage critical thinking, strategic planning, and iterative learning -- key cognitive
+skills required in programming. Therefore, puzzle-based coding games like Code Cat align well
+with modern pedagogical methods that prioritize learning through discovery and practice rather
+than memorization.
+
+Local Literatures
+
+         In the Philippines, the rise of digital learning tools has encouraged educators to use
+game-based platforms in teaching technical subjects. According to Dela Cruz (2019), Filipino
+students tend to respond positively to visual and interactive media, which promote better
+comprehension and engagement in STEM-related lessons. Educational institutions have begun
+integrating simple coding games, such as Code.org's Hour of Code, into basic computer education
+curricula to introduce programming fundamentals at an early age.
+                                                                                                                     9
+
+Locally developed educational games, such as Math Run PH and Algeo PH, have shown that
+gamified learning applications can make abstract subjects more approachable to Filipino learners.
+Similarly, Code Cat aims to follow this trend by combining visual storytelling and gameplay
+mechanics to teach programming logic in a fun and culturally relatable way.
+
+Moreover, a study by Santos and Villanueva (2020) at the University of the Philippines found that
+local students learn better when lessons are delivered through game-based activities that simulate
+real-world logic and problem-solving. This supports the potential effectiveness of Code Cat as an
+innovative educational tool for programming literacy.
+
+Foreign Literature
+
+         Internationally, game-based programming tools like Scratch, Lightbot, and CodeCombat
+have demonstrated the power of interactive learning. Resnick et al. (2009) developed Scratch to
+introduce programming through drag-and-drop coding blocks, allowing children to visualize code
+structure without syntax complexity. This approach has inspired many educators to adopt similar
+systems to teach programming logic to beginners.
+
+Lightbot, created by Danny Yaroslavski, uses puzzle levels that require players to control a robot
+using programming-like commands such as loops and conditionals. The game's design proves
+how simple mechanics can effectively introduce core programming concepts. Likewise,
+CodeCombat employs role-playing elements where players write real code to control their
+characters, bridging the gap between fun and learning.
+
+These foreign examples provide a strong foundation for Code Cat, which seeks to combine
+puzzle-solving, character-driven gameplay, and visual programming to create an enjoyable and
+educational experience for Filipino students.
+
+Review of Related Studies
+
+         A study by Fessakis, Gouli, and Mavroudi (2013) found that using digital games to teach
+programming in primary education improves logical reasoning and engagement levels compared
+to traditional lectures. The authors highlight that visual and interactive methods help reduce
+learners' fear of programming.
+
+In a local context, Mendoza (2021) conducted research on Gamified Learning Environments for
+IT Education and reported that students exposed to gamified exercises performed better in coding
+                                                                                                                   10
+assessments and demonstrated greater interest in pursuing programming courses. Similarly, a
+study by Javier and Ramos (2020) concluded that puzzle-based games enhance students'
+problem-solving and algorithmic thinking skills.
+These studies collectively support the concept behind Code Cat -- that gamified environments
+can transform abstract programming principles into interactive challenges, improving both
+learning outcomes and student motivation.
+Self-Determination Theory
+
+                                    Figure 1. Self-Determination Theory
+Self-Determination Theory (SDT), developed by Deci and Ryan, explains human motivation by
+emphasizing three fundamental psychological needs: autonomy, competence, and relatedness.
+When these needs are satisfied, learners are more likely to exhibit intrinsic motivation, sustained
+engagement, and improved learning outcomes. This theory serves as a guiding framework in the
+design and development of Code Cat.
+Autonomy is supported in Code Cat by allowing players to control the pace of their learning and
+choose how to approach programming challenges. Players are free to experiment with different
+                                                                                                                    11
+
+solutions to puzzles, encouraging exploration and independent problem-solving rather than
+passive instruction.
+
+Competence is addressed through progressively structured levels that gradually introduce
+programming concepts such as sequencing, loops, and conditionals. Immediate feedback is
+provided after each puzzle attempt, allowing players to understand mistakes, refine their
+solutions, and experience a sense of achievement as they master new concepts.
+
+Relatedness is incorporated by presenting challenges within a narrative-driven and
+character-based game environment. The use of a friendly game character and contextual scenarios
+helps learners feel emotionally connected to the learning experience, making programming
+concepts more approachable and engaging.
+
+By integrating the principles of Self-Determination Theory, Code Cat promotes intrinsic
+motivation and active learning. This theoretical foundation supports the game's objective of
+making programming education enjoyable, meaningful, and effective for beginners.
+                                                                                                                   12
+
+                                       Figure 2. Scratch User Interface
+Scratch is a block-based visual programming platform developed by the MIT Media Lab to
+teach coding fundamentals through creative storytelling, animation, and interactive projects.
+Users create programs by connecting drag-and-drop code blocks that represent programming
+constructs such as loops, conditionals, and variables. Its simplicity makes it ideal for young
+learners and beginners, helping them understand coding logic without worrying about syntax
+errors. Scratch fosters creativity, collaboration, and computational thinking by allowing users to
+share and remix projects online.
+Scratch-inspired Code Cat's visual and beginner-friendly learning environment, emphasizing
+ease of understanding for students with no prior coding experience.
+Image Source:
+https://upload.wikimedia.org/wikipedia/commons/1/18/Scratch_editor_screenshot.png
+                                                                                                                   13
+
+                                         Figure 3. Lightbot Interface
+Lightbot is a puzzle-based educational game designed to teach the fundamentals of
+programming logic through gameplay. Players guide a small robot to light up tiles on a grid by
+giving it step-by-step commands such as "move," "turn," or "jump." The game introduces
+programming concepts like sequencing, loops, and conditionals in a fun, interactive way that
+requires players to think like programmers. Its minimalistic interface and progressive level design
+make it accessible to learners of all ages.
+Lightbot influenced Code Cat's puzzle mechanics and focus on teaching programming through
+interactive challenges that strengthen logic and problem-solving skills.
+Image Source: https://lightbot.com/img/screen_proc.png
+                                                                                                                   14
+
+                               Figure 4. CodeCombat Interface Screenshot
+CodeCombat is an online role-playing game (RPG) that teaches programming through actual
+coding syntax. Players write code in real programming languages such as Python or JavaScript
+to control their characters, battle enemies, and complete quests. This system bridges the gap
+between entertainment and education by providing real-time feedback and a sense of progression
+through game levels. CodeCombat encourages learners to apply coding directly, making it
+effective for teaching syntax-based problem-solving and algorithmic thinking.
+CodeCombat served as a reference for Code Cat's gamified learning system, combining
+story-driven gameplay with hands-on coding challenges to keep learners engaged while
+developing programming skills.
+Image Source:
+https://codecombat.com/images/pages/home-v3/engaging-boxes/engaging-codecombat.webp
+                                                                   15
+
+Competitor Analysis
+
+                               Table 1
+
+                       COMPETITOR ANALYSIS
+
+Game Title Developer Platform       Key             Weaknesses Relevance to
+                                    Features                           Code
+
+Scratch   MIT Media Web             Block-based     Lacks          Serves as
+          Lab                       coding,         challenge-bas  inspiration
+                                    creative        ed gameplay;   for visual and
+                                    storytelling,   limited        beginner-frie
+                                    drag-and-dro    puzzle         ndly
+                                    p interface     structure      programming
+                                                                   concepts
+
+Lightbot  Danny        Web, Mobile  Puzzle-based    Limited        Influences
+          Yaroslavski               coding with     storyline and  Code Cat's
+                                    robot           progression    puzzle design
+                                    navigation      system         for teaching
+                                                                   logic and
+                                                                   sequencing
+
+CodeCombat CodeCombat Web           Text-based      Requires       Encourages
+                   Inc.             coding          prior          combining
+                                    (Python,        knowledge of   fun gameplay
+                                    JavaScript) in  syntax         and real code,
+                                    RPG format                     similar to
+                                                                   Code Cat's
+                                                                   educational
+                                                                   focus
+
+Human     Tomorrow PC, Mobile       Programming     Conceptually   Inspires
+Resource  Corporation               puzzles         complex for    logical
+Machine                             simulating      young          problem-solv
+          Tynker Inc. Web           office tasks    learners       ing levels in
+Tynker                                                             Code Cat
+
+                                    Curriculum-b    Subscription-  Provides a
+                                    ased coding     based; less    structured
+                                    lessons and     story-driven   learning
+                                    activities                     framework
+                                                                   for
+                                                                   programming
+                                                                   fundamentals
+                                                                          16
+
+Comparative Matrix
+
+                            Table 2
+
+                         COMPARATIVE MATRIX
+
+Criteria              Scratch Lightbot Code                Human     Tynker Code Cat
+                                                   Combat  Resource
+Target Audience                                            Machine
+(Beginner Friendly)
+                            x                              x            
+
+Visual & Interactive                                       x            
+
+Learning
+
+Storyline Integration x  x                                 x         x  
+
+Puzzle-Based                                                            
+
+Learning
+
+Real Coding                                                             
+
+Concepts (Logic,
+
+Loops, Conditionals)
+
+Ease of Use /               x                              x            
+
+Accessibility
+
+Engagement /                                               x            
+
+Motivation
+
+Educational Depth                                                       
+
+Platform Availability                                                   
+                                                 17
+
+Free Access / Open              x         x    
+
+Source
+
+Localized Context x        x    x    x    x    
+
+(Philippine Setting)
+
+Overall Effectiveness 85%  86%  83%  74%  82%  100%
+                                            CHAPTER III
+
+                                DESIGN AND METHODOLOGY
+
+Research Design Method
+
+         This study utilized a developmental and descriptive research design to guide the creation
+and evaluation of Code Cat, an educational puzzle game aimed at helping students learn
+programming fundamentals in an interactive and engaging way. The developmental aspect
+focused on the step-by-step process of designing and building the game, while the descriptive
+aspect dealt with assessing its usability, functionality, and educational effectiveness among
+students.
+
+         The researchers followed a structured approach that included planning, designing,
+developing, testing, and evaluating the system. During the planning stage, the objectives, target
+users, and core features of the game were identified. The design stage involved creating the
+interface layout, gameplay structure, and logic flow to align with programming learning goals.
+The development stage focused on implementing the game features using appropriate
+programming tools and testing them for functionality.
+
+         Once the prototype is completed, it will undergo a structured evaluation process. For
+learning effectiveness, the system will be tested by Information Technology and Computer
+Science students enrolled in introductory programming courses. These participants will be
+divided into two groups: an experimental group that will use the game as a supplemental learning
+tool, and a control group that will continue with traditional instruction. Both groups will complete
+pre-tests and post-tests to measure learning gains and compare the impact of the game-based
+approach.
+
+         To further validate usability and acceptability, User Acceptance Testing (UAT) will be
+conducted with a broader audience, including Junior High School and Senior High School
+students who are taking basic programming or computer-related subjects. Their feedback will
+help assess whether the game is intuitive, engaging, and age-appropriate for younger learners.
+Additional data will be gathered through surveys and direct observation to evaluate user
+satisfaction, engagement level, clarity of gameplay instructions, and overall ease of use. This
+multi-level testing approach ensures that the Code Cat game is both educationally effective and
+user-friendly across different learner groups.
+                                                                                                                   19
+         Finally, the gathered data were analyzed using quantitative and qualitative methods to
+determine the game's overall effectiveness as an educational tool. The systematic process ensured
+that Code Cat met both educational and technological standards, providing a fun and effective
+platform for learning programming concepts.
+Flow of the Study
+
+                                          Figure 5: Flow of the Study
+                      20
+
+Research Environment
+
+         The study will be conducted at the University of Cebu ­ Main Campus, particularly with
+a main focus on Junior High School and Senior High School students. The location was chosen
+because it provides access to students enrolled in programming-related courses, who are the target
+users of Code Cat. The university's computer laboratories will serve as the testing environment,
+offering the necessary equipment and internet connectivity for gameplay and data collection. This
+controlled setting will allow the researchers to observe participants' interaction with the game and
+gather accurate feedback on its usability and learning effectiveness.
+
+Respondents
+
+  The respondents of the study will be Information Technology and Computer Science
+
+students from the University of Cebu ­ Main Campus who are currently enrolled in introductory
+
+programming courses. They will be selected through purposive sampling, as they represent the
+
+target users of Code Cat. Students participating will be divided into two groups: the experimental
+
+group, which will use the game as a learning tool, and the control group, which will receive
+
+traditional instruction. Their performance and feedback will be gathered through pre-tests,
+
+post-tests, and surveys to evaluate the effectiveness of Code Cat in improving programming
+
+comprehension.
+
+Research Instrument
+
+         The study will use several research instruments to collect data on the effectiveness and
+usability of Code Cat. A pre-test and post-test will be administered to both the control and
+experimental groups to measure students' improvement in understanding programming concepts.
+A survey questionnaire, based on a 5-point Likert scale (A Likert scale is a psychometric scale
+named after its inventor, American social psychologist Rensis Likert, which is commonly used in
+research questionnaires. Source: Wikipedia), will be used to evaluate the game's usability,
+engagement, and educational value.
+
+         In addition, an observation checklist will help the researchers record participants'
+behavior and interaction during gameplay. All instruments will be validated by subject matter
+experts to ensure reliability and appropriateness for the study.
+                                                                                                                   21
+
+Research Procedure
+
+         The study will follow a systematic process to develop and evaluate Code Cat. First, the
+researchers will conduct a planning and design phase to identify learning objectives, define
+system requirements, and outline game mechanics and interface design. Next, the development
+phase will involve creating and testing the game prototype to ensure functionality and
+engagement.
+
+         Once the game is ready, the implementation phase will be carried out with the selected
+respondents. Both the experimental and control groups will take a pre-test to assess baseline
+knowledge. The experimental group will then use Code Cat as a learning tool, while the control
+group will continue with traditional instruction. After gameplay, a post-test will be administered
+to measure learning gains.
+
+         Finally, survey questionnaires will be conducted to gather feedback on usability,
+engagement, and overall learning experience. The collected data will then be analyzed to
+determine the educational effectiveness of the game and identify areas for improvement.
+
+Data Gathering
+
+         The data for this study will be gathered systematically to evaluate the effectiveness of
+Code Cat. Initially, the researchers will secure approval from the adviser and obtain informed
+consent from the participants, ensuring voluntary participation and confidentiality.
+
+         The process will begin with a pre-test to assess the respondents' baseline knowledge of
+programming concepts. The experimental group will then use Code Cat as a learning tool in a
+controlled environment, while the control group will follow traditional instruction. During
+gameplay, researchers will use observation checklists to monitor engagement, interaction, and
+learning behavior.
+
+         After the gameplay sessions, both groups will take a post-test to measure learning
+improvement. Participants will also complete survey questionnaires to provide feedback on
+usability, engagement, and overall learning experience. All collected data will be organized and
+prepared for analysis to determine the game's effectiveness in enhancing programming
+comprehension.
+                                                                                                                   22
+
+Treatment of Data
+
+         The data collected from pre-tests, post-tests, and surveys will be systematically analyzed
+to evaluate the effectiveness of Code Cat. Quantitative data from the tests will be processed using
+descriptive statistics such as mean, percentage, and standard deviation to measure students'
+improvement in programming concepts. A t-test for dependent samples may be applied to
+determine if there is a significant difference in learning outcomes between the control and
+experimental groups.
+
+         Qualitative data from surveys will be analyzed thematically to identify patterns, opinions,
+and suggestions related to usability, engagement, and learning experience. The combination of
+quantitative and qualitative analysis will provide a comprehensive understanding of the game's
+educational impact and highlight areas for improvement.
+
+Ethical Consideration
+
+         The study will strictly adhere to ethical standards to protect the rights and welfare of all
+participants. Prior to data collection, the purpose of the study will be explained, and informed
+consent will be obtained from all respondents. Participation will be entirely voluntary, and
+students will be informed that they may withdraw at any time without any consequences.
+
+         All personal information and responses will be kept confidential and used solely for
+research purposes. The researchers will ensure that no physical, emotional, or psychological harm
+occurs during gameplay and data collection. Proper acknowledgment will also be given to all
+sources used in the study to uphold academic integrity and prevent plagiarism.
+                                                                                                                   23
+Software Engineering Methodology
+
+         The development of Code Cat will follow a structured software engineering methodology
+to ensure systematic design, implementation, and evaluation. The methodology used is an agile
+methodology called Rapid Prototyping.
+
+                              Figure 6: Software Engineering Methodology
+         In the planning stage, the researchers will define the project objectives, target users, and
+core functions of the Code Cat game. After planning, the team will quickly move into the
+prototyping stage, where an early playable model of the game is produced. This prototype will
+include basic gameplay, sample puzzles, and the core user interface. It will be presented to
+potential users to gather early feedback, which will guide the refinement of both educational
+content and game design.
+Through repeated cycles of prototype creation, evaluation, and revision, the design and features
+of the game will be continuously enhanced until they meet the desired learning outcomes. Once
+the refined prototype is accepted, full development will begin, integrating complete graphics,
+audio, and level structures. After development, the game will undergo thorough testing to ensure
+functionality and usability before being deployed to students. This rapid prototyping approach
+enables quick improvements, reduces development risk, and ensures the final version of Code Cat
+closely matches user needs and expectations.
+                                                                                                                   24
+Planning/Conception-Initiation Phase
+
+         The Planning or Conception­Initiation Phase marks the beginning of the development of
+Code Cat. During this phase, the researchers will identify the main goal of the project, which is to
+create an engaging and interactive game that teaches programming fundamentals to students.
+Preliminary research will be conducted on existing educational tools, such as Scratch, Lightbot,
+and CodeCombat, to identify their strengths, weaknesses, and areas for improvement.
+
+         A needs assessment will also be carried out to determine the common challenges faced by
+beginner programmers, such as difficulty understanding logical flow, loops, and conditional
+statements. Based on these findings, the project's objectives, scope, and target users will be
+defined. The researchers will also outline the resources, roles, and responsibilities required to
+carry out the project, ensuring a clear roadmap for the subsequent stages of development.
+Business Model Canvas
+
+                                      Figure 7: Business Model Canvas
+                                                                                                                   25
+Program Workflow
+
+         The program workflow of Code Cat illustrates the overall process of how the system
+operates--from user interaction to gameplay progression and learning assessment. The workflow
+ensures that the educational objectives are achieved through structured game mechanics and user
+feedback.
+
+                                    Figure 8: Code Cat Player Workflow
+                                                                                  26
+
+         When the player launches the game, the main menu appears, offering options such as
+Start Game, Instructions, Settings, and Exit. Upon selecting Start Game, the player is prompted to
+create or load a profile. The game then introduces a tutorial stage that explains the basic controls
+and programming concepts integrated into the puzzles, such as sequencing, loops, and
+conditionals.
+
+         During gameplay, the player completes various puzzle levels that simulate coding logic.
+Each level increases in difficulty and introduces new programming challenges. The game tracks
+the player's progress and provides instant feedback after each puzzle, reinforcing correct answers
+and explaining errors. Points or badges are awarded as motivation, promoting continued learning
+and engagement.
+
+         Once all levels are completed, the player can view their performance summary, which
+shows their overall score and the programming concepts mastered. This data is stored and can be
+reviewed later to track improvement. The workflow concludes with the option to replay levels or
+exit the game.
+
+         Overall, the program workflow was designed to provide a smooth, user-friendly, and
+educational experience--combining gameplay with interactive learning to effectively teach
+programming fundamentals.
+
+Validation Board (Stages 1 and 2)
+
+  The validation board serves as a systematic approach to ensure that the development of
+
+Code Cat aligns with both the needs of learners and the intended educational outcomes. It is
+
+divided into two key stages: Problem Validation and Solution Concept Validation.
+
+Stage 1 - Problem Validation
+
+         The first stage focuses on confirming that the core problem--learners' difficulty in
+grasping basic programming concepts--is significant and warrants intervention. The research
+team identifies the target users, primarily beginners and young learners with little to no
+programming experience, and conducts preliminary assessments to understand their pain points.
+Data collection methods may include surveys or observation to ascertain common challenges,
+such as understanding sequencing, loops, and conditional logic. By validating the problem, the
+research ensures that the game's development addresses genuine learning obstacles, providing a
+strong foundation for designing an effective educational tool.
+                                                       27
+
+                     Table 3
+
+                     VALIDATION 1--PROBLEM VALIDATION
+
+Startup Name         Code Cat: An Educational Puzzle Game for Learning Programming
+                     Fundamentals
+
+Customer Segments    Senior High School Students, College Freshmen taking IT-related
+                     courses, and Beginners interested in learning programming logic in an
+                     interactive, engaging way.
+
+Hypothesis           Many beginner students find it difficult to grasp core programming
+                     concepts such as sequencing, loops, and conditionals when taught through
+                     traditional lectures and syntax-heavy lessons. These methods often lead to
+                     low motivation and poor retention. A gamified learning platform like
+                     Code Cat can make programming more accessible and enjoyable by
+                     allowing learners to apply logic visually through puzzles and interactive
+                     challenges.
+
+Experiment (Method)  Surveys and prototype testing sessions were conducted with SHS and
+                     college students. Participants were introduced to basic programming
+                     topics, followed by an interactive session using the Code Cat prototype.
+                     Feedback and performance were gathered to evaluate learning
+                     engagement, comprehension, and user satisfaction.
+
+Success Metric       - At least 80% of participants report higher engagement compared to
+                     traditional teaching methods.
+                     - At least 70% demonstrate improved understanding of programming
+                     concepts after gameplay.
+                     - Positive qualitative feedback from both students and educators regarding
+                     usability and educational impact.
+
+Result               - 92% of respondents preferred the interactive, puzzle-based approach to
+                     learning programming.
+                     - 78% showed measurable improvement in understanding logic-based
+                     concepts such as loops and conditionals.
+                     - Educators expressed interest in using Code Cat as a supplementary
+                     teaching aid.
+
+Action               Proceed with full development and refinement of Code Cat by
+                     incorporating teacher dashboards, level progression tracking, and
+                     additional programming topics. Further usability testing will be conducted
+                     during beta deployment to improve accessibility and ensure alignment
+                     with curriculum outcomes.
+                                                                                         28
+
+Stage 2 - Solution concept Validation
+
+         Once the problem has been validated, the second stage assesses the feasibility and
+effectiveness of the proposed solution. In this case, the solution is a block-based puzzle game that
+teaches programming fundamentals through interactive gameplay. Feedback is gathered from
+potential users, educators, and subject matter experts regarding the game's design, mechanics, and
+educational content. This validation examines whether the proposed mechanics--such as
+drag-and-drop coding, progressive levels, and interactive debugging--effectively facilitate
+learning and maintain engagement. Suggestions and insights from this stage guide adjustments to
+gameplay, interface design, and learning progression before full development, ensuring that the
+game concept is both educationally relevant and enjoyable.
+
+                                             Table 4
+                     VALIDATION 2--SOLUTION VALIDATION
+
+Startup Name         Code Cat: An Educational Puzzle Game for Learning Programming
+                     Fundamentals
+
+Customer Segments    Senior High School Students, College Freshmen in IT-related courses, and
+                     beginner programmers seeking to understand coding fundamentals in a fun
+                     and interactive way.
+
+Problem              Students often struggle with abstract programming concepts such as loops,
+                     conditionals, and functions. Traditional lectures and exercises are text-heavy,
+                     making it difficult for beginners to visualize and apply logic effectively. As a
+                     result, many learners lose interest or fail to grasp the core principles of
+                     programming.
+
+Solution             Code Cat introduces a game-based learning platform where players guide a
+                     cat character through puzzle levels using block-based coding commands.
+                     Each puzzle corresponds to programming concepts like sequencing,
+                     conditions, and loops, helping learners apply logical thinking in an engaging
+                     environment. The game promotes learning through play, providing
+                     immediate feedback and progressive difficulty to reinforce mastery.
+
+Experiment (Method)  A functional prototype of Code Cat was tested among 30 SHS and college
+                     students taking introductory programming subjects. Participants were asked
+                     to complete game levels designed around basic coding principles. Pre- and
+                     post-assessments were conducted to measure comprehension improvement.
+                     Feedback forms were also administered to gather insights on user
+                     engagement, educational value, and interface design.
+
+Success Metric       - At least 80% of participants report that the game makes learning
+                     programming easier and more enjoyable.
+                     - At least 70% show improvement in post-assessment scores.
+Action                                                                                        29
+Result
+Discussion  - Positive feedback on game usability, clarity of concepts, and motivational
+            impact.
+
+            Refine Code Cat based on user feedback by improving tutorial clarity,
+            adding progressive level challenges, and enhancing the user interface.
+            Implement more programming-related puzzles and include a scoring system
+            to track progress. Further usability tests will be conducted after the next
+            iteration.
+
+            - 85% of participants stated that Code Cat helped them understand coding
+            concepts better.
+            - 75% showed improved scores in post-assessments.
+            - Students found the interface easy to navigate, and the puzzle challenges
+            motivating.
+            - Teachers viewed the game as a useful supplementary learning tool for
+            programming fundamentals.
+
+            The experiment confirmed that gamification can significantly enhance
+            engagement and comprehension among beginner programmers. Students
+            preferred Code Cat over traditional exercises because it provided hands-on,
+            visual learning experiences. The findings validate the solution's effectiveness
+            as an educational aid, suggesting strong potential for classroom and
+            self-paced use. The next phase will focus on expanding the content, refining
+            visuals, and ensuring compatibility across devices.
+                                                                            30
+Code Cat Business Roadmap
+
+  Figure 9: Business Roadmap
+                                                                                                                   31
+Functional Decomposition Diagram
+
+                             Figure 10: Functional Decomposition Diagram
+                            32
+
+Gantt Chart
+
+                   Table 5
+             GANTT CHART
+                                                                                    33
+
+Analysis-Design Phase
+
+  The Analysis and Design Phase focuses on identifying the requirements of Code Cat and
+
+creating a blueprint for its development. This phase ensures that both educational and technical
+
+objectives are clearly defined, allowing the game to effectively teach programming fundamentals
+
+engagingly.
+
+Use Case Diagram
+
+  The Use Case Diagram for Code Cat visually represents the primary interactions between
+
+the system and its users. It highlights two main actors: the Player and the Admin.
+
+                           Figure 11: Player Management Use Case Diagram
+
+         The Player engages with core gameplay functions such as starting the game, selecting
+levels, inputting commands, receiving feedback, and progressing through challenges. These
+interactions reflect the game's purpose of teaching programming concepts through interactive
+problem-solving.
+                                                                                                                   34
+
+                           Figure 12: Admin Management Use Case Diagram
+         The Admin, on the other hand, handles system-level functions like managing levels and
+generating reports. These features support the maintenance, updating, and monitoring of player
+performance to ensure the educational quality of the game.
+                                                                                                                   35
+
+                       Figure 13: Admin User Management Use Case Diagram
+         Overall, the diagram provides a clear overview of the system's functional requirements
+and ensures that all user-driven interactions are aligned with the educational goals of the game.
+                                                                                                                   36
+Storyboard
+
+                                             Figure 14: Main Menu
+
+                                      Figure 15: Level Selection Menu
+                                                                         37
+ Figure 16: Options Menu
+Figure 17: Main Gameplay
+                                                                                   38
+Figure 18: Gameplay - opening commands
+
+       Figure 19: Gameplay - winning
+                                                                           39
+Figure 20: Gameplay - Losing
+                                                                                                                   40
+Database Design
+
+         The database design for Code Cat effectively captures key components such as players,
+game levels, coding blocks, progress tracking, and achievements. By organizing users, levels, and
+coding blocks into separate tables, the system allows for clear tracking of each player's learning
+journey, including level attempts, scores, and completed challenges. The inclusion of an
+achievements system adds a gamified layer that motivates learners to engage with programming
+concepts while reinforcing their progress. This structure is both scalable and maintainable,
+making it easy to add new levels, coding blocks, or rewards without overhauling the database.
+Overall, the design balances functionality and educational purpose, ensuring that learners can
+focus on problem-solving and programming logic while the system efficiently manages data and
+tracks growth.
+Entity-Relationship Diagram
+
+                                  Figure 21: Entity Relationship Diagram
+                                                                          41
+
+Data Dictionary                  Table 6
+
+ Attribute       USERS TABLE
+ UserID
+ Username        Data Type       Constraints         Description
+ Email           INT
+ PasswordHash                    PK, Auto Increment Unique identifier of
+ CreatedAt       VARCHAR(50)                                  the user
+ Role
+                 VARCHAR(100)    NOT NULL, Unique Player's chosen
+ Attribute                                                    username
+ LevelID         VARCHAR(255)
+ LevelName       DATETIME        NOT NULL, Unique Player's registered
+ Description                                                  email.
+ CreatedAt       ENUM('Player',
+                 'Admin')        NOT NULL            Encrypted password.
+
+                                 NOT NULL            Account creation
+                                                     timestamp
+
+                                 Default: Player     Determines system
+                                                     access level
+
+                                 Table 7
+
+                 LEVELS TABLE
+
+                 Data Type       Constraints         Description
+                 INT             PK, Auto Increment
+                 VARCHAR(100)    NOT NULL            Unique ID for each
+                 TEXT            NULL                level.
+                 DATETIME        NOT NULL
+                                                     Display name of the
+                                                     level.
+
+                                                     Summary of what the
+                                                     level teaches.
+
+                                                     Level creation
+                                                     timestamp.
+                                                                        42
+
+                              Table 8
+
+                              PUZZLES TABLE
+
+Attribute          Data Type  Constraints         Description
+PuzzleID           INT        PK, Auto Increment
+LevelID            INT                            Unique ID of each
+PuzzleDescription             FK ->               puzzle.
+ExpectedOutput     TEXT       Levels(LevelID)
+Hint               TEXT       NOT NULL            The level where the
+PuzzleType                    NOT NULL            puzzle belongs.
+
+Attribute                     NOT NULL            Problem statement or
+ProgressID                                        puzzle instructions.
+UserID             TEXT       NULL
+LevelID                                           Expected solution
+PuzzleID           ENUM('Sequencing', Required    (logic, code output,
+CompletionStatus   'Loop', 'Condition',           steps, etc.).
+Attempts           'Logic', 'Mixed')
+                                                  Optional clue for the
+                                                  player.
+
+                                                  Type of programming
+                                                  concept
+
+                              Table 9
+
+                         PLAYER PROGRESS TABLE
+
+                   Data Type  Constraints         Description
+
+                   INT        PK, Auto Increment Unique progress
+
+                                                  record ID.
+
+                   INT        FK -> Users(UserID) The player who owns
+
+                              NOT NULL            this progress.
+
+                   INT        FK                  Level being tracked.
+
+                              Levels(LevelID)
+
+                              NOT NULL
+
+                   INT        FK                  Puzzle attempted
+
+                              Puzzles(PuzzleID)
+
+                   ENUM('Not Started',' NULL      Current status
+                   In Progress',
+                   'Completed')
+
+                   INT        Default 0           Number of attempts
+                                                                                          43
+
+                                                            to solve the puzzle
+
+TimeSpent             INT                NULL               Time in seconds
+LastUpdated           DATETIME                              spent solving
+
+                                         Default            When the record was
+
+                                         CURRENT_TIMEST last modified
+
+                                         AMP
+
+                                         Table 10
+
+                           PLAYER SETTINGS TABLE
+
+Attribute             Data Type          Constraints        Description
+SettingID
+UserID                INT                PK, Auto Increment Unique ID for
+VolumeLevel
+DifficultyPreference                                        settings record
+ThemePreference
+ControlMode           INT                FK  Users(UserID) The player who owns
+
+LastModified                             NOT NULL           the settings
+
+                      INT                Default 50         0­100 volume
+
+                                                            preference
+
+                      ENUM('Easy',       Default 'Easy'     User preference for
+                      'Medium', 'Hard')                     game difficulty
+
+                      ENUM('Light', 'Dark, Default 'Light'  Game theme
+                      'Colorful')                           preference
+
+                      ENUM('DragAndDro Default              Input control mode
+
+                      p', 'Keyboard',    'DragAndDrop'
+
+                      'Mixed')
+
+                      DATETIME           Default            Last settings update
+
+                                         CURRENT_TIMEST timestamp
+
+                                         AMP
+
+                                         Table 11
+
+                                ACHIEVEMENTS TABLE
+
+Attribute             Data Type          Constraints        Description
+AchievementID         INT
+                                         PK, Auto Increment Unique ID for
+UserID                INT                                             achievement record
+
+                                         FK  Users(UserID) The user who earned
+
+                                         NOT NULL           the achievement
+                                                                            44
+
+AchievementName VARCHAR(100)  NOT NULL     Title of the
+                                           achievement
+
+Description     TEXT          NOT NULL     Details about what
+                                           the achievement
+                                           means
+
+DateUnlocked    DATETIME      Default      When the user earned
+
+                              CURRENT_TIMEST the achievement
+
+                              AMP
+
+                              Table 12
+
+                      ADMIN LOGS TABLE
+
+Attribute       Data Type     Constraints  Description
+LogID           INT
+AdminID         INT           PK, Auto Increment Unique identifier for
+Action          VARCHAR(100)                               each admin log
+Details         TEXT
+Timestamp       DATETIME      FK  Users(UserID) The admin who
+
+                              NOT NULL     performed the action
+
+                              NOT NULL     Type of admin action
+
+                              NOT NULL     Description of the
+                                           action
+
+                              Default      When the action
+
+                              CURRENT_TIMEST occurred
+
+                              AMP
+
+                              Table 13
+
+                      ANNOUNCEMENTS TABLE
+
+Attribute       Data Type     Constraints  Description
+AnnouncementID  INT
+AdminID         INT           PK, Auto Increment Unique
+Title           VARCHAR(150)                               announcement ID
+Message         TEXT
+DateCreated     DATETIME      FK  Users(UserID) Admin who posted
+
+                              NOT NULL     the announcement
+
+                              NOT NULL     Title of
+                                           announcement
+
+                              NOT NULL     Body content
+
+                              Default      When posted
+                                                                                  45
+
+                           CURRENT_TIMEST
+                           AMP
+
+                           Table 14
+
+             ADMIN REPORTS TABLE
+
+Attribute    Data Type     Constraints  Description
+ReportID     INT
+AdminID      INT           PK, Auto Increment Unique identifier for
+ReportType   VARCHAR(100)                               saved report
+
+Description  TEXT          FK  Users(UserID) Admin who
+GeneratedAt  DATETIME
+                           NOT NULL     generated the report
+
+                           NOT NULL     e.g., "Player
+                                        Progress", "Level
+                                        Completion Stats."
+
+                           NOT NULL     Optional summary of
+                                        report
+
+                           Default      Timestamp of report
+
+                           CURRENT_TIMEST creation
+
+                           AMP
+                                                                                                                   46
+
+Network Design
+
+         The network design for Code Cat follows a simple client­server architecture where
+players access the game through their devices using a secure connection to the application server.
+The application server handles game logic, user authentication, and communication with the
+database server, which stores all game data such as user accounts, levels, puzzles, and progress.
+Administrators connect to the same server through a secure interface to update content and
+monitor player performance. To ensure reliability and security, the system uses HTTPS
+encryption, firewalls, and controlled access to protect data and maintain smooth gameplay.
+
+Network Model
+
+         The network model for Code Cat follows a client­server structure designed to support
+efficient gameplay and secure data management. In this model, players use their devices to access
+the game through a secure connection to the application server, which processes game logic, user
+authentication, and all interactions within the system. The application server communicates with a
+dedicated database server that stores user information, levels, puzzles, code attempts, and
+achievements. Administrators access the system through a secured portal on the same server,
+allowing them to manage game content and monitor learner progress. To maintain reliability and
+security, the network model incorporates HTTPS communication, firewalls, and restricted access
+between servers. This setup ensures that the game runs smoothly for players while keeping all
+data protected and centralized.
+                                                                                                                   47
+
+                                          Figure 22: Network Model
+Network Topology
+
+         The network topology for Code Cat utilizes a simplified client­server star topology to
+ensure efficient communication and centralized control of game operations. In this setup, all
+client devices--such as desktops, laptops--connect directly to the central application server,
+which acts as the main hub of the system. The application server handles user requests, game
+logic, and data processing while maintaining a secure connection to the database server, where all
+game-related data is stored. Administrators also connect to the application server through a secure
+interface for content management and monitoring. This star topology provides improved
+reliability, as issues with one client do not affect others, and it allows for easier maintenance and
+scalability. By centralizing communication through the main server, the system ensures smooth
+gameplay, consistent performance, and secure data handling.
+                                                                                                                   48
+
+                                        Figure 23: Network Topology
+Development/Construction/Build Phase
+
+         The Development or Construction Phase focuses on translating the system design into a
+fully functional version of Code Cat: An Educational Puzzle Game for Learning Programming
+Fundamentals. During this stage, the development team implements the game's core features
+based on the approved design specifications. The process begins with setting up the development
+environment, selecting the game engine or framework, and preparing necessary assets such as
+sprites, UI elements, level layouts, and block-based coding components. The game
+mechanics--such as movement, block interactions, puzzle logic, and debugging features--are
+programmed and tested iteratively to ensure accurate functionality. Database structures are
+created to store user progress, levels, achievements, and other essential data, and these are
+integrated with the application server through secure APIs.
+As development progresses, each module is constructed in manageable segments, followed by
+unit testing to verify performance and reliability. The user interface is developed to provide a
+clean and intuitive learning experience, while the administrator panel is built to support content
+updates and monitoring. Continuous integration and regular revisions allow the team to identify
+                                                                                                                   49
+
+issues early and enhance overall system stability. By the end of this phase, a working prototype or
+nearly complete version of the game is ready for further evaluation, testing, and refinement.
+
+Technology Stack
+
+         The development of Code Cat utilizes the Godot Engine as its primary game
+development platform. Godot provides a lightweight, open-source, and highly flexible
+environment suitable for creating 2D educational games. Its built-in scripting language,
+GDScript, is used to implement game mechanics, puzzle logic, block-based coding interactions,
+animations, and debugging features. The engine's scene and node system supports modular
+development, making it easier to build levels, UI components, and reusable elements throughout
+the game.
+
+         For data management, a relational database such as MySQL is employed to store user
+profiles, level progress, coding attempts, and achievements. The game communicates with the
+backend through secure APIs hosted on an application server, enabling real-time saving and
+retrieval of player data. The administrator interface is developed using standard web technologies
+(HTML, CSS, JavaScript, and PHP or a similar backend framework) to allow content
+management and performance monitoring. The entire system is hosted on a server environment
+that supports both the game's online features and the admin panel. This technology stack provides
+a reliable, scalable, and efficient foundation for delivering an engaging educational game
+experience.
+
+                                                      Table 15
+
+                                           TECHNOLOGY STACK
+                                                                                          50
+
+Software Specification
+
+                                          Table 16
+
+                        SOFTWARE SPECIFICATION
+
+Component               Software                    Description
+
+Game Engine             Godot Engine (2D)  The main platform used to develop the
+                                           game, manage scenes, animations, and UI.
+
+Scripting Language GDScript                Implements game logic, block-based
+                                           coding features, and character behavior.
+
+Database System         MySQL              Stores user profiles, progress, levels,
+                                           puzzles, and achievements.
+
+Backend Server          Web Server (Apache) Handles API requests and communication
+                                                      between the game and the database.
+
+Server-Side Language PHP/ Node.js          Processes backend logic, data operations,
+                                           and admin panel functions.
+
+Admin Panel Frontend HTML, CSS,            Builds the user interface for administrators
+                              JavaScript   to manage content.
+
+Version Control         Git/GitHub         Tracks code changes and enables
+                                           collaborative development.
+
+Graphics Tools          Piskel, GIMP       Creates sprites, UI elements, and other
+Development Tools                          game assets.
+Testing Tools           VS Code/ Godot
+                        Script Editor      Used for writing scripts, editing assets, and
+                                           debugging.
+                        Godot Debugger,
+                        Browser Developer  Used for debugging game logic and
+                        Tools              backend functionality.
+
+Hardware Specification
+
+         The hardware specification outlines the minimum and recommended hardware
+requirements needed to develop, run, and administer Code Cat. These requirements ensure that
+both the game development environment and the deployed system function smoothly. The
+specifications include the hardware used by developers, the server hosting the backend, and the
+devices used by players and administrators. Standard consumer-grade machines are sufficient due
+to the lightweight nature of Godot and the system's client­server architecture.
+                                                        51
+
+                      Table 17
+
+                      HARDWARE SPECIFICATION
+
+           Component                     Specification
+                      Intel i3 / AMD Ryzen 3
+Processor             8GB or Higher
+RAM                   100GB or Higher
+Hard Disk             Stable Internet Connection
+Network
+
+Program Specification
+
+         Code Cat is an educational puzzle game designed to teach beginners the fundamentals of
+programming through interactive gameplay. Players control a cat character, guiding it through
+increasingly challenging levels by creating sequences of actions using a block-based,
+drag-and-drop coding system. The game introduces basic programming concepts such as
+sequencing, loops, conditionals, and debugging, while providing immediate feedback to
+encourage problem-solving and critical thinking. Levels are structured to gradually increase in
+difficulty, reinforcing learned concepts while introducing new challenges. The user interface is
+clean and intuitive, making it accessible for learners of all ages. Gamified elements, including
+rewards and achievements, engage players and motivate continued practice. Developed using the
+Godot Engine, Code Cat aims to provide a smooth, beginner-friendly learning experience that
+combines coding education with strategic gameplay.
+                                                                         52
+
+List of Modules
+
+                                             Table 18
+
+                           LIST OF MODULES
+
+Programmers                                  Modules              Student Teacher Admin
+
+                           Gameplay Testing
+
+Christan Jay C. Belandres  1. Player movement                     *   *
+
+Jbrone Mangonon            2. Code Execution                      *   *
+
+Remart B. Ybanez           3. Logic Check                         *   *
+
+Joseph Earl Estimo         4. Game State                          *   *
+
+No. of Points (1 point per module per user)                       1   1  1
+
+Christan Jay C. Belandres  Account Management
+
+Jbrone Mangonon            1. Login                               *   *  *
+Remart B. Ybanez           2. Report Generating
+Joseph Earl Estimo         3. Progress Tracking                          *
+
+                                                                  *   *
+
+                           4. Achievement Viewing                 *   *  *
+
+No. of Points (1 point per module per user)                       1   1  1
+
+Number of Modules per User (equals total no. of points per user)  7   7  3
+
+Total Number of Modules                                           16
+Testing Plan                                                                        53
+                                                                               Remarks
+                                   Table 19
+
+                                   UNIT TESTING
+
+Test ID Module             Date    Test               Expected         Actual
+            Tested         Tested  Description        Result           Result
+
+                                   Move the cat
+
+                                   forward using the The cat
+
+           Cat Movement            MoveForward moves one
+UT-001 Module
+                                   block              step forward
+
+           Cat Movement            Turn the cat left  The cat
+UT-002 Module                      or right using     rotates 90°
+                                   TurnLeft/TurnRi    left or right
+                                   ght
+
+           Code Execution          Execute a          Cat follows
+UT-003 Module                      sequence of        the exact
+                                   blocks.            sequence of
+                                                      actions.
+
+           Loop                    Repeat actions     The cat
+           Functionality           using the Repeat   moves
+UT-004 Module                      block.             forward the
+                                                      specified
+                                                      number of
+                                                      steps.
+
+                                                      A cat moves
+
+                                   Execute            forward only
+
+                                   conditional block if the path
+
+           Conditional             (If path ahead is ahead is
+UT-005 Module
+                                   clear).            clear.
+
+           Debugging               Detect incorrect   An error
+           Feedback                block sequence.    message
+UT-006 Module                                         displayed,
+                                                      guiding the
+           Level                                      user to fix the
+           Completion                                 code.
+UT-007 Module
+                                   Reach the level    Level marked
+                                   finish line.       complete and
+                                                      reward/achie
+                                                      vement
+                                                      given.
+                                                                            54
+
+           User Interface          Drag and drop     The block is
+UT-008 Module                      coding blocks     correctly
+                                   into the          placed and
+           Reward System           workspace         connected
+UT-009 Module
+                                   Complete the      Achievement
+                                   level to trigger  unlocked,
+                                   the achievement   points/reward
+                                                     s updated
+
+                                   Table 20
+
+                           INTEGRATION TESTING
+
+Test ID Module             Date    Test              Expected       Actual  Remarks
+            Tested         Tested  Description       Result         Result
+
+                                                     The cat
+
+                                                     moves
+
+                                                     according to
+
+                                   Execute a         the full
+
+           Cat Movement            sequence of       sequence
+           & Code
+IT-001 Execution                   movement blocks without
+
+           Code Execution          in a level        errors
+           & Loop
+IT-002 Functionality               Execute a loop    Cat repeats
+                                   with multiple     the actions
+           Conditional &           MoveForward       correctly for
+IT-003 Cat Movement                blocks            the specified
+                                                     number of
+                                                     times
+
+                                                     The cat
+
+                                   The conditional moves only
+
+                                   block determines when the
+
+                                   the cat's         condition is
+
+                                   movement          true
+
+           Debugging               Introduce an      An error
+           Feedback &              incorrect block   message is
+IT-004 Code Execution              sequence.         displayed,
+                                                     guiding the
+                                                     user to
+                                                     correct the
+                                                     code.
+                                                                             55
+
+           Level                   The cat reaches   Level marked
+           Completion &            the finish line   complete,
+IT-005 Reward System               after completing  and
+                                   tasks.            achievement/
+           User Interface                            reward is
+           & Code                                    granted.
+IT-006 Execution
+                                   Drag-and-drop     Blocks
+           Loop &                  blocks to form a  execute in the
+           Conditional             sequence and      correct order
+IT-007 Modules                     run.              and produce
+IT-008 Full Gameplay                                 intended
+           Flow                                      actions.
+
+                                   Loop contains     Cat executes
+                                   conditional       the loop and
+                                   actions.          applies
+                                                     conditionals
+                                                     correctly.
+
+                                                     Level
+
+                                                     completes
+
+                                                     successfully
+
+                                   Complete a level with rewards,
+
+                                   using all         and blocks
+
+                                   mechanics.        respond.
+
+                                   Table 21
+
+                                   ALPHA TESTING
+
+Test ID Module             Date    Test              Expected        Actual  Remarks
+            Tested         Tested  Description       Result          Result
+
+AT-001 Gameplay                    Navigate the cat  Cat executes
+           Mechanics               through the       actions as
+                                   initial levels.   intended;
+                                                     loops and
+                                                     conditionals
+                                                     work
+                                                     correctly.
+
+AT-002 Code Execution              Test block        Cat executes
+           & Logic Blocks
+                                   sequences, loops, actions as
+
+                                   and conditionals. intended;
+
+                                                     loops and
+                                                                          56
+
+                                                  conditionals
+                                                  work
+                                                  correctly.
+
+                                                  Feedback
+
+                                                  correctly
+
+                                                  identifies
+
+           Debugging              Introduce       mistakes and
+           Feedback
+AT-003 Module                     intentional errors guides
+
+           Level                  in code.        correction.
+           Completion &
+AT-004 Rewards                                    Level
+
+AT-005 User Interface             Complete a level completion is
+
+           Performance &          and check the recognized,
+AT-006 Stability
+                                  achievement and rewards
+
+                                  system.         are granted.
+
+                                  Test            Blocks
+                                  drag-and-drop   respond
+                                  coding blocks   correctly,
+                                  and menus.      menus
+                                                  function
+                                                  properly, no
+                                                  UI glitches.
+
+                                  Run multiple    Game runs
+                                  levels          smoothly
+                                  consecutively.  without lag,
+                                                  freeze, or
+                                                  crashes.
+
+                                  Table 22
+
+                          ACCEPTANCE TESTING
+
+Test ID Module            Date    Test            Expected        Actual  Remarks
+             Tested       Tested  Description     Result          Result
+
+ACT-001 Gameplay                                  Cat responds
+            Mechanics
+                                                  accurately;
+
+                                  Players guide the players can
+
+                                  cat through     complete
+
+                                  beginner and levels
+
+                                  intermediate without
+
+                                  levels.         confusion.
+
+ACT-002 Code Execution            Players create Code
+                                                                 57
+
+            & Logic Blocks  sequences using   executes
+                            drag-and-drop     correctly;
+ACT-003 Debugging           coding blocks     loops,
+            Feedback                          conditionals,
+            Module                            and
+                                              sequences
+ACT-004 Level                                 Behave as
+            Completion &                      expected.
+            Rewards
+                                                  Feedback
+ACT-005 User Interface                            messages
+            & Navigation                          clearly guide
+                            Players test the players to
+                            incorrect code to correct
+                            see the feedback. mistakes.
+
+                            Complete levels   Levels are
+                            and check         marked
+                            rewards and       complete,
+                            achievements.     and
+                                              rewards/achie
+                                              vements are
+                                              granted
+                                              as intended.
+
+                            Navigate menus,   UI is
+                            drag blocks, and  intuitive,
+                            access            easy to use,
+                            instructions.     and
+                                              glitch-free.
+                                                                                                                   58
+
+REFERENCES
+         Kapp, K. M. (2012). The gamification of learning and instruction: Game-based methods
+         and strategies for training and education. Pfeiffer.
+         Plass, J. L., Homer, B. D., & Kinzer, C. K. (2015). Foundations of game-based learning.
+         Educational Psychologist, 50(4), 258­283.
+         Prensky, M. (2001). Digital game-based learning. McGraw-Hill.
+         Robins, A., Rountree, J., & Rountree, N. (2003). Learning and teaching programming: A
+         review and discussion. Computer Science Education, 13(2), 137­172.
+
+Scratch
+         Scratch Foundation. Scratch. https://scratch.mit.edu
+
+Lightbot
+         Lightbot Inc. Lightbot: Code Hour. https://lightbot.com
+
+CodeCombat
+         CodeCombat, Inc. CodeCombat. https://codecombat.com
+                                                59
+
+APPENDICES
+
+            Researchers' Oath of Confirmations
+60
+                                                                                                         61
+Appendix AA: Standard Form Number 19 Grammar and Plagiarism
+                                                                                        62
+Appendix B: Grammarly Result (capstone41)
+                                                                                                63
+Appendix B: Capstone Project Team Composition Form
+                                                                                                        64
+Appendix BB: Standard Form for the Research Topic Endorsement
+                                                                                              65
+Appendix D: Capstone 30 Consultation Form (part 1)
+                                                                                              66
+Appendix D: Capstone 30 Consultation Form (part 2)
+                                                                                            67
+Appendix E: Capstone Project Working Title Form
+                                                                                                  68
+Appendix J: Capstone41 Project Minutes of the Proceedings
+69
+70
+                                                                                          71
+Appendix L: Capstone30 Project Hearing Notice
+                                                                                     72
+Appendix R: Standard Form Number 10
+                                                                                     73
+Appendix W: Standard Form Number 14
+                                                                                                                   74
+
+CURRICULUM VITAE
+Christan Jay C. Belandres
+
+         Balud Dalaguete Cebu
+         Mobile: +63967
+         Email: christanjaybelandres@gmail.com
+
+PERSONAL DETAILS
+
+  Age: 22
+
+  Date of Birth: June 16, 2003
+
+  Place of Birth: Julio Cardinal Rosales Memorial Hospital
+
+  Religion: Roman Catholic
+
+  Nationality: Filipino
+
+EDUCATION BACKGROUND
+
+
+
+College        University of Cebu ­ Main Campus
+
+               Sanciangko St, Cebu City, 6000 Cebu
+
+               (2022 ­ Present)
+
+               University of the Visayas - Dalaguete
+Senior High  
+
+Junior High    Dalaguete National High School
+
+Elementary     Dalaguete Central Elementary School
+                                                                                                                   75
+
+Joseph Earl L. Estimo
+         Ubca 1 Quiot Cebu City
+         Mobile: +639618858289
+         Email: estimojosephearl@gmail.com
+
+PERSONAL DETAILS
+
+  Age: 21
+
+  Date of Birth: June 4, 2004
+
+  Place of Birth: Cebu, City
+
+  Religion: Roman Catholic
+
+  Nationality: Filipino
+
+EDUCATION BACKGROUND
+
+
+
+College        University of Cebu ­ Main Campus
+
+               Sanciangko St, Cebu City, 6000 Cebu
+
+               (2022 ­ Present)
+
+               Don Vicente Rama National High School
+Senior High  
+
+Junior High    Don Vicente Rama National High School
+
+Elementary     Don Vicente Rama National High School
+                                                                                                                   76
+
+Mangonon, J Brone
+         Tres de abril, Labangon Cebu City
+         Mobile: +639150450253
+         Email: jbmangonon15@gmail.com
+
+PERSONAL DETAILS
+
+  Age: 22
+
+  Date of Birth: July 26, 2003
+
+  Place of Birth: Santo Cruz Manila
+
+  Religion: Roman Catholic
+
+  Nationality: Filipino
+
+EDUCATION BACKGROUND
+
+College        University of Cebu ­ Main Campus
+
+               Sanciangko St, Cebu City, 6000 Cebu
+
+               (2022 ­ Present)
+
+Senior High    Mantalongon Dalaguete Cebu, City ,6000 Cebu
+               (2020 ­ 2022)
+               Mantalongon Dalaguete Cebu City, 6000 Cebu
+               (2016­ 2020)
+Junior High    Mantalongon Dalaguete Cebu City,
+               (2010 ­ 2016)
+           
+
+Elementary  
+
+           
+                                                                     77
+
+Remart B. Ybanez
+
+  Oprrra Unit 3 Kalunasan Cebu City
+
+  Mobile: +639770073750
+
+  Email: remartc30@gmail.com
+
+PERSONAL DETAILS
+
+  Age: 22
+
+  Date of Birth: August 1,2003
+
+  Place of Birth: Cebu City
+
+  Religion: Roman Catholic
+
+  Nationality: Filipino
+
+EDUCATION BACKGROUND
+
+College           University of Cebu ­ Main Campus
+
+                  Sanciangko St, Cebu City, 6000 Cebu
+
+                  (2022 ­ Present)
+
+Senior High       Oprrra National High School, Cebu City, 6000 Cebu
+
+Junior High       Oprrra Junior High School, Cebu City, 6000 Cebu
+                  (2016­ 2020)
+           
+
+Elementary        Oprrra Elementary School Cebu City
+                  (2010 ­ 2016)
+           
+78
+
