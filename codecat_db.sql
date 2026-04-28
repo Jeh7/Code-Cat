@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS classroom_members;
 DROP TABLE IF EXISTS classrooms;
 DROP TABLE IF EXISTS student_level_progress;
 DROP TABLE IF EXISTS teacher_levels;
+DROP TABLE IF EXISTS admin_reports;
 DROP TABLE IF EXISTS teacher_reports;
 DROP TABLE IF EXISTS user_achievements;
 DROP TABLE IF EXISTS achievements;
@@ -131,6 +132,22 @@ CREATE TABLE teacher_reports (
     CONSTRAINT fk_teacher_reports_classroom
         FOREIGN KEY (classroom_id) REFERENCES classrooms(id)
         ON DELETE SET NULL
+);
+
+CREATE TABLE admin_reports (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    admin_id INT UNSIGNED NOT NULL,
+    title VARCHAR(160) NOT NULL,
+    report_type ENUM('user_roster', 'role_summary', 'classroom_activity', 'achievement_summary') NOT NULL,
+    summary TEXT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    original_filename VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_admin_reports_admin (admin_id),
+    CONSTRAINT fk_admin_reports_admin
+        FOREIGN KEY (admin_id) REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE user_achievements (

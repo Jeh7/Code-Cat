@@ -25,7 +25,9 @@ if (!isset($_SESSION['user'])) {
                 <img src="img\default-pfp.png" class="profile-img">
                 <div id="dropdown" class="dropdown">
                     <a href="profile.php">Profile</a>
-                    <a href="achievements.php">Achievements</a>
+                    <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+                        <a href="achievements.php">Achievements</a>
+                    <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
                         <a href="teacher_levels.php">Teacher Dashboard</a>
                         <a href="teacher_reports.php">Teacher Reports</a>
@@ -35,7 +37,7 @@ if (!isset($_SESSION['user'])) {
                         <a href="levels.php">Classroom Levels</a>
                     <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
-                        <a href="reports.php">User Reports</a>
+                        <a href="reports.php">Admin Reports</a>
                     <?php endif; ?>
                     <a href="logout.php">Logout</a>
                 </div>
@@ -85,10 +87,12 @@ if (!isset($_SESSION['user'])) {
                         <p>Use the links below to jump back into your current flow.</p>
                     </div>
                     <div class="quick_action_grid">
-                        <a class="quick_action_card" href="achievements.php">
-                            <strong>Achievements</strong>
-                            <span>Review unlocked milestones and track what is left.</span>
-                        </a>
+                        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+                            <a class="quick_action_card" href="achievements.php">
+                                <strong>Achievements</strong>
+                                <span>Review unlocked milestones and track what is left.</span>
+                            </a>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher'): ?>
                             <a class="quick_action_card" href="teacher_levels.php">
                                 <strong>Teacher Dashboard</strong>
@@ -100,8 +104,8 @@ if (!isset($_SESSION['user'])) {
                             </a>
                         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <a class="quick_action_card" href="reports.php">
-                                <strong>User Reports</strong>
-                                <span>Review account data and export the current list.</span>
+                                <strong>Admin Reports</strong>
+                                <span>Generate user, classroom, achievement, and system summary reports.</span>
                             </a>
                         <?php else: ?>
                             <a class="quick_action_card" href="gameplay.php">

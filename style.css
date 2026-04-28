@@ -589,6 +589,7 @@ textarea:focus {
 
 .login_box button,
 .login_box input,
+.report_filters input,
 .report_filters select,
 .teacher_form textarea,
 .teacher_form select,
@@ -615,6 +616,7 @@ textarea:focus {
 }
 
 .login_box input,
+.report_filters input,
 .report_filters select,
 .teacher_form textarea,
 .teacher_form select,
@@ -994,6 +996,82 @@ iframe,
 
 .dashboard_summary_card span {
   color: var(--muted_ink);
+}
+
+.admin_chart_grid,
+.admin_insight_grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin_chart_grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.admin_insight_grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.admin_chart_panel {
+  background: rgba(255, 255, 255, 0.46);
+  border: 1px solid var(--border_soft);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+.bar_chart {
+  display: grid;
+  gap: 12px;
+}
+
+.bar_row {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.8fr) minmax(120px, 2fr) minmax(34px, auto);
+  align-items: center;
+  gap: 10px;
+}
+
+.bar_row span {
+  color: var(--muted_ink);
+}
+
+.bar_row strong {
+  text-align: right;
+  color: var(--ink);
+}
+
+.bar_track {
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.bar_track span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.admin_compact_item span {
+  color: var(--muted_ink);
+}
+
+.admin_compact_list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin_compact_item {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.44);
 }
 
 .table_wrap {

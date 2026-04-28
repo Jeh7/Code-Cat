@@ -10,6 +10,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
     header("Location: teacher_levels.php");
     exit();
 }
+
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    header("Location: reports.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

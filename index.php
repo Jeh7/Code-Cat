@@ -25,7 +25,9 @@ include "flash.php";
                     <img src="img\default-pfp.png" class="profile-img">
                     <div id="dropdown" class="dropdown">
                         <a href="profile.php">Profile</a>
-                        <a href="achievements.php">Achievements</a>
+                        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+                            <a href="achievements.php">Achievements</a>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher'): ?>
                             <a href="teacher_levels.php">Teacher Dashboard</a>
                             <a href="teacher_reports.php">Teacher Reports</a>
@@ -35,7 +37,7 @@ include "flash.php";
                             <a href="levels.php">Classroom Levels</a>
                         <?php endif; ?>
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
-                            <a href="reports.php">User Reports</a>
+                            <a href="reports.php">Admin Reports</a>
                         <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
@@ -98,6 +100,12 @@ include "flash.php";
                     <div class="callout">
                         <strong>Teacher accounts do not launch the game.</strong>
                         <span>Use classrooms, levels, teacher reports, and student progress tracking from your dashboard.</span>
+                    </div>
+                <?php elseif (isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <button onclick="javascript:location.href='reports.php'" class="play-button">Open Admin Reports</button>
+                    <div class="callout">
+                        <strong>Admin accounts do not launch the game.</strong>
+                        <span>Use user reports, system summaries, and generated admin PDFs from your dashboard.</span>
                     </div>
                 <?php elseif (isset($_SESSION['user'])): ?>
                     <button onclick="javascript:location.href='gameplay.php'" class="play-button">Choose Gameplay</button>

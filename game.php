@@ -13,6 +13,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
     exit();
 }
 
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    header("Location: reports.php");
+    exit();
+}
+
 achievement_unlock_by_title($conn, (int)($_SESSION['id'] ?? 0), 'Puzzle Starter');
 ?>
 
@@ -42,7 +47,7 @@ achievement_unlock_by_title($conn, (int)($_SESSION['id'] ?? 0), 'Puzzle Starter'
                         <a href="levels.php">Classroom Levels</a>
                     <?php endif; ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
-                        <a href="reports.php">User Reports</a>
+                        <a href="reports.php">Admin Reports</a>
                     <?php endif; ?>
                     <a href="logout.php">Logout</a>
                 </div>

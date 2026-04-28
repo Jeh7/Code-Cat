@@ -8,6 +8,11 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    header("Location: reports.php");
+    exit();
+}
+
 $user_id = $_SESSION['id'];
 achievement_ensure_defaults($conn);
 $achievement_titles = achievement_titles_for_role((string)($_SESSION['role'] ?? 'student'));

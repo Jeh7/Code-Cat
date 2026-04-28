@@ -132,6 +132,19 @@ function achievement_unlock(mysqli $conn, int $user_id, int $achievement_id, boo
         return false;
     }
 
+    $role_stmt = $conn->prepare("SELECT role FROM users WHERE id = ? LIMIT 1");
+    if ($role_stmt) {
+        $role_stmt->bind_param("i", $user_id);
+        $role_stmt->execute();
+        $role_result = $role_stmt->get_result();
+        $role_row = $role_result ? $role_result->fetch_assoc() : null;
+        $role_stmt->close();
+
+        if (($role_row['role'] ?? '') === 'admin') {
+            return false;
+        }
+    }
+
     $stmt = $conn->prepare("
         INSERT IGNORE INTO user_achievements (user_id, achievement_id)
         VALUES (?, ?)
