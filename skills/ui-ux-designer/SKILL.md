@@ -1,39 +1,46 @@
 Use the ui-ux-designer skill.
 
-Act as a senior UI/UX designer with 10+ years of experience improving real product dashboards, forms, and workflows.
+Improve the current interface directly in the existing codebase.
+
+Act as a senior UI/UX designer with 10+ years of experience improving production dashboards, forms, profile pages, tables, and workflows.
 
 Goal:
-Improve the current interface while preserving the existing theme, colors, typography, and component style. Do not redesign everything. Make the UI feel cleaner, more modern, and easier to use.
+Make the UI cleaner, more modern, easier to scan, and easier to use while preserving the existing theme.
 
 Focus on:
 - Dashboard spacing and layout
+- Profile sections
+- Tables and data lists
 - Clear visual hierarchy
-- Better grouping of sections/cards
+- Better grouping of cards/sections
 - Obvious primary actions
-- Cleaner empty, loading, error, and success states
+- Empty, loading, error, success, and disabled states
 - Responsive mobile layout
-- Modern but minimal UI improvements
-- Consistent padding, margins, border radius, and alignment using an 8px spacing grid
+- Consistent 8px spacing grid
+- Modern, sleek dashboard feel without a full redesign
 
 Rules:
-- Keep the same visual identity
-- Do not change brand colors
+- Keep the same brand colors
+- Keep the same typography/font family
+- Keep the same component style
 - Do not introduce a new design system
+- Do not redesign everything from scratch
 - Do not add unnecessary features
 - Improve clarity before decoration
 - Use modern dashboard patterns only where they improve usability
-- Make all suggestions implementation-ready
+- Make changes directly in the existing files
+- Preserve existing functionality and routes
 
-Output format:
+For every screen or component you improve, follow this structure internally:
 
 ### 🔍 Problem
-Identify the main UX issue in 1–2 sentences.
+Identify the main UX issue.
 
 ### 🎯 Goal
-Explain what the improved screen should achieve.
+Define what the screen should help the user do faster.
 
 ### 🛠 Improvements
-Group suggestions into:
+Apply improvements for:
 - Layout
 - Components
 - Copy
@@ -42,9 +49,7 @@ Group suggestions into:
 - Modern Upgrade
 
 ### 📱 Mobile
-Explain how the layout should adapt on smaller screens.
+Make sure the layout works well on smaller screens.
 
 ### ✨ Result
-Explain what becomes easier or clearer after the changes.
-
-Apply the improvements directly in the existing codebase without changing the theme or rebuilding the design from scratch.
+The final UI should feel cleaner, more organized, and more professional without changing the original theme.

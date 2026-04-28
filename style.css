@@ -847,6 +847,90 @@ iframe,
   gap: 18px;
 }
 
+.profile_dashboard {
+  gap: 16px;
+}
+
+.profile_dashboard_hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.7fr);
+  gap: 18px;
+  align-items: stretch;
+  padding: 22px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(28, 43, 58, 0.96), rgba(52, 88, 118, 0.9)),
+    linear-gradient(135deg, rgba(94, 146, 218, 0.22), rgba(63, 157, 111, 0.12));
+  color: #f5f8ff;
+  box-shadow: 0 18px 42px rgba(24, 37, 52, 0.18);
+  box-sizing: border-box;
+}
+
+.profile_identity {
+  min-width: 0;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.profile_dashboard_avatar {
+  width: 82px;
+  height: 82px;
+  flex: 0 0 auto;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.profile_identity h2,
+.profile_identity p,
+.profile_hero_action p {
+  margin: 0;
+}
+
+.profile_identity h2 {
+  color: #ffffff;
+  text-align: left;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.profile_identity p,
+.profile_hero_action p {
+  color: rgba(245, 248, 255, 0.78);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.profile_overline {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(245, 248, 255, 0.74);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.profile_hero_action {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+  justify-items: stretch;
+}
+
+.profile_role_badge {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-weight: bold;
+}
+
 .profile_summary {
   grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
   gap: 16px;
@@ -889,13 +973,43 @@ iframe,
   align-content: start;
 }
 
+.profile_details {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.profile_dashboard .profile_field {
+  min-height: 116px;
+  align-content: space-between;
+  border: 1px solid rgba(34, 49, 62, 0.1);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(244, 248, 252, 0.64));
+  box-shadow: 0 10px 24px rgba(24, 37, 52, 0.08);
+}
+
+.profile_dashboard .profile_field strong {
+  color: #4d6172;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.profile_dashboard .profile_field span {
+  color: #192838;
+  font-size: 17px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
 .quick_action_grid {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 14px;
 }
 
 .quick_action_card {
-  background: rgba(255, 255, 255, 0.52);
+  min-height: 128px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(244, 248, 252, 0.66));
+  border: 1px solid rgba(34, 49, 62, 0.1);
   border-radius: 14px;
   padding: 16px;
   color: var(--ink);
@@ -903,10 +1017,13 @@ iframe,
   display: grid;
   gap: 8px;
   box-sizing: border-box;
+  box-shadow: 0 10px 24px rgba(24, 37, 52, 0.08);
 }
 
 .quick_action_card:hover {
   transform: translateY(-2px);
+  border-color: rgba(94, 146, 218, 0.32);
+  box-shadow: 0 14px 30px rgba(24, 37, 52, 0.12);
 }
 
 .quick_action_card strong,
@@ -1840,6 +1957,7 @@ iframe,
   .classroom_play_shell,
   .auth_shell,
   .profile_summary,
+  .profile_dashboard_hero,
   .dashboard_hero {
     grid-template-columns: 1fr;
   }
@@ -1894,8 +2012,23 @@ iframe,
   }
 
   .login_box,
-  .auth_aside {
+  .auth_aside,
+  .user_profile {
     padding: 22px 18px;
+  }
+
+  .profile_dashboard_hero {
+    padding: 18px;
+  }
+
+  .profile_identity {
+    align-items: flex-start;
+  }
+
+  .profile_dashboard_avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
   }
 
   .gameplay_split,
