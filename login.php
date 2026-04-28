@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 include "flash.php";
+include "achievement_helpers.php";
 
 $error = "";
 
@@ -24,6 +25,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['reg_date'] = $user['register_date'];
                 $_SESSION['role'] = $user['role'];
+                achievement_unlock_by_title($conn, (int)$user['id'], 'First Login');
                 $stmt->close();
                 flash_add('success', 'Logged in successfully.');
                 header("Location: index.php");

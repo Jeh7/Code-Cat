@@ -153,7 +153,17 @@ INSERT INTO achievements (title, description) VALUES
     ('Ready to Learn', 'Create an account and choose a role.'),
     ('Puzzle Starter', 'Launch the game from the dashboard.'),
     ('Achievement Hunter', 'Unlock your first achievement.'),
-    ('Teacher Mode', 'Register with the teacher role.');
+    ('Teacher Mode', 'Register with the teacher role.'),
+    ('Classroom Creator', 'Create your first classroom.'),
+    ('Student Mentor', 'Add your first student to a classroom.'),
+    ('Level Builder', 'Create your first classroom level.'),
+    ('Published Author', 'Publish a classroom level for students.'),
+    ('Report Maker', 'Generate your first classroom progress report.'),
+    ('Classroom Enrollee', 'Get added to your first classroom.'),
+    ('Level Explorer', 'Start a classroom level.'),
+    ('Classroom Rookie', 'Complete your first classroom level.'),
+    ('Classroom Climber', 'Complete five classroom levels.'),
+    ('Classroom Champion', 'Complete ten classroom levels.');
 
 -- Optional admin account.
 -- Password: admin123

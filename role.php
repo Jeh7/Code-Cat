@@ -1,6 +1,7 @@
 <?php
 include "db.php";
 include "flash.php";
+include "achievement_helpers.php";
 
 $id = (int)($_GET["id"] ?? 0);
 $role = "";
@@ -28,6 +29,10 @@ if ($id > 0 && $role !== "") {
     }
 
     if ($updated) {
+        achievement_unlock_by_title($conn, $id, 'Ready to Learn');
+        if ($role === 'teacher') {
+            achievement_unlock_by_title($conn, $id, 'Teacher Mode');
+        }
         flash_add('success', 'Account created. You can now sign in.');
         header("Location: login.php");
         exit();

@@ -3,6 +3,7 @@ session_start();
 include "db.php";
 include "flash.php";
 include "teacher_report_helpers.php";
+include "achievement_helpers.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     echo "Access denied";
@@ -182,11 +183,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $relative_path,
                             $original_filename
                         );
-                        $stmt->execute();
+                        $saved = $stmt->execute();
                         $stmt->close();
-                        flash_add('success', 'PDF report generated successfully.');
-                        header("Location: teacher_reports.php");
-                        exit();
+                        if ($saved) {
+                            achievement_unlock_by_title($conn, $teacher_id, 'Report Maker');
+                            flash_add('success', 'PDF report generated successfully.');
+                            header("Location: teacher_reports.php");
+                            exit();
+                        }
+
+                        @unlink($absolute_path);
+                        flash_add('error', 'The PDF was created, but the report record could not be saved.');
                     } else {
                         @unlink($absolute_path);
                         flash_add('error', 'The PDF was created, but the report record could not be saved.');

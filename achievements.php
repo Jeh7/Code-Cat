@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db.php";
+include "achievement_helpers.php";
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -8,16 +9,32 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['id'];
+achievement_ensure_defaults($conn);
+$achievement_titles = achievement_titles_for_role((string)($_SESSION['role'] ?? 'student'));
+$placeholders = implode(',', array_fill(0, count($achievement_titles), '?'));
 
-$sql = "
+$stmt = $conn->prepare("
 SELECT a.id, a.title, a.description,
        ua.id AS unlocked
 FROM achievements a
 LEFT JOIN user_achievements ua
-ON a.id = ua.achievement_id AND ua.user_id = '$user_id'
-";
+ON a.id = ua.achievement_id AND ua.user_id = ?
+WHERE a.title IN ($placeholders)
+ORDER BY a.id
+");
 
-$result = $conn->query($sql);
+$result = false;
+if ($stmt) {
+    $types = 'i' . str_repeat('s', count($achievement_titles));
+    $params = array_merge([$user_id], $achievement_titles);
+    $bind_params = [$types];
+    foreach ($params as $key => &$value) {
+        $bind_params[] = &$value;
+    }
+    call_user_func_array([$stmt, 'bind_param'], $bind_params);
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
 ?>
 
 <!DOCTYPE html>
@@ -65,8 +82,9 @@ $result = $conn->query($sql);
         <div class="page_back_row">
             <a class="secondary_button" href="index.php">Back to Home</a>
         </div>
-        <h2>Achievements</h2>
+        <h2><?= (($_SESSION['role'] ?? '') === 'teacher') ? 'Teacher Achievements' : 'Student Achievements' ?></h2>
         <div class="achievements">
+        <?php if ($result && $result->num_rows > 0): ?>
         <?php while ($row = $result->fetch_assoc()): ?>
             <div class="card <?php echo $row['unlocked'] ? 'unlocked' : 'locked'; ?>">
                 <h3><?php echo htmlspecialchars($row['title']); ?></h3>
@@ -76,7 +94,19 @@ $result = $conn->query($sql);
                 </span>
             </div>
         <?php endwhile; ?>
+        <?php else: ?>
+            <div class="empty_state">
+                <strong>No achievements found.</strong>
+                <span>Refresh the page after the database has been initialized.</span>
+            </div>
+        <?php endif; ?>
         </div>
     </div>
 </body>
 </html>
+
+<?php
+if ($stmt) {
+    $stmt->close();
+}
+?>

@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 include "classroom_level_helpers.php";
+include "achievement_helpers.php";
 
 header('Content-Type: application/json');
 
@@ -91,6 +92,8 @@ $conn->query("
         attempts = attempts + 1,
         last_played_at = NOW()
 ");
+
+achievement_unlock_by_title($conn, $student_id, 'Level Explorer');
 
 $progress_result = $conn->query("
 SELECT status, attempts, last_played_at, completed_at

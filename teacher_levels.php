@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 include "flash.php";
+include "achievement_helpers.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'teacher') {
     echo "Access denied";
@@ -23,11 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ");
             if ($stmt) {
                 $stmt->bind_param("iss", $teacher_id, $classroom_name, $classroom_description);
-                $stmt->execute();
+                $created = $stmt->execute();
                 $stmt->close();
-                flash_add('success', 'Classroom created successfully.');
-                header("Location: teacher_levels.php");
-                exit();
+                if ($created) {
+                    achievement_unlock_by_title($conn, $teacher_id, 'Classroom Creator');
+                    flash_add('success', 'Classroom created successfully.');
+                    header("Location: teacher_levels.php");
+                    exit();
+                }
             }
         }
 
@@ -67,12 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($insert_stmt) {
                     $insert_stmt->bind_param("ii", $classroom_id, $student_id);
                     $insert_stmt->execute();
+                    $student_added = $insert_stmt->affected_rows > 0;
                     $insert_stmt->close();
                     if ($classroom_stmt) {
                         $classroom_stmt->close();
                     }
                     if ($student_stmt) {
                         $student_stmt->close();
+                    }
+                    if ($student_added) {
+                        achievement_unlock_by_title($conn, $teacher_id, 'Student Mentor');
+                        achievement_unlock_by_title($conn, $student_id, 'Classroom Enrollee');
                     }
                     flash_add('success', 'Student added to the classroom.');
                     header("Location: teacher_levels.php");

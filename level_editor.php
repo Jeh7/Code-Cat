@@ -3,6 +3,7 @@ session_start();
 include "db.php";
 include "classroom_level_helpers.php";
 include "flash.php";
+include "achievement_helpers.php";
 
 function teacher_levels_has_column(mysqli $conn, string $column): bool
 {
@@ -298,6 +299,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($save_ok && $level_id > 0) {
+            achievement_unlock_by_title($conn, $teacher_id, 'Level Builder');
+            if ($status === 'published') {
+                achievement_unlock_by_title($conn, $teacher_id, 'Published Author');
+            }
             flash_add('success', 'Level saved successfully.');
             header('Location: level_editor.php?id=' . $level_id);
             exit();

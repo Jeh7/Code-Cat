@@ -1,5 +1,7 @@
 <?php
 session_start();
+include "db.php";
+include "achievement_helpers.php";
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -10,6 +12,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher') {
     header("Location: teacher_levels.php");
     exit();
 }
+
+achievement_unlock_by_title($conn, (int)($_SESSION['id'] ?? 0), 'Puzzle Starter');
 ?>
 
 <!DOCTYPE html>

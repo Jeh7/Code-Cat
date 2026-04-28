@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 include "classroom_level_helpers.php";
+include "achievement_helpers.php";
 
 header('Content-Type: application/json');
 
@@ -121,6 +122,8 @@ $conn->query("
         last_played_at = NOW(),
         completed_at = NOW()
 ");
+
+achievement_unlock_completed_level_milestones($conn, $student_id);
 
 echo json_encode([
     'ok' => true,
