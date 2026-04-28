@@ -425,7 +425,7 @@ if ($edit_user_id > 0) {
 <head>
     <title>Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=admin-dashboard-cards">
 </head>
 <body>
     <div class="tab">
@@ -461,74 +461,85 @@ if ($edit_user_id > 0) {
             <a class="secondary_button" href="index.php">Back to Home</a>
         </div>
 
-        <div class="dashboard_hero">
-            <div>
+        <div class="dashboard_hero admin_dashboard_hero">
+            <div class="admin_hero_copy">
                 <h2>Admin Dashboard</h2>
                 <p>Monitor accounts, classroom activity, progress, and generated reports from one administrative workspace.</p>
             </div>
-            <div class="dashboard_summary">
-                <div class="dashboard_summary_card">
+            <div class="admin_hero_metrics">
+                <div class="dashboard_summary_card analytics_card analytics_card_primary">
                     <strong><?= $report_count ?></strong>
                     <span><?= $role === '' ? 'Users in current view' : ucfirst($role) . ' users in current view' ?></span>
+                    <small>Filtered roster</small>
                 </div>
-                <div class="dashboard_summary_card">
+                <div class="dashboard_summary_card analytics_card analytics_card_success">
                     <strong><?= array_sum($role_counts) ?></strong>
                     <span>Total registered accounts</span>
+                    <small>All roles</small>
                 </div>
             </div>
         </div>
 
         <?= render_flash_messages() ?>
 
-        <div class="dashboard_summary">
-            <div class="dashboard_summary_card">
+        <div class="analytics_grid">
+            <div class="dashboard_summary_card analytics_card analytics_card_primary">
                 <strong><?= $role_counts['student'] ?></strong>
                 <span>Students</span>
+                <small>Learning accounts</small>
             </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_info">
                 <strong><?= $role_counts['teacher'] ?></strong>
                 <span>Teachers</span>
+                <small>Classroom owners</small>
             </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_warning">
                 <strong><?= $role_counts['admin'] ?></strong>
                 <span>Admins</span>
+                <small>System access</small>
             </div>
-            <div class="dashboard_summary_card">
-                <strong><?= $role_counts['na'] ?></strong>
-                <span>No role selected</span>
-            </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_success">
                 <strong><?= (int)$system_summary['total_classrooms'] ?></strong>
                 <span>Classrooms</span>
+                <small>Created spaces</small>
             </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_info">
                 <strong><?= (int)$system_summary['total_levels'] ?></strong>
                 <span>Teacher levels</span>
+                <small><?= $publishing_rate ?>% published</small>
             </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_success">
                 <strong><?= (int)$system_summary['completed_entries'] ?></strong>
                 <span>Completed progress entries</span>
+                <small><?= $completion_rate ?>% completion</small>
             </div>
-            <div class="dashboard_summary_card">
+            <div class="dashboard_summary_card analytics_card analytics_card_primary">
                 <strong><?= (int)$system_summary['admin_reports'] ?></strong>
                 <span>Generated admin reports</span>
+                <small>PDF exports</small>
             </div>
         </div>
 
         <div class="admin_chart_grid">
-            <div class="admin_chart_panel">
+            <div class="admin_chart_panel role_distribution_card">
                 <div class="dashboard_section_header">
                     <h3>Role distribution</h3>
                     <p>Current account mix by role.</p>
                 </div>
-                <div class="bar_chart">
+                <div class="role_distribution_grid">
                     <?php foreach ($role_counts as $chart_role => $chart_count): ?>
-                    <div class="bar_row">
-                        <span><?= htmlspecialchars(ucfirst($chart_role)) ?></span>
-                        <div class="bar_track" aria-label="<?= htmlspecialchars($chart_role) ?> <?= (int)$chart_count ?>">
-                            <span style="width: <?= (int)round(((int)$chart_count / $max_role_count) * 100) ?>%;"></span>
+                    <?php if ($chart_role === 'na') { continue; } ?>
+                    <?php
+                        $role_label = ucfirst($chart_role);
+                        $assigned_role_total = max(1, $role_counts['student'] + $role_counts['teacher'] + $role_counts['admin']);
+                        $role_percent = (int)round(((int)$chart_count / $assigned_role_total) * 100);
+                    ?>
+                    <div class="role_distribution_item">
+                        <div>
+                            <strong><?= (int)$chart_count ?></strong>
+                            <span><?= htmlspecialchars($role_label) ?></span>
                         </div>
-                        <strong><?= (int)$chart_count ?></strong>
+                        <small><?= $role_percent ?>% of accounts</small>
                     </div>
                     <?php endforeach; ?>
                 </div>
